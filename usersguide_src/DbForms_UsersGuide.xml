@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+	<!ENTITY pref SYSTEM "Preface.xml">
+	<!ENTITY intr SYSTEM "Introduction.xml">
+	<!ENTITY comp SYSTEM "Compatibility.xml">
+	<!ENTITY inst SYSTEM "Installation.xml">
+	<!ENTITY jsms SYSTEM "JumpStart_MS_Server_Database.xml">
+	<!ENTITY tuto SYSTEM "Tutorial.xml">
+	<!ENTITY conf SYSTEM "Configuration.xml">
+	<!ENTITY secu SYSTEM "Security.xml">
+	<!ENTITY uplo SYSTEM "Fileuploads.xml">
+	<!ENTITY styl SYSTEM "Styling.xml">
+	<!ENTITY sort SYSTEM "Sorting.xml">
+	<!ENTITY scri SYSTEM "Scripting_Variables.xml">
+	<!ENTITY hook SYSTEM "Application_Hookups.xml">
+	<!ENTITY devg SYSTEM "DevGui.xml">
+	<!ENTITY inte SYSTEM "Internationalization.xml">
+	<!ENTITY vali SYSTEM "Validation_Framework.xml">
+	<!ENTITY jscr SYSTEM "Javascript_Calendar.xml">
+	<!ENTITY fkey SYSTEM "Foreign_Keys.xml">
+	<!ENTITY cons SYSTEM "Connection_Support.xml">
+	<!ENTITY mult SYSTEM "Multiple_Database_Connections.xml">
+	<!ENTITY plug SYSTEM "PluggableEvents.xml">
+	<!ENTITY ejbs SYSTEM "EJBs.xml">
+	<!ENTITY jasp SYSTEM "JasperReports.xml">
+	<!ENTITY tagl SYSTEM "Tag_Library.xml">
+	<!ENTITY date SYSTEM "Appendix_Internationalization_of_Dates.xml">
+	<!ENTITY todo SYSTEM "Appendix_To_Do.xml">
+	<!ENTITY chan SYSTEM "Appendix_Changes.xml">
+	<!ENTITY refe SYSTEM "Appendix_References.xml">
+	<!ENTITY ackn SYSTEM "Appendix_Acknowledgements.xml">
+	<!ENTITY auth SYSTEM "Appendix_Author.xml">
+	<!ENTITY navi SYSTEM "Navigation.xml">
+	<!ENTITY xml SYSTEM "XMLDatasource.xml">
+	<!ENTITY uml-cls SYSTEM "UMLDiagrams-cls.xml">
+	<!ENTITY uml-seq SYSTEM "UMLDiagrams-seq.xml">
+	<!ENTITY unit-test SYSTEM "Client_Side_Unit_Testing.xml">
+	<!ENTITY how_to SYSTEM "How_To.xml">
+	<!ENTITY query_supp SYSTEM "Query_Support.xml">
+	<!ENTITY data_fields SYSTEM "Data_Fields.xml">
+]>
+<book>
+	<title>DbForms User's Guide</title>
+        <subtitle>Version 2.5</subtitle>
+<part>
+	<title>DbForms in a Nutshell</title>
+&pref;
+&intr;
+</part>
+<part>
+	<title>Installation</title>
+&comp;
+&inst;
+&devg;
+&jsms;
+</part>
+<part>
+	<title>Basic Use Tutorial</title>
+&tuto;
+</part>
+<part>
+	<title>Advanced Use and Extensions</title>
+&conf;    
+&secu;
+&uplo;
+&styl;
+&sort;
+&query_supp;
+&scri;
+&hook;
+&inte;
+&vali;
+&jscr;
+&fkey;
+&cons;
+&mult;
+&plug;
+&ejbs;
+&jasp;
+&xml;
+&navi;                
+
+</part>
+<part>
+        <title>Additional Information</title>
+&how_to;
+&tagl;
+&data_fields;
+&unit-test;        
+</part>
+<part>
+	<title>UML diagrams</title>
+&uml-cls;
+&uml-seq;
+</part>
+<part>
+	<title>Appendices</title>
+&chan;
+&todo;
+&ackn;
+&auth;
+&refe;
+</part>
+</book>

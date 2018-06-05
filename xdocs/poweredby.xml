@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="fossato@pow2.com">Luca Fossato</author>
+    <title>DbForms Powered By</title>
+  </properties>
+
+<body>
+
+<section name="Powered By">
+  <p>
+    The table below gives informations about applications developed using DbForms.
+	Select the related link for further informations and screenshots !	
+  </p>
+  <p>
+    <table width="600" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+	  <th width="200">application</th>
+	  <th>description</th>
+    </tr>
+    <tr valign="top"> 
+	  <td><a href="poweredby/pow2acl.html">pow2ACL</a></td>
+	  <td>
+	    pow2ACL gives access control list facility to web applications.
+		It provides a JSP tag library and custom Struts action classes. 
+	  </td>
+	</tr>
+    <tr valign="top"> 
+	  <td><a href="poweredby/pow2cm.html">pow2ContentManagement</a></td>
+	  <td>
+	    pow2ContentManagement is a toolkit useful to build content-driven applications 
+		like electronic catalogs and e-commerce sites.
+	  </td>
+	</tr>
+         <tr valign="top"> 
+	  <td><a href="poweredby/j_peer.html">Shopping Site Backend</a></td>
+	  <td>
+	   This is by DbForm's original creator.  
+	  </td>
+	</tr>
+     <tr valign="top"> 
+	  <td><a href="poweredby/j_peer_2.html">course adminstration site Backend</a></td>
+	  <td>
+	   This is by DbForm's original creator.  
+	  </td>
+	</tr>
+     <tr valign="top"> 
+	  <td>
+	  	<a href="poweredby/gecko.html">CRM Managment system based on dbforms</a>
+	  </td>
+    <td>
+      A CRM system build by gecko-soft 
+	  </td>
+	</tr>
+	</table>
+  </p>
+</section>
+
+<!--
+<section name="DbForms companion">
+  <p>
+    The table below lists some applications that could be used with DbForms
+	to enhance the features of your applications:
+  </p>
+  <p>
+    <table width="600" border="0" cellspacing="0" cellpadding="2">
+	<tr> 
+	  <th width="200">application</th>
+	  <th>description</th>
+    </tr>
+    <tr valign="top"> 
+	  <td><a href="poweredby/pow2webgui.html">pow2WebGui</a></td>
+	  <td>
+	    pow2WebGui is a web gui framework useful to build and render visual components.
+	  </td>
+	</tr>
+	</table>
+  </p>
+</section>
+-->
+
+</body>
+</document>

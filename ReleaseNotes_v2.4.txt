@@ -1,0 +1,141 @@
+Release Notes for DbForms Version 2.4,  2004-08-02
+
+Contents:
+1)     About this release
+
+2)     Details about enhancements and changes
+
+2-1)   Changes to the tag library
+2-1-1) New attribute overrideFieldCheck for db:dbform tag
+2-1-2) Added title attribute to tags
+2-1-3) Added country support for locale
+2-1-4) Added autocomplete attribute to dbforms tag
+2-1-5) Changed autoupdate attribute of dbforms tag
+2-1-6) New attribute compareWith for SearchCombo
+2-1-7) Added tag DbSearchCheckBox
+
+2-2)   Changes to configuration
+2-2-1) Added contextDataSource as attribute to dbconnection tag in config file
+2-2-2) Added global interceptor to dbforms-config.xml
+
+2-3)   Others
+2-3-1) Support for html/database escaping
+2-3-2) Fully supported servletapi 2.4 and jspapi 2.0
+
+
+
+1)    About this release
+-------------------------
+This is a developers release, be careful to use this release in an
+important production environment, but you are encouraged to try out this
+release. Please report any problems or comments to the mailing list of
+the project
+
+    jdbforms-interest@lists.sourceforge.net
+
+This documents summarizes the changes since last official release 2.3.
+
+
+
+2)     Details about enhancements and changes
+---------------------------------------------
+
+2-1)  Changes to the tag library
+---------------------------------
+
+2-1-1) New attribute overrideFieldCheck for db:dbform tag
+---------------------------------------------------------
+If set to true the field values will not be checked if they are changed.
+The database update will be done always.
+This could be usefull if you want to call your interceptor always to 
+check fields which are not part of the table.
+In your interceptor you can use return DbEventInterceptor.IGNORE_OPERATION 
+if you do not want the database update 
+
+
+2-1-2) Added title attribute to tags
+------------------------------------
+You can know use the title attribute for all tags. So tooltips can be supported for IE.
+
+2-1-3) Added country support for locale
+---------------------------------------
+Know also the country attribut is used in locales
+
+2-1-4) Added autocomplete attribute to dbforms tag
+--------------------------------------------------
+If the autocomplete value is specified then the attribute is inserted in the form tag. 
+if the value is "off" and if the browser has autocompletion ability, it can be disabled with this tag. 
+Any value will be accepted for autocomplete. e.g. autocomplete="any", 
+the generated HTML code is: <form name="dbforms" ... autocomplete="any" ... >
+
+2-1-5) Changed autoupdate attribute of dbforms tag
+--------------------------------------------------
+If set to "true", at every action (navigation, insert, update, etc.) all input fields of ALL currently rendered rowsets are parsed and updated. 
+if set to "OnUpdateOnly", updates are only performed if an explicite "update"- action is launched 
+(normally by hitting the updateAction-button)
+
+2-1-6) New attribute compareWith for SearchCombo
+------------------------------------------------
+If set to "index" the index value will be used to compare against the selected value.
+If set to "value" the value value will be used to compare against the selected value.
+If set to "list" the index of the list will be used to compare against the selected value
+default is "index".
+
+
+2-1-7) Added tag DbSearchCheckBox
+---------------------------------
+This tag will render a checkbox with a dedicated value for searching
+
+
+2-2)  Changes to configuration
+--------------------------------
+
+2-2-1) Added contextDataSource as attribute to dbconnection tag in config file
+------------------------------------------------------------------------------
+With the contextDataSource attribute you can use existing DataSource-Object from
+servlet-context-scope (e.g. from struts-config.xml):
+you just have to add a "contextDataSource" property to dbforms-config.xml
+with the name of the scoped-Variable.
+
+2-2-2) Added global interceptor to dbforms-config.xml
+-----------------------------------------------------
+You can add an global interceptors now:
+<dbforms-config>
+	<interceptors>
+	   <interceptor>
+	      <param/>
+	   </interceptor>
+       	</interceptors>
+</dbforms-config>
+The interceptor tag has the same attributes as the interceptor tag inside the 
+table attribute!
+
+
+2-3)  Others
+--------------
+
+2-3-1) Support for html/database escaping
+-----------------------------------------
+Escapers can be set for tables, fields in dbforms-config file, all output tags in the
+jsp page. 
+Ranking is:
+   1. jsp tag
+   2. Field
+   3. Table
+   4. default escaper
+See javadoc for details of escaper interface.
+
+2-3-2) Fully supported servletapi 2.4 and jspapi 2.0
+----------------------------------------------------
+Servletapi 2.4 with jspapi 2.0 is fully suported now.
+Nethertheless dbforms is compiled against servletapi 2.3 because compiling against servletapi 2.4
+and deploying to an servletapi 2.3 machine (e.g. tomcat 4) will lead to an wrong signature error.
+The missing interfaces from javax.servlet.jsp.el to compile with servletapi 2.3 there are included 
+in the file jsp-api-el-2.0.jar of the distribution.
+To compile against servletapi 2.3 you must include the files of the directory 
+dependend/servletapi2.3 in your classpath.
+To compile against servletapi 2.4 you must include the files of the directory 
+dependend/servletapi2.4 in your classpath.
+
+
+

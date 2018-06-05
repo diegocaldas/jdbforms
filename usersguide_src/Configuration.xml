@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter id="config">
+<title>Configuration Files</title>
+<sect1>
+<title>Overview</title>
+
+<para>
+DbForms application JSPs contain tags for building the
+application functionality.  These tags are defined in the tag library
+document, not in this section.
+</para>
+    
+<para>
+The application web deployment descriptor file
+<computeroutput>web.xml</computeroutput> must contain specific content
+for DbForms.  See 
+<emphasis role="underline"><xref linkend="building-appls"/></emphasis>
+and, in particular,
+<emphasis role="underline"><xref linkend="depldesc"/></emphasis> 
+for more information
+about the requirements for <computeroutput>web.xml</computeroutput>.
+</para>
+
+<para>
+The other key application configuration file is <computeroutput>dbforms-config.xml</computeroutput> which is the subject of the remainder of this chapter.
+Errors in this file often cause errors in the execution of a DbForms web application.  Whenever a change is made to this file, it is wise to check the servlet engine log files for any errors listed there.
+</para>
+
+<para>
+The <computeroutput>dbforms-config.xml</computeroutput> is read when
+the servlet container is started or when the web application is
+reloaded.  If there are any errors in this file, the DbForms parser
+will abort with an exception.  The web application will then be left
+in an indeterminate state.  Typically, the servlet engine (such as
+Tomcat) will continue to service requests for the web application but
+these will encounter a error such as a Java "No DbConnection object
+configured with name 'null'" exception.
+</para>
+
+
+<para>
+Setting up the configuration file
+<computeroutput>dbforms-config.xml</computeroutput> is an important
+part of creating a DbForms application.  This file defines the set of
+database tables to be used, defines the database connectivity needed to
+perform operations, and supplies information and parameters for 
+more advanced capabilities such as
+interceptors and defined queries.  The
+DevGui tool described in 
+<emphasis role="underline"><xref linkend="devgui"/></emphasis> 
+ provides an easy
+way to create an initial version of
+<computeroutput>dbforms-config.xml</computeroutput>.
+DevGui uses JDBC to connect with your
+database and automatically extract table definitions needed for
+DbForms.
+</para>
+
+<para>
+The top level structure of the
+<computeroutput>dbforms-config.xml</computeroutput> file is shown
+below.  The root element is
+<computeroutput>&lt;dbforms-config&gt;</computeroutput> and this, of
+course, occurs only one time.  The seven subelements shown inside of the
+root element must appear in the order shown.
+</para>
+
+<programlisting>
+   &lt;dbforms-config&gt;
+     &lt;table&gt;&lt;/table&gt;  
+     &lt;query&gt;&lt;/query&gt;  
+     &lt;events&gt;&lt;/events&gt;  
+     &lt;dbconnection&gt;&lt;/dbconnection&gt;  
+     &lt;DOMFactoryClass&gt;&lt;/DOMFactoryClass&gt;  
+     &lt;DefaultEscaperClass&gt;&lt;/DefaultEscaperClass&gt;  
+     &lt;interceptors&gt;&lt;/interceptors&gt;  
+   &lt;/dbforms-config&gt;
+</programlisting>
+
+<para>
+The first four subelements, with tags
+<computeroutput>&lt;table&gt;</computeroutput> through
+<computeroutput>&lt;dbconnection&gt;</computeroutput>, can appear zero
+or more times.  The remaining subelements, tags
+<computeroutput>&lt;DOMFactoryClass&gt;</computeroutput> through
+<computeroutput>&lt;interceptors&gt;</computeroutput>, may occur zero
+or one time.  Since all subelements are optional, an empty root tag is 
+valid although not useful.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>dbforms-config</computeroutput>
+</title>
+</sect1>
+
+<para>
+The root element surrounds the other elements.
+Only one <computeroutput>dbforms-config</computeroutput> element
+can appear in a file.  XML namespaces are not used.  The root
+element may be preceded by an XML declaration such as
+<programlisting>   &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+</programlisting>
+or an XML comment.
+</para>
+
+<para>
+If you have a source distrtibution of DbForms and wish to validate
+your <computeroutput>dbforms-config.xml</computeroutput> file, the XML
+schema is located at
+<computeroutput>src/org/dbforms/resources/dbforms-config.xsd</computeroutput>
+relative to the root directory of the source distribution.  The JEdit
+editor (<ulink url="www.jedit.org">www.jedit.org</ulink>) with the XML
+plugin may be used for this purpose.  The Apache Xerces project 
+(<ulink url="xml.apache.org/xerces2-j">xml.apache.org/xerces2-j</ulink>)
+also provides capabilities to validate an XML document against a
+schema.  Two attributes may be needed in the
+<computeroutput>dbforms-config</computeroutput> element tag to allow
+the validation to occur.
+<programlisting>
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="(your path to)/dbforms-config.xsd"
+</programlisting>
+</para>
+
+<sect1>
+<title>
+  Element <computeroutput>table</computeroutput>
+</title>
+
+<para>
+The <computeroutput>table</computeroutput> element is perhaps the most
+complex element.  It contains the majority of the information needed
+by DbForms to render the DbForms JSP tags.  A
+<computeroutput>table</computeroutput> element is needed for for each
+table to be used with DbForms.
+</para>
+
+<para>
+A starting set of <computeroutput>table</computeroutput> elements as
+well as a basic <computeroutput>dbconnection</computeroutput> element
+can be generated using the DevGui tool.  This tool, which is described in 
+<emphasis role="underline"><xref linkend="devgui"/></emphasis>, 
+verifies database connectivity and then uses JDBC
+capabilities to query the metadata for tables in the database.  This
+can be a signficant time-saving step.
+</para>
+
+<para>
+The nesting and ordering of subelements within each
+<computeroutput>table</computeroutput> tag is shown below.
+</para>
+
+<programlisting>
+   &lt;table&gt;
+     &lt;field/&gt;
+     &lt;calc/&gt;
+     &lt;foreign-key/&gt;
+     &lt;events&gt;
+       &lt;event/&gt;
+     &lt;/events&gt;
+     &lt;interceptor&gt;
+       &lt;param/&gt;
+     &lt;/interceptor&gt;
+     &lt;granted-privileges/&gt;
+   &lt;/table&gt;
+</programlisting>
+
+<para>
+The top level subelements, <computeroutput>field</computeroutput> through
+<computeroutput>granted-privileges</computeroutput> may each occur
+zero or more times except <computeroutput>events</computeroutput>
+which is optional but may appear a maximum of one time.
+</para>
+
+<para>
+There is no element content in the any of the elements.  All
+information is supplied in the attributes of these elements and 
+the attributes of their subelements.
+</para>
+
+<!-- table  -->
+
+<para>
+The <computeroutput>table</computeroutput> element itself has one 
+required attribute,
+<computeroutput>name</computeroutput>, giving the name of the table
+and a number of optional attributes.  All of the attributes are listed below.
+<variablelist>
+  <varlistentry>
+    <term><computeroutput>name</computeroutput></term>
+    <listitem>
+      The name of the table.  Required.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>orderBy</computeroutput></term>
+    <listitem>
+      The name of a column by which the table should be sorted.  The
+      order defined in this element is not changeable by the user and
+      appears in the application to be the natural order of rows in
+      the table.  If omitted or set to false, the order is determined
+      by the database system.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>dataAccessClass</computeroutput></term>
+    <listitem>
+      This is the fully-qualified name of a Java class that implements
+      the data access functionality for the table, replacing JDBC.
+      Currently, this is used for XML as discussed in 
+      <emphasis role="underline"><xref linkend="xml_data"/></emphasis>
+      but developers may define other data access
+      classes.  All data access classses must extend the DbForms class
+      <computeroutput>org.dbforms.event.datalist.dao.DataSource</computeroutput>.
+      Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>escaperClass</computeroutput></term>
+    <listitem>
+      This is the fully-qualified name of a Java class that implements
+      functionality to place escape characters in column data so the
+      HTML display is as desired and to place escape characters in a
+      field value before it is stored in the database.  The Java class must
+      implement DbForms interface
+      <computeroutput>org.dforms.util.IEscaper</computeroutput>.
+      Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>alias</computeroutput></term>
+    <listitem>
+      This attribute is used for XML data sources.  It provides a URL
+      to access data for an XML "table".  The URL includes a query
+      portion (following the '?' in the URL) that is used as an XPath
+      expression to obtain the data.  See 
+      <emphasis role="underline"><xref linkend="xml_data"/></emphasis>
+      for more details.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>blobHandling</computeroutput></term>
+    <listitem>
+      If this attribute is set to
+      "<computeroutput>classic</computeroutput>", DbForms will use its
+      original method of handling BLOBs which involved storing BLOB
+      data in individual disk files.  When this attribute is omitted
+      or has any other value, the database management system is used
+      to store BLOBs in appropriate table columns.  When classic BLOB
+      handling is used, the <computeroutput>directory</computeroutput>
+      and <computeroutput>encoding</computeroutput> attributes of
+      <computeroutput>field</computeroutput> subelements may be used
+      to control where and how BLOB files are handled.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>defaultVisibleFieldsFormat</computeroutput></term>
+    <listitem>
+      This attribute sets the default for the
+      <computeroutput>foreign-key</computeroutput> attribute
+      <computeroutput>format</computeroutput> as a convenience
+      when fields from the table are referenced as foreign keys.  See
+      <emphasis role="underline"><xref linkend="foreign"/></emphasis>
+      for more information.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>defaultVisibleFields</computeroutput></term>
+    <listitem>
+      This attribute sets the default for the
+      <computeroutput>foreign-key</computeroutput> attribute
+      <computeroutput>visibleFields</computeroutput> as a convenience
+      when fields from the table are referenced as foreign keys.  See
+      <emphasis role="underline"><xref linkend="foreign"/></emphasis>
+      for more information.  Optional.
+    </listitem>
+  </varlistentry>
+</variablelist>
+</para>
+
+<!-- field  -->
+
+<para>
+The <computeroutput>field</computeroutput> element describes a column
+in the table.  There are two required attributes,
+<computeroutput>name</computeroutput>, giving the name of the column
+in the table, and <computeroutput>fieldType</computeroutput>, giving
+the data type of the column.  There are also many optional attributes.
+All of the attributes are listed below.
+<variablelist>
+  <varlistentry>
+    <term><computeroutput>name</computeroutput></term>
+    <listitem>
+      This is the name of the field (column) as known in the database.
+      Required.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>fieldType</computeroutput></term>
+    <listitem>
+      This is the type of the field.  The list of valid values is
+      shown below.  Required.  The comparison within DbForms uses the
+      Java method <computeroutput>String.startsWith()</computeroutput> so,
+      for example,  Oracle's <computeroutput>varchar2</computeroutput>
+      matches the <computeroutput>varchar</computeroutput> type listed below.
+      Use of an unsupported column type will result in a Java exception 
+      while reading the 
+      <computeroutput>dbforms-config.xml</computeroutput> 
+      file which will generally render the application unusable.
+      <variablelist>
+        <varlistentry>
+          <term>Character Types</term>
+          <listitem>
+            DbForms field types <computeroutput>char</computeroutput>,
+            <computeroutput>varchar</computeroutput>,
+            <computeroutput>longchar</computeroutput>, 
+            <computeroutput>long varchar</computeroutput>, and 
+            <computeroutput>text</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Integer Types</term>
+          <listitem>
+            DbForms field types
+            <computeroutput>int</computeroutput>, 
+            <computeroutput>smallint</computeroutput>, 
+            <computeroutput>long</computeroutput>, and 
+            <computeroutput>tinyint</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Numeric Types</term>
+          <listitem>
+            DbForms field types
+            <computeroutput>numeric</computeroutput>, 
+            <computeroutput>number</computeroutput>, and
+            <computeroutput>decimal</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Date and Time Types</term>
+          <listitem>
+            DbForms
+            <computeroutput>date</computeroutput>, 
+            <computeroutput>timestamp</computeroutput>, and
+            <computeroutput>time</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Floating Point Types</term>
+          <listitem>
+            DbForms field types
+            <computeroutput>double</computeroutput>,
+            <computeroutput>float</computeroutput>, and
+            <computeroutput>real</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Large Object Types</term>
+          <listitem>
+            DbForms
+            <computeroutput>image</computeroutput>,
+            <computeroutput>blob</computeroutput>, and
+            <computeroutput>diskblob</computeroutput>.
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Boolean Types</term>
+          <listitem>
+            DbForms field type <computeroutput>bool</computeroutput>.
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>size</computeroutput></term>
+    <listitem>
+      This attribute gives the size of the field in the database.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>isKey</computeroutput></term>
+    <listitem>
+      This attribute should be set to true if the field is a key
+      field.  If omitted, the field is not a key.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>sortable</computeroutput></term>
+    <listitem>
+      This attribute should be set to true if the field will be made
+      available for sorting.  If omitted, the field is not sortable unless it
+      is a key field.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>autoInc</computeroutput></term>
+    <listitem>
+      This attribute should be set to true if the field will be populated
+      automatically by the database.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>directory</computeroutput></term>
+    <listitem>
+      This attribute is used with classic BLOB handling where DbForms
+      stores BLOB data in individual files.  The value of this
+      attribute indicates the directory where the BLOB file will be
+      stored.  This directory must exist and be must be writeable by
+      the servlet engine.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>expression</computeroutput></term>
+    <listitem>
+      This attribute is used for XML data access.  The value is taken to be a
+      relative XPath expression that is attached to the URL given by the 
+      <computeroutput>alias</computeroutput> attribute in the 
+      enclosing <computeroutput>table</computeroutput> element.
+      Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>defaultValue</computeroutput></term>
+    <listitem>
+      This value is used to supply a default for the given field when a row
+      is inserted into the database.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>alias</computeroutput></term>
+    <listitem>
+      Not currently used.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>escaperClass</computeroutput></term>
+    <listitem>
+      This is the fully-qualified name of a Java class that implements
+      functionality to place escape characters in column data so the
+      HTML display is as desired and to place escape characters in a
+      field value before it is stored in the database.  The Java class must
+      implement DbForms interface
+      <computeroutput>org.dforms.util.IEscaper</computeroutput>.
+      Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>encoding</computeroutput></term>
+    <listitem>
+    This attribute is used with classic BLOB handling where DbForms
+    stores BLOB data in individual files in the directory given by the
+    <computeroutput>directory</computeroutput> attribute.  When
+    <computeroutput>encoding</computeroutput> is set to true, file
+    names for BLOB objects are generated by DbForms so there is no
+    possibility of one BLOB object overwriting another.  If
+    <computeroutput>encoding</computeroutput> is false or is omitted,
+    the remote file name of an uploaded BLOB file is used by
+    DbForms.  This means that files of the same name will overwrite
+    each other.  Optional.
+    </listitem>
+  </varlistentry>
+</variablelist>
+</para>
+
+<!-- calc  -->
+<para>
+The <computeroutput>calc</computeroutput> element is similar to the
+<computeroutput>field</computeroutput> element except that the
+<computeroutput>encoding</computeroutput> attribute is not allowed.  A
+field defined within a <computeroutput>calc</computeroutput> element
+is not populated by the user.  Rather, the value is generated by 
+an interceptor.
+</para>
+
+<para>
+Columns in a table that are foreign keys in the SQL sense should be
+described in using the element <computeroutput>foreign-key</computeroutput>
+rather than the <computeroutput>field</computeroutput>
+element.  This allows DbForms to handle the field differently.  There
+are limitations, however, on DbForms foreign key handling.  See 
+<emphasis role="underline"><xref linkend="foreign"/></emphasis>
+for more details.
+</para>
+
+<para>
+Every table uses, by default, the standard event configuration
+established in the <computeroutput>events</computeroutput> subelement
+nested directly within the root
+<computeroutput>dbforms-config</computeroutput> element. A developer
+can choose, however, to override the event class associated with a
+certain type of event, by adding and configuring the
+<computeroutput>events</computeroutput> element within a
+<computeroutput>table</computeroutput> element.
+</para>
+
+<para>
+The <computeroutput>events</computeroutput> element itself is merely a
+container for one or more <computeroutput>event</computeroutput>
+subelements within it.  Element <computeroutput>events</computeroutput>
+has no attributes.
+Each <computeroutput>event</computeroutput> element may have a number
+of attributes and may enclose nested
+<computeroutput>param</computeroutput> subelements.  See 
+<emphasis role="underline"><xref linkend="plug-events"/></emphasis>
+and especially 
+<emphasis role="underline"><xref linkend="tbyt"/></emphasis>
+for more details.
+</para>
+
+<para>
+The <computeroutput>interceptor</computeroutput> element is used for
+declaring interceptor classes locally for a particular table.  See the
+discussion later in this chapter on the
+<computeroutput>interceptor</computeroutput> element for details of
+the attributes and the <computeroutput>param</computeroutput>
+subelement.
+As mentioned in 
+<emphasis role="underline"><xref linkend="app_hooks"/></emphasis>,
+it is also possible to
+declare interceptors globally to apply to all tables.  Globally
+declared iterceptors are invoked for all tables but interceptors
+declared for specific tables are invoked only for that table.  If both
+table-specific and global interceptors are defined, the table-specific
+iterceptor is invoked first and, if it signals success, the global
+interceptor is then invoked.
+</para>
+
+<para>
+By default, all users of the DbForms application have full access to
+read and write all of the tables defined in
+<computeroutput>dbforms-config.xml</computeroutput>.The
+<computeroutput>granted-privileges</computeroutput> element has four
+optional attributes that can establish limits for specific user roles.
+The attributes are <computeroutput>select</computeroutput>,
+<computeroutput>insert</computeroutput>,
+<computeroutput>update</computeroutput>, and
+<computeroutput>delete</computeroutput>.  User roles are those defined
+in the application <computeroutput>web.xml</computeroutput> file. See
+<emphasis role="underline"><xref linkend="security"/></emphasis>
+for more details.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>query</computeroutput>
+</title>
+
+<para>
+A <computeroutput>query</computeroutput> is a defined SQL SELECT such as a
+SQL join that can be referenced as if it were a table.  A query is
+defined within a <computeroutput>query</computeroutput> element.  The
+<computeroutput>query</computeroutput> element has the same structure
+(attributes and subelements)
+as a <computeroutput>table</computeroutput> element but with
+some additional subelements and additional attributes on the 
+<computeroutput>query</computeroutput> element itself to
+define the query by supplying portions of the SQL SELECT
+statement.
+</para>
+
+<para>
+There is an additional repeating subelement
+<computeroutput>search</computeroutput> which occurs after the other
+subelements as listed in the preceding section on the
+<computeroutput>table</computeroutput> element. The
+<computeroutput>search</computeroutput> subelement allows the query to
+contain dynamic parameters.  The
+<computeroutput>search</computeroutput> subelement has no element
+content but does have three attributes.  The
+&lt;<computeroutput>db:search</computeroutput>&gt; tag in a JSP page
+provides the link between a user-entered value and the query.  It also
+provides the comparison operator used between the column or expression and
+the user-entered data value.  The attributes are listed below.
+<variablelist>
+  <varlistentry>
+    <term><computeroutput>name</computeroutput></term>
+    <listitem>
+      This is the name of a column in the query.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>fieldType</computeroutput></term>
+    <listitem>
+      This attribute gives the field type.  Optional.
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term><computeroutput>expression</computeroutput></term>
+    <listitem>
+      This attribute allows an expression to be used rather than a
+      column name.  The expression will be given the name provided in
+      the <computeroutput>name</computeroutput> attribute using the
+      SQL AS operator.  Optional.
+    </listitem>
+  </varlistentry>
+</variablelist>
+</para>
+
+<para>
+See <emphasis role="underline"><xref linkend="qSupp"/></emphasis> 
+for more information.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>events</computeroutput>
+</title>
+
+<para>
+The <computeroutput>events</computeroutput> element contains
+information about advanced handling for database and page navigation.
+It is optional but may occur as many times as desired.
+</para>
+
+<para>
+See <emphasis role="underline"><xref linkend="plug-events"/></emphasis> 
+for a more complete explanation of the use of this element.
+</para>
+
+<para>
+The nesting of subelements within the
+<computeroutput>events</computeroutput> tag is shown below.
+</para>
+
+<programlisting>
+   &lt;events&gt;
+     &lt;database-events&gt;
+       &lt;database-event/&gt;
+     &lt;/database-events&gt;
+     &lt;navigation-events&gt;
+       &lt;navigation-event/&gt;
+     &lt;/navigation-events&gt;
+   &lt;/events&gt;
+</programlisting>
+
+<para>
+The <computeroutput>database-events</computeroutput> element must
+occur at least once but may appear as many times as necessary.  The
+<computeroutput>&lt;database-events&gt;</computeroutput> tag encloses
+one or more <computeroutput>database-element</computeroutput>
+elements.  There is no element content in the
+<computeroutput>database-event</computeroutput> element.  The element
+may have the otional attribute <computeroutput>id</computeroutput> and
+must have the required attributes
+<computeroutput>type</computeroutput> and
+<computeroutput>className</computeroutput>.
+</para>
+
+<para>
+The <computeroutput>navigation-events</computeroutput> element must
+occur at least once but may appear as many times as necessary.  The
+<computeroutput>&lt;navigation-events&gt;</computeroutput> tag
+encloses one or more
+<computeroutput>navigation-element</computeroutput> elements.  There
+is no element content in the
+<computeroutput>navigation-event</computeroutput> element.  The
+element may have the otional attribute
+<computeroutput>id</computeroutput> and must have the required
+attributes <computeroutput>type</computeroutput> and
+<computeroutput>className</computeroutput>.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>dbconnection</computeroutput>
+</title>
+
+<para>
+This element is used to specify a connection that DbForms will use to
+access the database.  It is possible to define more than one
+connection.  There are attributes for some DbForms tags that allow a
+specific connection to be specified.  If there are multiple
+connections, one should be designated as the default.  The default
+connection is used unless a specific connection is specified in a
+DbForms JSP tag.
+</para>
+
+<para>
+The nesting of subelements within the
+<computeroutput>dbconnection</computeroutput> tag is shown below.
+</para>
+
+<programlisting>
+   &lt;dbconnection&gt;
+     &lt;property/&gt;
+     &lt;pool-property/&gt;
+   &lt;/dbconnection&gt;
+</programlisting>
+
+<para>
+The <computeroutput>property</computeroutput> element may occur zero
+or more times.  Element <computeroutput>pool-property</computeroutput> may
+also occur zero or times.  Neither of these elements can contain
+element content.  Instead, all information is supplied in required
+attributes.  These attributes are <computeroutput>name</computeroutput> and
+<computeroutput>value</computeroutput>.  The attribute values are
+simple strings.
+</para>
+
+<para>
+The <computeroutput>dbconnection</computeroutput> element itself has a
+number of attributes.  All of the attributes except
+<computeroutput>name</computeroutput> are optional.  
+</para>
+
+<para>
+See <emphasis role="underline"><xref linkend="dbforms_concepts"/></emphasis>,
+<emphasis role="underline"><xref linkend="connSupp"/></emphasis>,
+and <emphasis role="underline"><xref linkend="multdbcon"/></emphasis>
+for more detail about this element and for examples of its use.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>DOMFactoryClass</computeroutput>
+</title>
+
+<para>
+This element contains the fully-qualified class name to be used as a
+DOM factory object.  The element content between the start and end
+tags gives the class name.  There are no attributes for the element.
+</para>
+
+</sect1>
+
+<sect1>
+<title>
+  Element <computeroutput>DefaultEscaperClass</computeroutput>
+</title>
+</sect1>
+
+<para>
+This element contains the fully-qualified class name to be used to
+escape database and other HTML content.  Escaping is necessary to make
+sure that characters such as '&lt;' and '&gt;' in displayed data do not
+compromise the HTML structure of the DbForms page.  A replacement
+escaper class might be needed if the DbForms default escaper class is
+not sufficient.
+</para>
+<para>
+The element content between the start and end tags gives the class
+name.  There are no attributes for the element.
+</para>
+
+<sect1>
+<title>
+  Element <computeroutput>interceptors</computeroutput>
+</title>
+</sect1>
+
+<para>
+See <emphasis role="underline"><xref linkend="app_hooks"/></emphasis> 
+for a more complete explanation of the
+use of this element.  This element is used for declaring interceptor
+classes globally.  It is also possible to declare interceptors within
+each table.  See the <computeroutput>table</computeroutput> element
+earlier in this chapter.  Globally declared interceptors are invoked
+for all tables but interceptors declared for specific tables are
+invoked only for that table.  If both table-specific and global
+interceptors are defined, the table-specific iterceptor is invoked
+first and, if it signals success, the global interceptor is then invoked.
+</para>
+
+<para>
+The nesting of subelements within the
+<computeroutput>interceptors</computeroutput> tag is shown below.
+</para>
+
+<programlisting>
+   &lt;interceptors&gt;
+     &lt;interceptor&gt;
+       &lt;param/&gt;
+     &lt;/interceptor&gt;
+   &lt;/interceptors&gt;
+</programlisting>
+
+<para>
+The <computeroutput>interceptors</computeroutput> subelement is optional
+but, if present, can only occur once.  The
+<computeroutput>&lt;interceptors&gt;</computeroutput> tag encloses one
+or more <computeroutput>interceptor</computeroutput> elements.  Within
+an <computeroutput>interceptor</computeroutput> element there may be
+zero or more <computeroutput>param</computeroutput> elements that
+provide fixed parameters to the instances of the interceptor class.
+None of these elements contain element content.  Instead, all
+information is supplied in attributes.
+</para>
+
+<para>
+The <computeroutput>interceptors</computeroutput> element has no
+attributes.  
+</para>
+
+<para>
+The <computeroutput>interceptor</computeroutput> element has a single
+required attribute <computeroutput>className</computeroutput> that
+gives the fully-qualified Java class name of the interceptor class.
+This class must implement the
+<computeroutput>org.dbforms.config.DbEventInterceptor</computeroutput> interface.
+</para>
+
+<para>
+The <computeroutput>param</computeroutput> element has two required
+attributes, <computeroutput>name</computeroutput> and
+<computeroutput>value</computeroutput>.  Attribute
+<computeroutput>name</computeroutput> gives the name of the parameter
+and the <computeroutput>value</computeroutput> attribute gives a
+string value for the parameter.  These parameters are accessible via
+the servlet context which is made available to the interceptor class
+via the <computeroutput>config</computeroutput> parameter of type
+<computeroutput>DbFormsConfig</computeroutput>.
+</para>
+
+</chapter>

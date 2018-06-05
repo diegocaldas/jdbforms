@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="fossato@pow2.com">Luca Fossato</author>
+    <title>DbForms Powered By - pow2cm</title>
+  </properties>
+
+<body>
+
+<section name="Powered By - pow2ContentManagement">
+
+  <subsection name="Description">
+    <p>
+      <a href="http://www.pow2.com" target="_new">pow2ContentManagement</a> 
+      is a toolkit useful to build content-driven applications like 
+      electronic catalogs and e-commerce sites. 
+    </p>
+  </subsection>
+
+  <subsection name="Screenshots">
+    <p>
+      The following screenshots show the backoffice interface that's used to
+      manage the contents database:
+	  <br/>
+    </p>
+    <center>
+    <p>
+      <a href="../images/poweredby/pow2cm/editCategory.png" target="_new">
+        <img src="../images/poweredby/pow2cm/editCategory-small.png" border="0"/></a>
+      <br/>
+      <div style="position:relative; width:480px; top:0px; text-align:left">
+        categories tree and category form - this screenshot shows all the categories managed by the
+        application and the data of the selected one.<br/>
+      </div>
+      <br/>
+    </p>
+    <p>
+      <a href="../images/poweredby/pow2cm/editCategory-article.png" target="_new">
+        <img src="../images/poweredby/pow2cm/editCategory-article-small.png" border="0"/></a>
+      <br/>
+      <div style="position:relative; width:480px; top:0px; text-align:left">
+        category items - shows all the items that belongs to the selected category.<br/>
+      </div>
+      <br/>
+    </p>
+    <p>
+      <a href="../images/poweredby/pow2cm/articleDetail.png" target="_new">
+        <img src="../images/poweredby/pow2cm/articleDetail-small.png" border="0"/></a>
+      <br/>
+      <div style="position:relative; width:480px; top:0px; text-align:left">
+        article detail - shows the detail fields of the selected article.<br/>
+      </div>
+      <br/>
+    </p>
+    <p>
+      <a href="../images/poweredby/pow2cm/groupItems.png" target="_new">
+        <img src="../images/poweredby/pow2cm/groupItems-small.png" border="0"/></a>
+      <br/>
+      <div style="position:relative; width:480px; top:0px; text-align:left">
+        group items - show all the items that belong to the selected group.<br/>
+      </div>
+      <br/>
+    </p>
+    </center>
+  </subsection>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,850 @@
+2003-02-18
+(Henner.Kollmann@gmx.de)
+     Add id attribute to search tag
+
+2003-02-12
+(Henner.Kollmann@gmx.de)
+     DbLinkURLTag.java: added TryCatchFinnaly to support Tomcat 4 tag pooling.
+     
+       
+2003-02-07
+(Henner.Kollmann@gmx.de)
+    integrate DbForms with JasperReports.
+    taken from api doc:
+    	This servlet starts a JasperReport.
+	Data is read from the current dbForm.
+	Servlet is looking for the report xml file in WEB-INF/custom/reports, WEB-INF/reports.
+	If report xml is newer then jasper file report will be recompiled.
+	Data is send to report as JRDataSourceRSV which is a Wrapper around an ResultSetVector.
+	To enable subreports, message resources etc an ReportParameter is send to the JasperReport. 
+	usage:
+		with a simple goto button:
+			<db:gotoButton
+				destTable="web_parts"
+				destination=" /reports/Artikel"/>
+		or for one record:
+			<db:gotoButton
+				destTable="web_parts"
+				keyToDestPos="currentRow"
+				destination="/reports/Artikel"
+			/>
+	Servlet mapping must be set to handle all /reports by this servlet!!!
+		<servlet/>
+			<servlet-name/>startreport</servlet-name/>
+			<display-name/>startreport</display-name/>
+			<servlet-class/>org.dbforms.StartReportServlet</servlet-class/>
+		</servlet>
+		<servlet-mapping/>
+			<servlet-name/>startreport</servlet-name/>
+			<url-pattern/>/reports/*</url-pattern/>
+		</servlet-mapping>
+
+2003-02-04
+(Henner.Kollmann@gmx.de)
+    Controller.java,DbFormTag.java, DbFormsValidatorUtil.java
+   	refactor validation so that subforms will be validated too.
+    	Works for javascript and server based validation.
+	refactor javascriptFieldsArray so that fields in subform will be generated too.
+
+2003-02-03
+(Henner.Kollmann@gmx.de)
+    ConfigServlet.java
+	allow more then one config file, seperated by ,
+	allow mre then one validation file, seperated by ,          
+    DbFormsValidator.java
+        remove null pointer exception
+    DbFormsValidatorUtil.java
+        remove blind javascript code if validation not found
+        
+        
+2003-01-31
+(Henner.Kollmann@gmx.de)
+    ConfigServlet.java
+        added events to query
+        rearranged initXMLValidator code
+
+2003-01-30
+(fossato@pow2.com)
+    started the "Mavenization" process for the the current DbForms web site.
+    See http://jakarta.apache.org/turbine/maven/ for further informations about the
+    Jakarta Turbine-Maven project.
+ 
+    - started the porting of the actual web site documentation to the xdoc format;
+    - added the "site.xml" ant build file that can be used to build a preview of the
+      "xdoc documentation" - Maven "site:generate" target is quite an heavy beast !! ;^)
+
+    SITE PREVIEW:
+    To generate a *preview* of the web site documentation, follow those steps:
+
+    > cd $DBFORMS_HOME
+    $DBFORMS_HOME > ant -buildfile site.xml
+
+    Ant will build the $DBFORMS_HOME/xdocs_target directory; it will contains 
+    the new html documentation that uses the "jakarta-site2" look
+    http://jakarta.apache.org/site/jakarta-site2.html
+
+    MAVEN SITE GENERATION
+    a) get and install the latest Turbine-Maven distribuition
+       http://jakarta.apache.org/turbine/maven/
+
+    b.0) put $MAVEN_HOME/bin directory into your system PATH;
+    b.1) put your cvs.exe client program into your system PATH;
+
+    c) > cd $DBFORMS_HOME
+       $DBFORMS_HOME > maven site:generate
+
+    d) wait a bit... ;^)
+
+    A successfull Maven build process creates the $DBFORMS_HOME/target/docs directory;
+    to view the new site load the $DBFORMS_HOME/target/docs/index.html file into your web browser.
+    
+
+
+====================== v1_1_3_pr2 was released ==============================================       
+
+2003-01-28
+(Henner.Kollmann@gmx.de)
+    2 more helper classes:
+        StringUtil.java: dealing with strings
+        TimeUtil.java  : dealing with parsing/converting of Dates
+    SqlUtil.java:
+        changed parsing of timestamp to make it more fault tolerant. Now it's possible to
+        enter something like 12.12  and the value will be expanded to 12.12.2003 (current year).
+        Same for 12. will be expanded to 12.<current month>.<current year>
+    DbFormTag.java:
+        Extend extending searching and time fields. If you input a single time value like 12.01.2003 12:30 you
+        will get the range up to the end of the day: 12.01.2003 12:00 - 13.01.2003 0:00
+   
+
+2003-01-27
+(Henner.Kollmann@gmx.de)
+    FieldValues.java:
+       corrected bug with navigation and NOTISNULL
+2003-01-24
+(Henner.Kollmann@gmx.de)
+    taglib_docu.xml:
+       added formatClass to tableData and queryData
+    EmbeddedData.java
+       added formatClass attribute. Class given in formatClass attribute will be loaded through reflection and will be
+       used for formatting the output. Must be derived from org.dbforms.util.PrintfFormat. 
+       Default is org.dbforms.util.PrintfFormat.
+
+2003-01-23
+(Henner.Kollmann@gmx.de)
+    taglib_docu.xml:
+        added new field novalue to checkbox and radio tag
+    DbCheckboxTag, DbRadioTag:
+        corrected problem with storing of values if checkbox is unchecked.
+        Will add a hidden input field with value set to the novalue attribute and the same name as the checkbox field
+        This value will be stored if checkbox is unchecked.
+    ParseUtil:
+        Corrected comment of getParameter. The first value will be used if the parameter has multiple values.    
+        
+
+2002-11-27
+(fossato@pow2.com)
+        pluggable events system
+        -----------------------
+        committed the first version
+
+
+2002-11-26
+(Henner.Kollmann@gmx.de)
+    taglib_docu.xml:
+        added descriptions extensions to filter attribute in form
+        Cleaned up description of destPos, keyToDestPos, keyToKeyToDestPos
+        added new tag hasNoRecords
+        extended dblink tag
+    ConfigServlet.java, DbFormsConfig.java:
+        Added SERVLETCONTEXT_REALPATH
+    Table.java:
+        Added new method getPositionString
+     DbForm.java:
+        Use Table.getPositionString
+     HasMoreRecords.java
+        Will now render body if true!
+     HasNoRecords.java
+        New tag. Same as HasMoreRecords. But with recCount = 0
+     DbLinkURL.java
+        Added Child, parent stuff, corrected char encoding
+     EventEngine.java, GotoEvent.java
+        Added Child, parent stuff for DbLinkURL
+     Util.java:
+        Some more helpers.
+        
+====================== v1_1_3_pr1 was released ==============================================       
+    
+2002-11-18
+(fossato@pow2.com)
+        connectionProviders' connection pool configuration
+        --------------------------------------------------
+        connection pools managed by Protomatter and Jakarta connectionProviders 
+        can be configured via the dbforms-config.xml file
+
+
+2002-11-18
+(Henner.Kollmann@gmx.de)
+    some minor bug fixes
+    new attribute in for query: distinct. If true query will build select distinct ....
+
+    
+2002-11-15
+(fossato@pow2.com)
+        connectionFactory sources integration
+        -------------------------------------
+        - created the "src/org/dbforms/conprovider" directory; added the following files:
+          - ConnectionFactory.java
+          - ConnectionProvider.java
+          - ConnectionProviderPrefs.java
+          - JakartaConnectionProvider.java
+          - ProtomatterConnectionProvider.java
+          - SimpleConnectionProvider.java
+
+        - added the following jars to the dependend directory:
+          - commons-dbcp.jar           (needed by JakartaConnectionProvider class)
+          - protomatter-1.1.8-pre5.jar (needed by ProtomatterConnectionProvider class)
+
+
+2002-11-15
+(Henner.Kollmann@gmx.de)
+        Source code formatting party
+        ----------------------------
+Things that had been done:
+    - created a tag on current version v1_1_2c 
+    - cleaned up code with jalopy using jarkarta settings
+    - added the settings
+    - corrected the wrong binary files
+    - deleted com.itp sources from the current version
+    - deleted org.dbforms.doc.html (old stuff is now in doc!)
+    - inserted Mark Dimons changes for Tomcat 4.1.1
+    - removed all release() methods
+        
+2002-11-14
+(Henner.Kollmann@gmx.de)
+   extended build.xml with new target dist: will build a whole distribution with
+      - javadoc, taglib doc, devgui doc
+      - devgui.bat, devgui.sh for the current version
+      - jar and tld file
+
+
+2002-11-09
+(fossato@pow2.com)
+        Multiple Connection support and connectionPool factory:
+        -------------------------------------------------------
+        added "multiple connection support" stuff by Bradley M. Handy (bhandy@arbor.edu)
+        and connectionPool factory by Power Of Two S.r.l. (fossato@pow2.com)
+            org/dbforms/ConfigServlet.java
+            org/dbforms/Controller.java
+            org/dbforms/DbFormsConfig.java
+            org/dbforms/taglib/DbFormTag.java
+            org/dbforms/taglib/DbGetConnection.java
+            org/dbforms/taglib/EmbeddedData.java
+            org/dbforms/util/DbConnection.java
+              
+        added the dependency jar library:
+            depends/pow2ConnectionFactory.jar
+
+        added the "dbConnectionName" attribute into the etc/taglib_docu.xml file
+        to the following elements:
+            dbform
+            tableData
+            queryData
+            getConnection
+            blobContent
+
+        File servlet and the related BlobContent tag:
+        ---------------------------------------------
+        Filse servlet: 
+        fixed a null pointer exception for Disk Blob data management 
+        (generated when the selected file does not exist) and used 
+        "extract method" refactoring to get "readDiskBlob" method to handle
+        Disk Blob data and "readDbFieldBlob" to handle Database Blob data;
+              org/dbforms/util/FileServlet.java 
+        
+        BlobContent tag: 
+        added the "defaultValue" attribute (useful for Disk Blob data)
+              org/dbforms/taglib/DbBlobContentTag.java
+              etc/taglib_docu.xml
+
+        Format attribute for DbLabelTag:
+        --------------------------------
+        moved the "format" attribute and the related accessor methods from DbDateLabelTag 
+        to its superclass: DbLabelTag;
+        format attribute for DbLabelTag is initialized to NULL;
+        format attribute for DbDateLabelTag is initialized to DbFormsConfig.getDateFormatter(),
+        using the date format specified into the xml config file.
+              org/dbforms/taglib/DbDateLabelTag
+              org/dbforms/taglib/DbLabelTag
+              etc/taglib_docu.xml
+
+2002-11-07
+(Henner.Kollmann@gmx.de):
+    added properties to DbConnection:
+    <connection>
+        <property name="charSet" value="8859_1"
+    </connection>
+    Will be used as 
+           con = DriverManager.getConnection(name, properties);
+
+2002-11-07
+(Henner.Kollmann@gmx.de):
+    dbforms/ConfigServlet.java
+        Extended with query syntax, cleaned up connection stuff
+    dbforms/DbFormsConfig.java
+        Added query stuff
+    dbforms/Field.java
+        New property expression, needed for query stuff
+    dbforms/FieldValue.java
+        form filter will work with null, not null now
+        use expression in getWhereClause and getWhereEqualsSearchClause
+        moved getOrderClause to table
+    dbforms/Query.java
+        New class, derived form Table to support query syntax in dbforms-config.
+    dbforms/Table.java
+        Insert query stuff
+    dbforms/event/DeleteEvent.java
+        Insert query stuff
+    dbforms/event/InsertEvent.java
+        Insert query stuff
+    dbforms/event/UpdateEvent.java
+        Insert query stuff
+    dbforms/taglib/DbFormTag.java
+        form filter will work with null, notIsNull now
+        SYNTAX: fieldname ISNULL
+            fieldname NOTISNULL
+    dbforms/util/MessageResources.java
+        added public static String getMessage(HttpServletRequest request, String msg)
+    dbforms/util/ParseUtil.java
+        added public static boolean hasSearchFields(ServletRequest request)
+
+2002-11-5 (dikr):
+
+New classes to model foreign key references:
+  org.dbforms.ForeignKey
+  org.dbforms.Reference
+
+Devgui has been extendended:
+  Foreign Keys are automatically detected,
+  the corresponding foreign-key and reference
+  tags are written into dbforms config file
+  (updated  XMLConfigGenerator.java ).
+
+2002-11-4 (dikr):
+
+Added Files:
+  DbFormsTags_Frame.html:
+        Frame version of taglib reference doc
+  etc/tldoc2html_toc.xsl
+        new xsl stylesheet to generate navigation
+        page for taglib html reference
+
+Modified Files: build.xml
+
+Task 'generate_taglib_htmldocs' has been extended
+to generate two more HTML pages:
+
+ - one navigation page containing all tags
+   in same order as within source file
+   (semantic order)
+ - one navigation page containing all
+   tags in alphabetical order
+
+The new pages will be embedded within new frame version
+of taglib reference doc/html/DbFormsTags_Frame.html.
+
+Wednesday, October 30, 2002:
+(Henner.Kollmann@aucos.de):
+        - taglib_docu.xml:
+        New tag search, searchCombo
+        extend doc for select tag
+    - DBMessageTag.java
+        Write parameter and text if text is not found in the resource file
+    - DBFormTag.java
+        correct bug if search algorithm field is not found!
+    - DBSelectTag.java
+        Changed behaviour if fieldName is not a valid field of the table. 
+        In this case the fieldName would be rendered. 
+        So it would be possible to create select's with free fieldNames!
+    - DBSearchTag.java
+        New tag to simplify search fields
+    - DBSearchTagCombo.java
+        New tag to simplify search fields with combos
+    
+
+2002-10-22, 2002-10-23 (dikr):
+
+Added Files:
+
+tldoc2html.xsl:
+  Initial release of XSL stylesheet to
+  generate HTML reference documentation
+  from taglib_docu.xml.
+tldoc2xsl-fo.xsl:
+  Initial release of XSL stylesheet to generate a
+  XSL Formatting Objects document from taglib_docu.xml.
+  The result of this transformation
+  can be converted by a Formatting Objects Processor like
+  Apache FOP (http://xml.apache.org/fop) to PDF, PS and
+  lots of other formats.
+
+Modified Files:
+build.xml
+
+ - Added ant task 'generate_taglib_htmldocs' to generate
+   HTML reference documentation from taglib_docu.xml using
+   new stylesheet etc/tldoc2html.xsl.
+
+   Simply do a
+
+      ant generate_taglib_htmldocs
+
+   and you will (hopefully) find the result as file
+   doc/html/DbFormsTags.html.
+   
+ - Added ant task 'generate_taglib_pdfdocs' to generate
+   PDF reference documentation from taglib_docu.xml using
+   new stylesheet etc/tldoc2xsl-fo.xsl. This task
+   first generates the xsl-fo document, then Apache Formatting
+   Objects Processor FOP (http://xml.apache.org/fop/index.html)
+   is used to create a PDF file out of the xsl-fo file.
+   I used Version FOP-0.20.4, older versions may make some problems
+   because some attributes seem to be renamed. After installing FOP
+   and before calling 'ant generate_taglib_pdfdocs' you have to
+   set environment variable FOP_HOME to location of FOP installation
+
+taglib_docu.xml:
+
+   Some minor changes within summary and info
+   attributes (containing comments) to make the
+   result of the transformation of this file
+   to HTML and PDF look better.
+
+Tuesday, October 22, 2002:
+(Henner.Kollmann@aucos.de):
+
+        - taglib_docu.xml:
+        extended message tag
+    - DBMessageTag.java
+        extend with parameters
+    - SQLUtil.java
+        createAppropriateTimeStamp
+    - FieldValue.java
+        new searching
+    - DBFormTag.java
+        new searching
+                          
+2002-10-16 (dikr):
+
+viewTable.xsl :
+
+patch to eliminate nullpointer exception
+in case of empty result sets when searching
+
+2002-10-14 (dikr):
+
+2 patches contributed by Carlos Anjos for devgui.sh:
+
+- figure out automaticaly the DBFORMS_HOME if not already set
+- change of the dir where the jar is ("dist" and not "lib")
+
+Sunday, October 13, 2002:
+(Henner.Kollmann@aucos.de):
+
+        - taglib_docu.xml:
+        added new tag DbPos
+        added onSubmit for dbForms
+    
+    - DbPosTag.java:
+        renders a position to use with keyToDestPos.
+        This is the same string wich would be used as 
+        value in the DbassociatedRadioTag.
+    - FieldValue.java:
+        extend search algorithm with 
+            WEAK_START, WEAK_END, WEAK_START_END
+            results in like '%search', 'search%', '%search%'
+    - dbForms.java:
+        added onSubmit support
+        extend search algorithm with 
+            WEAK_START, WEAK_END, WEAK_START_END
+            results in like '%search', 'search%', '%search%'
+    - DbFormsValidatorUtil.java 
+        Catch errors while getXMLErrorMessage
+    - Table.java 
+        getFieldValuesFromPositionAsHt: position.length() maybe 0
+        createOrderFieldValues        : use the default order if result.size == 0, 
+                        not only if result == null 
+                        This could happens if  all parameters 
+                        with sort_  are set to none
+    - DbAssociatedRadioTag.java 
+        set checked=true for the first row
+    - GotoEvent.java 
+        correct processEvent: postion maybe of size == 0
+                
+2002-10-8 (dikr):
+
+Modified Files: DbFormTag.java DbGetConnection.java
+
+removed ; after return statement (compilation errors with jdk14)
+
+
+Thursday, September 19, 2002:
+(kraemer@rz.uni-kiel.de):
+I have tried to integrate several enhancements contributed
+by the dbforms community for devgui itself and the xsl stylesheets
+used by devgui
+
+----------------------------------------------------------------
+
+ - Enhancements to XSL stylesheets (all contrib. Sebastian Bogaci, special 
+       thanks also for further help and discussion)
+
+    - More usage of extended stylesheet dbforms.css to make generated
+      JSPs more configurable. A lot of attributes like color, background color,
+      fonts etc. can now be easily changed at a central place.
+      If you don't like the appearance of generated pages, it is now easy
+      to change it.
+   
+    - Parameter multipart="true" is automatically set when fields of
+      type 'blob', 'image' or 'diskblob' are detected within a table.
+
+    - Made generated pages now really work when schema name
+      is included in table name by substituting '.' in file and
+      variable names by an '_'. Example: currentRow_schmema1.table1 is
+      an illegal variable name in Java, must use currentRow_schmema1_table1 
+
+    - First integration of JavaScript Calendar written by 
+      Robert W. Husted to edit date fields. See pages
+      http://developer.iplanet.com/viewsource/husted_calendar/husted_calendar.html
+      and http://jscal.sourceforge.net/ 
+      for details of this application. Integration into dbforms stylesheets 
+      by Sebastian Bogaci. The calender is not included in generated pages by default, 
+      activation can be done by setting a (new) checkbox within devgui
+      on xsl transformation panel.
+
+      See also (soon) dbforms documentation about the calendar
+
+ - Enhancements to DevGui:
+
+    - Automatic detection of auto-incremented (aka identity) fields
+      for some databases (contrib. Sebastian Bogaci). This information
+      is written to generated xml files by setting attribute autoInc="true".
+
+      Currently we (hope to) have support for MySQL, DB2 (Sebastian) and
+      Sybase (thanks to Eric Pugh). If you know how to add support for
+      more systems, please send a mail to dbforms-interest mailing list.
+ 
+    - New checkbox to include JavaScript calendar in JSPs generated by
+      xsl transformations (see above).
+ 
+    - New checkbox to write standard names for unknown field types to generated
+      dbforms-config.xml file. 
+   
+    - Now really fixed bug that could lead to problems when having tables
+      with same name in different schemas.
+
+    - Date format inside dbforms config file can now be set in DevGui.
+
+    - Added Look & Feel Menu.
+      
+ - New Readme file for DevGui 
+
+ - DevGui can now be startet without Gui to regenerate a dbforms config file.
+   This can be done from command line as well as from a running Java program.
+   To do so, you have to:
+
+     - create a property file containing connection information etc
+       This may be done in a standard gui session of DevGui
+     - call it via:
+     
+       java org.dbforms.devgui.DevGui createconfigfile <propertyfilename>
+     
+       or
+     
+       java org.dbforms.devgui.DevGui createconfigfile <propertyfilename> <outputfilename> 
+     
+     Here is an example:
+     
+     $ java org.dbforms.devgui.DevGui createconfigfile /home/sweethome/dbex.props outout.xml
+     
+   If the outputfilename is not set on command line, it will be taken from
+   property file. Normally the property file should be once generated in
+   a gui session. It can later be used in command line sessions to regenerate
+   the dbforms-config.xml file after changes to database.
+     
+   It is also possible to call the main() method of class DevGui from
+   within a running java program like in
+     
+       String[] pars = {"createconfigfile","/home/sweethome/dbex.props"};
+       org.dbforms.devgui.DevGui.main(pars);
+     
+   The other DevGui functionality (XSL transformation) can currently not be called
+   via command line, maybe later. 
+
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Tuesday, May 21, 2002
+DbForms version 1.1.2
+Grunikiewicz.philip@hydro.qc.ca
+
+
+These enhancements are the direct result of your feedback and Eric Beaumier's hard work.  
+
+
+New features
+---------------------------------
+
+
+textField  - tag
+password - attribute
+--------------------
+
+If 'password' attribute is set to true, the textField tag will render a 'password' type (html) 
+input tag.  This allows developers, to make available, visually encrypted input field.
+
+
+
+localeKey - attribute
+Session scope (web.xml)
+-----------------------
+
+Dbforms will first look in the Session object to see if a locale object is available. If not, it
+will retrieve a locale from the request object.
+
+The attribute used to retrieve the locale object from the session can be specified by the developer.  
+(The locale object may have been placed in a given attribute by another framework [ie: Struts]).  
+To specify the attribute to use, set the following:
+
+In web.xml
+
+<init-param>
+    <param-name>localeKey</param-name>
+    <param-value>AttributeNameWhereOtherFrameworkStoresLocaleObject</param-value>   
+</init-param>
+
+If 'localeKey' is not set by the user, DbForms will store, for future reference, the locale object
+in the attribute named 'org.dbforms.LOCALE'.
+
+
+Bug Fixes and general maintenance
+---------------------------------
+
+The generated 'javascriptValidation' methods now support more complex (db)forms. (Multiple data rows, insert mode)
+The generated 'javascriptFieldsArray' method has also been enhanced to support more complex (db)forms.
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, May 3, 2002
+DbForms version 1.1.1
+Grunikiewicz.philip@hydro.qc.ca
+
+
+These enhancements are the direct result of your feedback and Eric Beaumier's hard work.  
+
+
+New features
+---------------------------------
+
+
+dbform, input  - tags
+readOnly - attribute
+------------------------
+
+Rendering of read-only html widgets. Specify entire form or field by field.
+
+
+input - tags
+readOnlyStyleClass - attribute
+-------------------------------
+
+Enables developers to use a particular cascaded stylesheets (css) 'style' if input field is 
+readOnly.
+
+Exemple:
+
+<db:dbform  ... readOnly="<%=readonly%>" ... > 
+     <db:textField  fieldName="field1" styleClass="class1" readOnlyStyleClass="class1.readonly" />
+</db:dbform>
+
+
+javascriptArray  - tag
+----------------------
+
+This tag was added to allow the generation of a javascript array from EmbeddedData.
+
+Exemple :
+
+ <db:javascriptArray name="arrServerMod">
+         <db:queryData  name="server_models_js"  
+                                  query="SELECT id, cat_id, name FROM server_models"/>
+ </db:javascriptArray>
+
+Result : 
+
+
+ <SCRIPT language="javascript">
+     var arrServerMod = new Array();
+     arrServerMod[0] = new Array('1','1','IBM 3090');
+     arrServerMod[1] = new Array('2','1','IBM 4300');
+     arrServerMod[2] = new Array('3','1','IBM 9121');
+     arrServerMod[3] = new Array('4','1','Unisys A-Series');
+     arrServerMod[4] = new Array('5','1','Unisys 2200-Series');
+     arrServerMod[5] = new Array('6','2','IBM AS/400');
+     arrServerMod[6] = new Array('7','2','Unisys 5000');
+ </SCRIPT>
+
+
+deleteButton  - tag
+confirmMessage - attribute
+--------------------------
+
+This attribute will generate a javascript message asking if the user really wants to delete this 
+entry.  If the 'captionResource' attribute of the (db)Form is set to true, the message can be 
+resolve from a ResourceBundle (ref: I18N)
+
+Exemple:
+
+<db:deleteButton 
+    caption="button.delete" 
+    followUp="/bugs_list.jsp" 
+    confirmMessage="bugsForm.delete.confirm" /> 
+
+
+Note: Certain Netscape browsers will not support this feature when using an image-flavor delete 
+button.
+
+
+StaticDataItem  - tag
+--------------------------
+
+Added I18N compatibility for StaticDataItem tags. Now, value can be resolved via a given 
+ResourceBundle.
+
+  <db:staticData name="data_bugstate"> 
+        <db:staticDataItem key="0" value=" bugsForm.status.0"/> 
+        <db:staticDataItem key="1" value=" bugsForm.status.1"/> 
+        <db:staticDataItem key="2" value=" bugsForm.status.2"/> 
+  </db:staticData> 
+  
+  Here, bugsForm.status.x will be resolved according to user's current locale
+  (locale found in request object). 
+  
+  
+
+Checkbox, Radio - tags
+growSize - attribute
+----------------------
+
+Allows a developer to limit the number of elements per row by generating <TABLE><TR><TD> 
+html tags.
+
+Exemple: 
+
+<db:radio fieldName="bugstate" growSize="3"> 
+     <db:staticData name="data_bugstate"> 
+           <db:staticDataItem key="0" value="bugsForm.status.0"/> 
+           <db:staticDataItem key="1" value="bugsForm.status.1"/> 
+           <db:staticDataItem key="2" value="bugsForm.status.2"/> 
+           <db:staticDataItem key="3" value="bugsForm.status.3"/> 
+           <db:staticDataItem key="4" value="bugsForm.status.4"/> 
+           <db:staticDataItem key="5" value="bugsForm.status.5"/> 
+     </db:staticData> 
+</db:radio>
+
+
+
+isWebEvent - tag
+----------------
+
+Allows a developer to detect which type of event is being processed by the DbForms controller.  
+The following events are currently available within dbForms:
+
+    navFirst, 
+    navPrev, 
+    navNext, 
+    navLast, 
+    navNew, 
+    noop, 
+    goto, 
+    insert, 
+    update, 
+    delete
+
+
+Exemple:
+
+ 
+    <db:isWebEvent event="navfirst" value="true"> < /FONT> 
+         <h4>navFirst event throwed</h4> 
+    </db:isWebEvent>
+
+
+    You can even nest this tag within another tag...
+
+    <db:isWebEvent event="delete" value="false"> </FONT>  
+         <h4>it's not a Delete event </h4> 
+                <db:isWebEvent event="update" value="false"> </FONT>  
+                     <h4>and not Update event</h4>  
+                </db:isWebEvent> 
+    </db:isWebEvent>
+
+  
+
+label, dateLabel, dataLabel - tag
+nullFieldValue - Attribute
+---------------------------------
+
+If the value (retrieved from the database) is null, allow the user to replace the text to display
+by a custom value.  May be used in conjunction with dbForm's I18N support.
+
+Example:
+
+    <db:label fieldName="name" nullFieldValue="msg.unknownUser"/>
+ 
+
+
+Bug Fixes and general maintenance
+---------------------------------
+
+When generating a javascript validation method (javascriptValidation="true"), the method name 
+is now generated in the proper case [first character uppercase].
+
+Render onClick attribute only if javascript validation method exists.
+
+Added logging (warning) of 'root' exceptions (i.e: 'Interceptor class not found' instead of 
+'cannot connect'!)
+
+Allow customEntry attribute (Select tag) to include dots(.) in its description value. 
+
+Updated example applications 
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, April 19, 2002
+DbForms version 1.1
+Grunikiewicz.philip@hydro.qc.ca
+
+New features
+---------------------------------
+
+
+Introduced support for Internationalization (i18n). (Contrib. E.Beaumier)
+
+Incorporated Apache's Commons-Validator framework for server-side and client-side validations. (Contrib. E.Beaumier)
+
+Upgraded struts digester to Commons digester. (Contrib. E.Beaumier)
+
+Reworked Bugtracker application - incorporated i18n and Validation examples.
+
+Reviewed dbForms User Guide v1.1
+
+*** NOTE ***
+
+Version 1.1 of DbForms has been upgraded to use the Apache commons framework.  
+This framework required Java XML Parser (JAXP) v1.1.  Older Web containers 
+(such as Tomcat v3.2.x) are still using JAXP v1.0 technology and are therefore 
+incompatible.

@@ -1,0 +1,74 @@
+TABLE.window_backoffice
+{
+  font-size: 10px;
+  border:    0px;
+}
+
+TD.window_backoffice-TopL
+{
+  BACKGROUND: url(../pics/window/backoffice/wTopL.gif) no-repeat;
+  height: 35px;
+}
+
+TD.window_backoffice-Top
+{
+  BACKGROUND: url(../pics/window/backoffice/wT.gif) repeat-x;
+  height: 35px;
+}
+
+TD.window_backoffice-TopR
+{
+  BACKGROUND: url(../pics/window/backoffice/wTopR.gif) no-repeat;
+  height: 35px;
+}
+
+TD.window_backoffice-Left
+{
+  BACKGROUND: url(../pics/window/backoffice/wL.gif) repeat-y;
+  width: 20px;
+}
+
+TD.window_backoffice-Right
+{
+  BACKGROUND: url(../pics/window/backoffice/wR.gif) repeat-y;
+  width: 20px;
+}
+
+IMG.window_backoffice-Title
+{
+  position: relative;
+  left:     1px;
+  top:      2px;
+}
+
+SPAN.window_backoffice-Title
+{
+  position:       relative;
+  left:           2px;
+  top:            1px;
+  font-size:      12px;
+  font-weight:    bold;
+  text-align:     right;
+  letter-spacing: 5px;
+  color:          #f0f0f0;
+}
+
+TD.window_backoffice-BotLeft
+{
+  background: url(../pics/window/backoffice/wBotL.gif) no-repeat;
+  width:      20px;
+  height:     15px;
+}
+
+TD.window_backoffice-Bot
+{
+  background: url(../pics/window/backoffice/wBot.gif)  repeat-x;
+  height:     15px;
+}
+
+TD.window_backoffice-BotRight
+{
+  background: url(../pics/window/backoffice/wBotR.gif) no-repeat;
+  width:      20px;
+  height:     15px;
+}

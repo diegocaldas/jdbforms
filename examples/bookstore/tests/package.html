@@ -1,0 +1,294 @@
+<html>
+<body>
+<h1>Hints for the test pages</h1>
+<table border="1">
+   <tr>
+      <th>Page</th>
+      <th>Description</th>
+      <th style="width:50px">Used in junit tests</th>
+   </tr>
+   <tr>
+      <td><A HREF="test.jsp">test.jsp</A></td>
+      <td>To test if container works.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSList.jsp">testBOOKSList.jsp</A></td>
+      <td>To test if we see a list of all (9) books. Including null
+      fields and special chars.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSListAutoUpdate.jsp">testBOOKSListAutoUpdate.jsp</A>
+      </td>
+      <td>To test if auto update only changes the changed values</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSSingle.jsp">testBOOKSSingle.jsp</A></td>
+      <td>To test navigation of all (9) books. Including null fields and
+      special chars. One record per page</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSSingle2.jsp">testBOOKSSingle2.jsp</A></td>
+      <td>To test navigation of all (9) books. Including null fields and
+      special chars. Two records per page</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSSingleAutoUpdate.jsp">testBOOKSSingleAutoUpdate.jsp</A>
+      </td>
+      <td>To test if auto update refresh the values</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSListXML.jsp">testBOOKSListXML.jsp</A><br />
+      </td>
+      <td>tests books list with xml data.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSSingleXML.jsp">testBOOKSSingleXML.jsp</A></td>
+      <td>To test navigation of books with xml data.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSSingleXML2.jsp">testBOOKSSingleXML2.jsp</A>
+      </td>
+      <td>To test navigation of books with xml data.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBooksWithInterceptor.jsp">testBooksWithInterceptor.jsp</A>
+      </td>
+      <td>test to edit/insert record into table books using
+      interceptors.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testDateAsPrimaryKey.jsp">testDateAsPrimaryKey.jsp</A>
+      </td>
+      <td>test to edit/insert record into a table with a date field as
+      primary key</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testKEYS.jsp">testKEYS.jsp</A></td>
+      <td>to test navigation with a table wich has multiple key fields</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testMenu.jsp">testMenu.jsp</A><br />
+      <A HREF="testMenuPage1.jsp">testMenuPage1.jsp</A><br />
+      <A HREF="testMenuPage2.jsp">testMenuPage2.jsp</A></td>
+      <td>test 2 navNew buttons on one page. Results in navigation to
+      the same page</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testNavNewQuery.jsp">testNavNewQuery.jsp</A><br />
+      <A HREF="testNavNewQueryEdit.jsp">testNavNewQueryEdit.jsp</A></td>
+      <td>Shows list of all BOOKS (9). Used to test if navNew works.
+      Result should show a new record displayed withtestNavNewEdit.jsp
+      In this test page you can see how to call another edit page from
+      the current page with current link value and an link url. e.g.
+      list of books with given AUTHOR_ID. Show name of author with
+      dataLabel tag and call edit page with linkurl tag.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testNavNewTable.jsp">testNavNewTable.jsp</A><br />
+      <A HREF="testNavNewTableEdit.jsp">testNavNewTableEdit.jsp</A></td>
+      <td>Shows list of all BOOKS (9). Used to test if navNew works.
+      Result should show a new record displayed with testNavNewEdit.jsp
+      </td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testPosition.jsp">testPosition.jsp</A><br />
+      <A HREF="testPositionAuthorEdit.jsp">testPositionAuthorEdit.jsp</A><br />
+      <A HREF="testPositionAuthorViewEdit.jsp">testPositionAuthorViewEdit.jsp</A>
+      </td>
+      <td>tests &lt;db:position&gt; tag with table/query</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testPositionSingleRow.jsp">testPositionSingleRow.jsp</A><br />
+      <A HREF="testPositionAuthorEdit.jsp">testPositionAuthorEdit.jsp</A><br />
+      <A HREF="testPositionAuthorViewEdit.jsp">testPositionAuthorViewEdit.jsp</A>
+      </td>
+      <td>tests &lt;db:position&gt; tag with table/query and only a
+      single row as result</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testPositionXML.jsp">testPositionXML.jsp</A><br />
+      <A HREF="testPositionAuthorViewEdit.jsp">testPositionAuthorEditView.jsp</A>
+      </td>
+      <td>tests &lt;db:position&gt; tag coming from xml table.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testPositionClassic.jsp">testPositionClassic.jsp</A><br />
+      <A HREF="testPositionAuthorEditClassic.jsp">testPositionAuthorEditClassic.jsp</A><br />
+      </td>
+      <td>tests &lt;db:gotoButton&gt; tag with classic navigation</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testUseTagsWithEmptyTable.jsp">testUseTagsWithEmptyTable.jsp</A>
+      </td>
+      <td>tests &lt;db:select&gt;, &lt;db:radio&gt; inside a
+      &lt;db:dbform&gt; without a table given in the dbform tag</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorBooksSubForm.jsp">testAuthorBooksSubForm.jsp</A>
+      </td>
+      <td>tests navigation in a subform</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorBooksSubFormWithJavascriptFieldsArray.jsp">testAuthorBooksSubFormWithJavaScriptFieldsArry.jsp</A>
+      </td>
+      <td>to test generating of javascript fieldsarray</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorBooksSubFormSingle.jsp">testAuthorBooksSubFormSingle.jsp</A>
+      </td>
+      <td>tests navigation in a subform with a single record in sub.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorBooksSubFormWithFilter.jsp">testAuthorBooksSubFormWithFilter.jsp</A>
+      </td>
+      <td>tests navigation in a subform with SQL filter tag.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorBooksSubFormWithContextVar.jsp">testAuthorBooksSubFormWithContextVar.jsp</A>
+      </td>
+      <td>tests the new context var to with calculation the tablename at
+      runtime!</td>
+      <td>no</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBOOKSListDynaBug.jsp">testBOOKSListDynaBug.jsp,
+      testBOOKSListDynaBug.2.3.jsp, testBOOKSListDynaBug.2.4.jsp</A></td>
+      <td>to test if currentRow_table, rsv_table and
+      dbforms.getCurrentRow() gives the same results. page
+      testBOOKSListDynaBug.jsp do a redirect to jsp version dependend
+      pages. This is necessary because the tld files of the standard
+      taglibs differs from jsp version to jsp version.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testUnboundField.jsp">testUnboundField.jsp</A></td>
+      <td>tests value of a field wich is not bounded to an database
+      field</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testDISKBLOBS.jsp">testDISKBLOBS.jsp</A></td>
+      <td>to tests upload with diskblobs</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testBLOBINTERCEPTOR.jsp">testBLOBINTERCEPTOR.jsp</A>
+      </td>
+      <td>to tests upload with blobinterceptor</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testSEARCH.jsp">testSEARCH.jsp</A> <A
+         HREF="testSEARCHRESULTS.jsp">testSEARCHRESULTS.jsp</A></td>
+      <td>To test searching in one from and getting the results in
+      another page. This should test the followUp attribute of
+      db:dbforms!</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testIsWebEvent.jsp">testIsWebEvent.jsp</A></td>
+      <td>tests IsWebEvent tag</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testGetDBConnection.jsp">testGetDBConnection.jsp,
+      testGetDBConnection.2.3.jsp, testGetDBConnection.2.4.jsp</A></td>
+      <td>tests getConnection tag page testGetDBConnection.jsp do a
+      redirect to jsp version dependend pages. This is necessary because
+      the tld files of the standard taglibs differs from jsp version to
+      jsp version.</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><a HREF="testEncoding.jsp">testEncoding.jsp</a>, <a
+         HREF="testEncodingWithDbForms.jsp">testEncodingWithDbForms.jsp</a>
+      </td>
+      <td>small page to test encoding. Not dbforms dependend!</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testApplicationResources.jsp">testApplicationResources.jsp</A>
+      </td>
+      <td>Testing of getting resource strings as with captionResource</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testCustomFormatter.jsp">testCustomFormatter.jsp</A>
+      </td>
+      <td>Testing of custom formatting</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testExports.jsp">testExports.jsp</A></td>
+      <td>Tests exporting to jasper, excel, csv</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testSearchAndCalcFields.jsp">testSearchAndCalcFields.jsp</A>
+      </td>
+      <td>Testing of search and calc fields</td>
+      <td>yes</td>
+   </tr>
+   <tr>
+      <td><A HREF="testSearchAndCalcFieldsSingle.jsp">testSearchAndCalcFieldsSingle.jsp</A>
+      <A HREF="testSearchAndCalcFieldsSingle5.jsp?FILTER5=TRUE">testSearchAndCalcFieldsSingle5.jsp</A>
+      </td>
+      <td>Testing of getting the resultsetvector when the preAddRow
+      Interceptor call will delete a record.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorEditWithValidation.jsp">testAuthorEditWithValidation.jsp</A>
+      </td>
+      <td>Testing of validation</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testAuthorEditWithValidationServer.jsp">testAuthorEditWithValidationServer.jsp</A>
+      </td>
+      <td>Testing of validation on server side whith autoUpdate set to
+      true</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testSelectTagXML.jsp">testSelectTagXML.jsp</A></td>
+      <td>Testing of select tag together with an XML base table.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testDbDateFieldTag.jsp">testDbDateFieldTag.jsp</A></td>
+      <td>Testing the old calendar control.</td>
+      <td>&nbsp;</td>
+   </tr>
+   <tr>
+      <td><A HREF="testDbDateFieldTag2.jsp">testDbDateFieldTag2.jsp</A></td>
+      <td>Testing the new calendar control.</td>
+      <td>&nbsp;</td>
+   </tr>
+</table>
+</body>
+</html>

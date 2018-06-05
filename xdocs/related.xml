@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="fossato@pow2.com">Luca Fossato</author>
+    <title>DbForms: related works</title>
+  </properties>
+
+<body>
+
+<section name="Related works">
+
+  <subsection name="Projects with greater scope than DbForms">
+    <p>
+      <ul>
+        <li><a href="http://jakarta.apache.org/struts/index.html" target="_blank">Jakarta-Struts</a> by Apache.org - open source, java</li>
+        <li><a href="http://sourceforge.net/projects/webwork/" target="_blank">Webwork</a> by EJBoss.org - open source, java</li>
+        <li><a href="http://xmlc.enhydra.org/index.html" target="_blank">Barracuda (fka Rocks)</a> by Enhyra.org - open source, java</li>
+        <li><a href="http://wings.mercatis.de/" target="_blank">wingS</a> open source, java</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection name="Projects with scope similar to DbForms">
+    <p>
+      <ul>
+        <li><a href="http://jakarta.apache.org/struts/index.html" target="_blank">Jakarta-Struts</a> by Apache.org - open source, java</li>
+        <li><a href="http://sourceforge.net/projects/webwork/" target="_blank">Webwork</a> by EJBoss.org - open source, java</li>
+        <li><a href="http://xmlc.enhydra.org/index.html" target="_blank">Barracuda (fka Rocks)</a> by Enhyra.org - open source, java</li>
+        <li><a href="http://wings.mercatis.de/" target="_blank">wingS</a> open source, java</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection name="Projects with smaller scope than DbForms">
+    <p>
+      <ul>
+        <li>
+          <a href="http://www.brics.dk/bigwig/powerforms/" target="_blank">
+            Bigwig Powerforms</a> focusses on client side formfield validation. 
+            Open source, JavaScript.
+        </li>
+      </ul>
+    </p>
+  </subsection>
+
+  <subsection name="Not categorized yet">
+    <p>
+      <ul>
+        <li>
+          <a href="http://www.dia.uniroma3.it/Araneus" target="_blank">Arenaus</a> 
+		  by Universita' di Roma Tre and Universita'; della Basilicata - open source, java
+		</li>
+        <li>
+		  <a href="http://www.research.att.com/~mff/strudel/" target="_blank">Strudel</a> 
+		  by AT&amp;T - open source, java
+		</li>
+      </ul>
+    </p>
+  </subsection>
+
+</section>
+
+</body>
+</document>

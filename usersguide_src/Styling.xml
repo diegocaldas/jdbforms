@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+  <title>Styling
+</title>
+  <sect1>
+    <title>First level: basic HTML and JSP - tags
+</title>
+    <para>As you may have noticed, the sample applications used lots of table/tr/td/br/hr tags as well as cascade stylesheets to build an average interface.
+</para>
+    <para>We could use other HTML/JSP code to build a better interface: For instance, we could use much more JavaScript or DHTML to create eye catching effects, or we could even include headers and footers using JSP:include  elements, etc.
+</para>
+    <para>DbForms does not restrict you in any way.
+</para>
+    <sect2>
+      <title>Cascading Style Sheet Usage
+</title>
+      <para>A lot of attributes like color, background color, fonts etc. can now be easily changed at a central place by using the stylesheet 
+        <emphasis role="bold">dbforms.css</emphasis> to make generated JSPs to your liking in terms of style. The stylesheet dbforms.css can be found inside the 
+        <emphasis role="bold">misc</emphasis> directory in cvs and within the directory 
+        <emphasis role="bold">dist</emphasis> inside a DbForms distribution..
+
+      </para>
+      <para>If you don't like the appearance of generated pages, it is now easy to change it.
+</para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Second level: &lt;dbForms&gt; - tags
+</title>
+    <para>Most visible tags of the dbForms Custom Tag Library provide attributes for styling, just as their HTML-pendants do (please refer the chapter DbForms Custom-Tag-Library for more information about the attributes for embellishing tags).
+</para>
+    <para>A special issue of styling is the 
+      <emphasis role="bold">action-buttons</emphasis>. These buttons provide additional functionality for a better styling, as the following examples demonstrate:
+
+    </para>
+    <para/>
+    <example>
+      <title>Instantiating a standard button
+</title>
+      <mediaobject id="standard_button">
+        <imageobject role="html">
+          <imagedata format="PNG" fileref="images/figures/standard_button.png"/>
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata format="PNG" fileref="../images/figures/standard_button.png"/>
+        </imageobject>
+      </mediaobject>
+      <programlisting>
+        <emphasis role="bold">&lt;db:gotoButton</emphasis> caption="Edit bears" destination="/bears.jsp" 
+        <emphasis role="bold">/&gt;</emphasis>
+      </programlisting>
+    </example>
+    <example>
+      <title>Instantiating an image button
+</title>
+      <mediaobject id="image_button">
+        <imageobject role="html">
+          <imagedata format="PNG" fileref="images/figures/image_button.png"/>
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata format="PNG" fileref="../images/figures/image_button.png"/>
+        </imageobject>
+      </mediaobject>
+      <programlisting>
+        <emphasis role="bold">&lt;db:gotoButton</emphasis> destination="/bears.jsp" 
+             
+        <emphasis role="bold">flavor="image"</emphasis> src="bear.gif" alt="click to edit bears"
+        <emphasis role="bold">/&gt;</emphasis> 
+    
+      </programlisting>
+    </example>
+    <para/>
+    <example>
+      <title>Instantiating a HTML4  button
+</title>
+      <mediaobject id="html4_button">
+        <imageobject role="html">
+          <imagedata format="PNG" fileref="images/figures/html4_button.png"/>
+        </imageobject>
+        <imageobject role="fo">
+          <imagedata format="PNG" fileref="../images/figures/html4_button.png"/>
+        </imageobject>
+      </mediaobject>
+      <programlisting>
+        <emphasis role="bold">
+            &lt;db:gotoButton </emphasis>destination="/bears.jsp"
+        <emphasis role="bold"> flavor="modern" </emphasis>style="width:220"
+        <emphasis role="bold">&gt;</emphasis> 
+                &lt;b&gt;Bears!&lt;/b&gt; 
+     
+                &lt;p&gt; 
+     
+                &lt;img src="bear.gif" border="0"&gt; 
+     
+    &lt;/p&gt; 
+     
+    &lt;b&gt;click if you want to view them&lt;/b&gt;&lt;br&gt; 
+     
+    (but be careful and don't feed...)
+ 
+     
+            &lt;/db:gotoButton&gt; 
+    
+      </programlisting>
+    </example>
+    <para>Nota bene: you should be aware that the image and modern flavored buttons are built on HTML standards not supported by all browsers.  For example the modern button shown in Listing 15 wont work on Netscape 4.
+</para>
+  </sect1>
+  <sect1>
+    <title>Third Level: DbForms - templates
+</title>
+    <para>Please note: this topic is currently under construction. It is possible that the styling approach described in this chapter will be replaced by some other approach in subsequent versions.
+(Further comments at the end of the chapter)</para>
+    <sect2>
+      <title>Introduction
+</title>
+      <para>DbForms comes with a simple yet powerful method of template-processing. This mechanism was designed to ease and speed up development. In summary, it is based on the following requirements:
+</para>
+      <itemizedlist mark="opencircle">
+        <listitem>
+          <para>It should tidy up the HTML/JSP code. In other words, it should act as a kind of macro-engine replacing complex code by simple statements. This makes the HTML/JSP-code easier to read, understand and maintain.
+</para>
+        </listitem>
+        <listitem>
+          <para>It should be easy to use. Application-designers using predefined templates should not need to do any complicated coding. They should just specify which template to use and eventually specify attributes for customizing the templates  this leads to the next point:
+</para>
+        </listitem>
+        <listitem>
+          <para>Templates should be dynamic, not static. Templates should be able to retrieve and process attributes provided by the application -designer. Furthermore, templates should be JSP pages themselves, to provide maximum flexibility.
+</para>
+        </listitem>
+        <listitem>
+          <para>New templates should be easy to create. Transforming a good-looking HTML/JSP code into a valid and working template for use by DbForms-applications should be a matter of a few minutes, not hours! This should ensure growing repositories of powerful DbForms-templates which are available to other DbForms-developers (whether inside a company or  even better  as a contribution to all developers)
+</para>
+        </listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2>
+      <title>How to use DbForms templates
+</title>
+      <para>Including existing templates into the JSP view is  according to the goals described above  an easy task. There is only one custom tag, 
+        <computeroutput>db:style tag</computeroutput>, that needs to be facilitated for this purpose:
+
+      </para>
+      <programlisting>
+        <emphasis role="bold">&lt;db:style</emphasis>
+        <emphasis role="bold">template</emphasis>="templateName"
+ 
+  
+        <emphasis role="bold">paramList</emphasis>="param1='value1',param2='value2',. . .,paramN='valueN'"
+ 
+  
+        <emphasis role="bold">part</emphasis>= "begin"  /
+        <emphasis role="bold">&gt;</emphasis>
+     
+    
+      </programlisting>
+      <para>This tag may or may not include a body. Its attributes are:
+</para>
+      <itemizedlist mark="opencircle">
+        <listitem>
+          <para>
+            <emphasis role="bold">template</emphasis> [required]: this refers to the name of the template to be used
+
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <emphasis role="bold">paramList</emphasis>: a parameter-list used to specify rendering properties for the template.
+
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <emphasis role="bold">part</emphasis>: the part of the template (i.e. begin, end)
+
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2>
+      <title>Example of 
+        <emphasis role="italic">applying</emphasis> templates
+
+      </title>
+      <para>Imagine a simple login box. The code for such a form could resemble the following:
+</para>
+      <programlisting>
+                                
+            &lt;html&gt;
+                &lt;body&gt;
+                     
+        <emphasis role="bold">&lt;db:style</emphasis> template="center" part="begin" /&gt;
+                    
+                     
+        <emphasis role="bold">&lt;db:style</emphasis> template="sourceforge" paramList="width='300' 
+                    bg='steel3.jpg'" part="begin"/&gt;
+        
+                        &lt;form method="POST"&gt;
+        
+                            &lt;table align="center"&gt;
+        &lt;tr&gt;
+                                    &lt;td&gt;
+                                        &lt;b&gt;Username: &lt;/b&gt;
+                                        &lt;br&gt;
+                                        &lt;input name="j_username" type="text"&gt;
+                                        &lt;br&gt;
+                                    &lt;/td&gt;
+        &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td&gt;
+                                        &lt;b&gt;Password: &lt;/b&gt;
+                                        &lt;br&gt;
+                                        &lt;input name="j_password" type="password"&gt;
+                                        &lt;br&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td align="center"&gt;
+                                        &lt;br&gt;&lt;input type="submit" value="Log in!"&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        
+                        &lt;/form&gt;
+
+                     
+        <emphasis role="bold">&lt;db:style</emphasis> part="end"/&gt;
+        
+        
+                     
+        <emphasis role="bold">&lt;db:style</emphasis> part="end"/&gt;
+        
+                &lt;/body&gt;
+        
+            &lt;/html&gt;
+      
+      </programlisting>
+      <para>
+        <emphasis role="bold">Remarks</emphasis>
+      </para>
+      <para>Note the bold printed &lt;style&gt; tags. The use of these tags make up the difference between the screenshot shown in Figure 17 and the other one in Figure 18
+</para>
+      <para>As you may notice, one template (sourceforge) is nested into the other (center).
+</para>
+      <para>Another thing you may notice is that the sourceforge-template (which I have taken from the popular open-source development site sourceforge.net) defines a parameter-list while the other template does 
+        <emphasis role="italic">not</emphasis>.The parameters declared in the parameter list are written in JavaScript-style using 
+        <emphasis role="italic">single quotes</emphasis>, but the quotes may be left out (they are tolerated to make parameter lists easier to read) The important thing however, is to separate each param-value-pair by a 
+        <emphasis role="italic">comma</emphasis>.
+
+      </para>
+      <para/>
+      <para>
+        <figure>
+          <title>The login box without styling templates
+</title>
+          <mediaobject id="login_without_styling_templates">
+            <imageobject role="html">
+              <imagedata format="PNG" fileref="images/figures/login_without_styling_templates.png"/>
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata format="PNG" fileref="../images/figures/login_without_styling_templates.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <para/>
+      <para>
+        <figure>
+          <title>The same login box using 2 styling templates
+</title>
+          <mediaobject id="login_using_styling_templates">
+            <imageobject role="html">
+              <imagedata format="PNG" fileref="images/figures/login_using_styling_templates.png"/>
+            </imageobject>
+            <imageobject role="fo">
+              <imagedata format="PNG" fileref="../images/figures/login_using_styling_templates.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </para>
+    </sect2>
+    <sect2>
+      <title>Example of 
+        <emphasis role="italic">creating</emphasis> templates
+
+      </title>
+      <sect3 id="tempbasedir">
+        <title>Template base directory
+</title>
+        <para>There exists (optionally) one template-directory for each web-application. This directory should be dedicated exclusively to templates. The location of this directory is specified in the web application deployment descriptor (web.xml) using the context-parameter templateBase (see following example)
+</para>
+        <programlisting>
+          <emphasis role="bold">&lt;context-param&gt; </emphasis>
+            
+                &lt;param-name&gt; 
+          <emphasis role="bold">templateBase</emphasis>&lt;/param-name&gt; 
+    
+                &lt;param-value&gt;mytemplates&lt;/param-value&gt; 
+            
+            &lt;/context-param&gt; 
+    
+        </programlisting>
+        <para>If there is no such entry in web.xml, then the default directory 
+          <computeroutput>templates</computeroutput> will be used.
+
+        </para>
+        <para>The directory entry is relative to the root of the web-application (absolute directories are not allowed)
+</para>
+        <para>This base-directory contains all templates accessible by the application. Each template has its own subdirectory. In the example above, the subdirectories sourceforge and center would exist.
+</para>
+      </sect3>
+      <sect3>
+        <title>The structure of templates
+</title>
+        <para>A template usually consists of two files: One file to be included/rendered when the start of the style-tag is evaluated, and another file to be included/rendered when the end of the style-tag is evaluated. The starting file has to have the suffix _begin.jsp, the ending file has to have the suffix _end. The names of both files start with the name of the template (and the directory they are contained in)
+</para>
+        <para>In the example above, the following structure exists:
+</para>
+        <programlisting>                                                
+                ourWebApp/templates/
+                
+                ourWebApp/templates/sourceforge/
+ 
+    ourWebApp/templates/sourceforge/sourceforge_begin.jsp
+ 
+    ourWebApp/templates/sourceforge/sourceforge_end.jsp
+ 
+    ourWebApp/templates/sourceforge/images/
+ 
+    ourWebApp/templates/sourceforge/images/steel.jpg
+ 
+    ourWebApp/templates/sourceforge/images/nail.jpg
+ 
+    ourWebApp/templates/center/
+ 
+    ourWebApp/templates/center/center_begin.jsp
+ 
+    ourWebApp/templates/center/center_end.jsp
+ 
+    </programlisting>
+        <para>As you may have noticed in Listing 18, there can also exist other resource types (image-/jsp-/html-files) in addition to the mandatory 
+          <computeroutput>*_begin.jsp </computeroutput>and
+          <computeroutput> *end.jsp</computeroutput> files. These files may be statically or dynamically included by the templates-stubs.
+
+        </para>
+      </sect3>
+      <sect3>
+        <title>Coding templates
+</title>
+        <sect4>
+          <title>Static templates: </title>
+          <blockquote>
+            <para>
+              <emphasis role="bold">
+            center_begin.jsp</emphasis>
+            </para>
+          </blockquote>
+          <programlisting>
+    &lt;table width="100%" height="100%"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt; 
+    &lt;center&gt; 
+    </programlisting>
+          <blockquote>
+            <para>
+              <emphasis role="bold">center_begin.jsp</emphasis>
+            </para>
+          </blockquote>
+          <programlisting>
+                &lt;/center&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt; 
+        &lt;tr&gt;
+            &lt;td&gt;
+            &lt;/td&gt; 
+  &lt;/tr&gt;
+    &lt;/table&gt; 
+    </programlisting>
+          <para>As most readers will agree, there is not much to tell about the code above. In this example,  a table gets rendered which centers all elements it embeds (for instance the login-form).
+</para>
+        </sect4>
+        <sect4>
+          <title>Dynamic templates: 
+          </title>
+          <blockquote>
+            <para>
+              <emphasis role="bold">a few snippets from sourceforge_begin.jsp</emphasis>
+            </para>
+          </blockquote>
+          <programlisting>
+                                              
+&lt;%@ taglib uri="/WEB-INF/taglib.tld" prefix="db" %&gt;[...]
+ 
+    &lt;table cellpadding="0" cellspacing="0" border="0" 
+    width
+            <emphasis role="bold">="&lt;db:templateParam</emphasis> name="width" defaultValue="99%" /&gt;"&gt; 
+     [...]
+ 
+        &lt;td background
+            <emphasis role="bold">="&lt;db:templateBasedir/&gt;</emphasis>images/tbar1.png" width="1%" height="17"&gt; 
+         [...]
+ 
+            
+            <emphasis role="bold">&lt;db:templateParam</emphasis> name="bg" defaultValue="steel.jpg" dir="images" /&gt;" &gt; 
+             [...]
+ 
+    
+          </programlisting>
+          <para>This example shows the usage of two custom tags supporting templates.
+</para>
+          <itemizedlist mark="opencircle">
+            <listitem>
+              <para>&lt;templateParam&gt; parses a specified parameter from the paramsList-attribute of the calling JSP.
+</para>
+            </listitem>
+            <listitem>
+              <para>&lt;templateBasedir&gt; supplies the base directory to use. This is important to make sure all resources (ie: images) are found.
+</para>
+            </listitem>
+          </itemizedlist>
+          <para>More information about these tags can be found in the description of the custom tag library and in on-line examples.
+</para>
+        </sect4>
+      </sect3>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Why is the style-taglib still under construction?
+</title>
+    <para>Because it has one serious limitation: &lt;style&gt; tags may not be nested inside any other custom tag. Many servers, including Suns reference implementation Apache Tomcat 3.2, are firing an exception like illegal flushing within custom tag. This stems from the way response- and writer-objects are handled in the JSP framework.
+</para>
+    <para>Other servers like Orion server tolerate db:style tags within other tags, but of course DbForms is obliged to the JSP specification and its reference implementation.
+</para>
+    <para>This is the reason why I am currently researching how to bypass the problem. Any hint from the reader would be highly appreciated!
+</para>
+    <para/>
+  </sect1>
+</chapter>

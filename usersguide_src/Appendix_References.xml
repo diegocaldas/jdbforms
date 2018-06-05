@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Luca (H3G) -->
+<appendix>
+  <title>References
+</title>
+  <para/>
+  <para>
+    <table>
+      <title>References</title>
+      <tgroup cols="2">
+        <tbody>
+          <row>
+            <entry>[Johnson]</entry>
+            <entry>Ralph Johnson and Brian Foote &#147;Designing Reusable Classes &#147;
+http://st-www.cs.uiuc.edu/users/johnson/frameworks.html#Definition</entry>
+          </row>
+          <row>
+            <entry>[Servlet]</entry>
+            <entry>http://java.sun.com/products/servlet/</entry>
+          </row>
+          <row>
+            <entry>[JSP]</entry>
+            <entry>http://java.sun.com/products/jsp/</entry>
+          </row>
+          <row>
+            <entry>[Taglib]</entry>
+            <entry>http://java.sun.com/products/jsp/taglibraries.html</entry>
+          </row>
+          <row>
+            <entry>[Struts]</entry>
+            <entry>http://jakarta.apache.org/struts/index.html</entry>
+          </row>
+          <row>
+            <entry>[Gamma]</entry>
+            <entry>Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides &#147;Design Patterns: Elements of Reusable Object-Oriented Software&#148; Addison Wesley. October 1994.</entry>
+          </row>
+          <row>
+            <entry>[Poolman]</entry>
+            <entry>http://sourceforge.net/projects/poolman/</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </para>
+  <para/>
+</appendix>

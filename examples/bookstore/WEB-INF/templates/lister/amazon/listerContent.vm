@@ -1,0 +1,9 @@
+<p class="lister_amazon-ItemDesc">
+  <ul class="lister_amazon-List">&nbsp;
+
+  #foreach( $item in $array )  
+   <li><a href="${item.value}">${item.label}</a></li>
+  #end
+
+</ul>
+</p>

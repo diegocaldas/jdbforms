@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Henner Kollmann (HeKo's Softwareschmiede) -->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="field">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="fieldType" type="xs:string" use="required"/>
+		<xs:attribute name="size" type="xs:string" use="optional"/>
+		<xs:attribute name="isKey" type="xs:string" use="optional"/>
+		<xs:attribute name="sortable" type="xs:string" use="optional"/>
+		<xs:attribute name="autoInc" type="xs:string" use="optional"/>
+		<xs:attribute name="directory" type="xs:string" use="optional"/>
+		<xs:attribute name="expression" type="xs:string" use="optional"/>
+		<xs:attribute name="defaultValue" type="xs:string" use="optional"/>
+		<xs:attribute name="alias" type="xs:string" use="optional"/>
+		<xs:attribute name="escaperClass" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="calc">
+		<xs:complexContent>
+			<xs:extension base="field"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="table">
+        <xs:sequence>
+			<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="field">
+							<xs:attribute name="encoding" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="calc" type="calc" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="foreign-key" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="reference" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="local" type="xs:string" use="required" />
+								<xs:attribute name="foreign" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="foreignTable" type="xs:string" use="required" />
+					<xs:attribute name="name" type="xs:string" use="required" />
+					<xs:attribute name="format" type="xs:string" use="optional" />
+					<xs:attribute name="visibleFields" type="xs:string" use="optional" />
+					<xs:attribute name="displayType" use="optional" default="none">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="select" />
+								<xs:enumeration value="radio" />
+								<xs:enumeration value="none" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="events" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="event" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="required" />
+											<xs:attribute name="value" type="xs:string" use="required" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="type" type="xs:string" use="required" />
+								<xs:attribute name="id" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="interceptor" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:string" use="required" />
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="className" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="granted-privileges" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="select" type="xs:string" use="optional" />
+					<xs:attribute name="insert" type="xs:string" use="optional" />
+					<xs:attribute name="update" type="xs:string" use="optional" />
+					<xs:attribute name="delete" type="xs:string" use="optional" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="orderBy" type="xs:string" use="optional"/>
+		<xs:attribute name="dataAccessClass" type="xs:string" use="optional"/>
+		<xs:attribute name="escaperClass" type="xs:string" use="optional"/>
+		<xs:attribute name="alias" type="xs:string" use="optional"/>
+		<xs:attribute name="blobHandling" type="xs:string" use="optional"/>
+		<xs:attribute name="defaultVisibleFieldsFormat" type="xs:string" use="optional"/>
+		<xs:attribute name="defaultVisibleFields" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="dbforms-config">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="DOMFactoryClass" type="xs:string" minOccurs="0" />
+               <xs:element name="DefaultEscaperClass" type="xs:string" minOccurs="0" />
+               <xs:element name="ResolveConfigPropertyClass" type="xs:string" minOccurs="0" />
+				<xs:element name="table" type="table" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="query" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="table">
+								<xs:sequence>
+									<xs:element name="search" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:attribute name="name" type="xs:string" use="optional" />
+											<xs:attribute name="fieldType" type="xs:string" use="optional" />
+											<xs:attribute name="expression" type="xs:string" use="optional" />
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="from" type="xs:string" use="optional" />
+								<xs:attribute name="where" type="xs:string" use="optional" />
+								<xs:attribute name="followAfterWhere" type="xs:string" use="optional" />
+								<xs:attribute name="orderWithPos" type="xs:string" use="optional" />
+								<xs:attribute name="distinct" type="xs:string" use="optional" />
+								<xs:attribute name="groupBy" type="xs:string" use="optional" />
+								<xs:attribute name="having" type="xs:string" use="optional" />
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="events" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="database-events" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="database-event" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="id" type="xs:string" use="optional" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="className" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="navigation-events" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="navigation-event" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="id" type="xs:string" use="optional" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="className" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="dbconnection" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="property" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="value" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="pool-property" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="value" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:string" use="optional" />
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="type" type="xs:string" use="optional" />
+						<xs:attribute name="isJndi" type="xs:string" use="optional" />
+						<xs:attribute name="isPow2" type="xs:string" use="optional" />
+						<xs:attribute name="defaultConnection" type="xs:string" use="optional" />
+						<xs:attribute name="connectionProviderClass" type="xs:string" use="optional" />
+						<xs:attribute name="connectionPoolURL" type="xs:string" use="optional" />
+						<xs:attribute name="conClass" type="xs:string" use="optional" />
+						<xs:attribute name="username" type="xs:string" use="optional" />
+						<xs:attribute name="password" type="xs:string" use="optional" />
+						<xs:attribute name="orderBy" type="xs:string" use="optional" />
+						<xs:attribute name="contextDataSource" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="interceptors" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="interceptor">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="param" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="value" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="className" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

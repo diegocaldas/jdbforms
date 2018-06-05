@@ -1,0 +1,51 @@
+Release Notes for DbForms Version 2.6,  xxxx-xx-xx
+
+Contents:
+1)    About this release
+2)    Details about enhancements and changes
+2-1)     Remove the formatter attribute
+2-2)     Added new chart type: Category Data 
+2-3)     Added new chart type: TimeSeries Data
+2-4)     Refactor the dbforms package
+2-5)     New presetFormValues tag 
+2-6)     Add hidden attribute to search tag
+2-7)     New calendar control
+2-9)     Use of variables in the config file
+2-10)    Moved to actual libs 
+2-11)	 Changed readOnly attribute in select tag
+
+
+1) About this release
+---------------------
+
+DbForms 2.6 is the next release to be labelled production/stable. It
+is the result of further development of the 2.5-SNAPSHOT
+releases. Changes made in those releases are included and described
+below.
+
+Please report any problems or comments to the DbForms mailing list:
+
+    jdbforms-interest@lists.sourceforge.net
+
+This document summarizes the changes since release 2.4 that are of
+interest to end users. Note that there have also been several internal
+enhancements to DbForms which are documented only within the
+source code (e.g. code cleanup, improved algorithms).
+
+
+2)    Details about enhancements and changes
+--------------------------------------------
+
+2-1)  Remove the formatter attribute
+--------------------------------------------
+The formatter attribute has been deprecated in version 2.5 and is removed now.
+
+2-3)  Refactor the dbforms package: 
+--------------------------------------------
+new folder for interfaces, Rename abstract classes to Abstract...
+
+2-11) Changed readOnly attribute in select tag
+----------------------------------------------
+Disable html select tag if readOnly is set to true, instead of 
+resetting it with javascript as this was confusing to users.
+

@@ -1,0 +1,212 @@
+TABLE.tabbedselector_backoffice
+{
+  font-size: 12px;
+  border:    0px;
+}
+
+
+TD.tabbedselector_backoffice-LeftUp1
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlUp1.gif) no-repeat;
+  height:     33px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-LeftUp2
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlUp2.gif) repeat-x;
+  height:     33px; 
+}
+
+
+TD.tabbedselector_backoffice-LeftUp3
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlUp3.gif) no-repeat;
+  height:     33px; 
+  width:      10px;
+}
+
+
+SPAN.tabbedselector_backoffice-LeftTitleUp
+{
+  position:       relative;
+  left:           0 px;
+  top:            -1px;
+  font-size:      12px;
+  text-align:     right;
+  letter-spacing: 1px;
+  color:          #000000;
+}
+
+
+SPAN.tabbedselector_backoffice-LeftTitleDown
+{
+  position:       relative;
+  left:           0 px;
+  top:            -1px;
+  font-size:      12px;
+  text-align:     right;
+  letter-spacing: 1px;
+  color:          #000000;
+}
+
+
+SPAN.tabbedselector_backoffice-TitleUp
+{
+  position:       relative;
+  left:           -1px;
+  top:            -1px;
+  font-size:      12px;
+  text-align:     right;
+  letter-spacing: 1px;
+  color:          #000000;
+  z-index:        0;
+}
+
+
+SPAN.tabbedselector_backoffice-TitleDown
+{
+  position:       relative;
+  left:           0px;
+  top:            -1px;
+  font-size:      12px;
+  text-align:     right;
+  letter-spacing: 1px;
+  color:          #000000;
+  z-index:        0;
+}
+
+
+TD.tabbedselector_backoffice-LeftDown1
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlDown1.gif) no-repeat;
+  height:     33px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-LeftDown2
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlDown2.gif) repeat-x;
+  height:     33px; 
+}
+
+
+TD.tabbedselector_backoffice-LeftDown3
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tlDown3.gif) no-repeat;
+  height:     33px; 
+  width:      10px;
+}
+
+
+TD.tabbedselector_backoffice-Up1
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tUp1.gif) no-repeat;
+  height:     33px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-Up2
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tUp2.gif) repeat-x;
+  height:     33px; 
+}
+
+
+TD.tabbedselector_backoffice-Up3
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tUp3.gif) no-repeat;
+  height:     33px; 
+  width:      10px;
+}
+
+
+
+
+
+
+TD.tabbedselector_backoffice-Down1
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tDown1.gif) no-repeat;
+  height:     33px; 
+  width:      11px;
+}
+
+
+TD.tabbedselector_backoffice-Down2
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tDown2.gif) repeat-x;
+  height:     33px; 
+}
+
+
+TD.tabbedselector_backoffice-Down3
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tDown3.gif) no-repeat;
+  height:     33px; 
+  width:      10px;
+}
+
+
+TD.tabbedselector_backoffice-Left1
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tableft1.gif) repeat-x;
+  height:     33px; 
+}
+
+
+TD.tabbedselector_backoffice-Left2
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tableft2.gif) no-repeat;
+  height:     33px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-L
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabL.gif) repeat-y;
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-R
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabR.gif) repeat-y;
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-LBot
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabLBot.gif) no-repeat;
+  height:     33px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-LBot
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabLBot.gif) no-repeat;
+  height:     14px; 
+  width:      12px;
+}
+
+
+TD.tabbedselector_backoffice-Bot
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabBot.gif)  repeat-x;
+  height:     14px; 
+}
+
+
+TD.tabbedselector_backoffice-RBot
+{
+  BACKGROUND: url(../pics/tabbedselector/backoffice/tabRBot.gif) no-repeat;
+  height:     14px; 
+  width:      13px;
+}
+

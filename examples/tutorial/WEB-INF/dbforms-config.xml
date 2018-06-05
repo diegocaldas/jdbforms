@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<dbforms-config>
+
+  <table name="services">
+    <field name="id"          fieldType="int" isKey="true" />
+    <field name="name"        fieldType="char" />
+    <field name="description" fieldType="char" />
+  </table>
+            
+  <table name="customers">
+    <field name="id"        fieldType="int" isKey="true" />
+    <field name="firstname" fieldType="char" />
+    <field name="lastname"  fieldType="char" />
+    <field name="address"   fieldType="char" />
+    <field name="pcode"     fieldType="char" />
+    <field name="city"      fieldType="char" />
+  </table>
+            
+  <table name="orders">
+    <field name="order_id"    fieldType="int" isKey="true" autoInc="true" />
+    <field name="customer_id" fieldType="int" isKey="true" />
+    <field name="service_id"  fieldType="char" sortable="true"/>
+    <field name="orderdate"   fieldType="char" sortable="true"/>
+  </table>
+                
+  <table name="complaints">
+    <field name="complaint_id" fieldType="int" isKey="true" autoInc="true" />
+    <field name="customer_id"  fieldType="int" isKey="true" />
+    <field name="usermessage"  fieldType="char" />
+    <field name="incomingdate" fieldType="char" sortable="true"/>
+    <field name="priority"     fieldType="int"  sortable="true"/>
+  </table>
+            
+  <table name="priorities">
+    <field name="id"          fieldType="int" isKey="true" />
+    <field name="shortname"   fieldType="char" />
+    <field name="description" fieldType="char" />
+  </table>    
+
+  <query name="orders_and_servicenames"
+         from="orders,services"
+         where="orders.service_id=services.id"
+         orderBy="orderdate">
+    <field name="customer_id"  fieldType="int"/>
+    <field name="name"         fieldType="char"/>
+    <field name="orderdate"    fieldType="char"/>
+  </query>
+
+<!--
+  <dbconnection
+    name = "java:comp/env/jdbc/tutorial"
+    isJndi = "true"
+  />
+-->
+   <dbconnection
+     isPow2 = "true"
+     connectionProviderClass = 
+       "org.dbforms.conprovider.SingleConnectionProvider"
+     name = 
+       "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsql/tutorial"
+     isJndi = "false"
+     conClass = "org.hsqldb.jdbcDriver"
+     username = "sa"
+     password = ""
+   />
+
+</dbforms-config>

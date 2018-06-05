@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<dbforms-config>
+	<table name="complaint">
+		<field name="complaint_id" fieldType="int" size="11" isKey="true" autoInc="true" />
+		<field name="customer_id" fieldType="int" size="11" isKey="true"/>
+		<field name="usermessage" fieldType="char" size="255"/>
+		<field name="incomingdate" fieldType="date" size="10"/>
+		<field name="priority" fieldType="int" size="11"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<table name="customer">
+		<field name="firstname" fieldType="char" size="50" isKey="true" />
+		<field name="id" fieldType="int" size="11" isKey="true" />
+		<field name="lastname" fieldType="char" size="50"/>
+		<field name="address" fieldType="char" size="30"/>
+		<field name="pcode" fieldType="char" size="10"/>
+		<field name="city" fieldType="char" size="40"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<table name="orders">
+		<field name="order_id" fieldType="int" size="11" isKey="true" autoInc="true"/>
+		<field name="customer_id" fieldType="int" size="11" isKey="true"/>
+		<field name="service_id" fieldType="int" size="11"/>
+		<field name="orderdate" fieldType="date" size="10"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<table name="pets" blobHandling="classic">
+		<field name="pet_id" fieldType="int" size="11" isKey="true" autoInc="true"/>
+		<field name="customer" fieldType="int" isKey="true"/>
+		<field name="name" fieldType="varchar" size="30"/>
+		<field name="portrait_pic" fieldType="diskblob" size="255" directory="d:\test" />
+		<field name="story" fieldType="blob" size="65535"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<table name="priority">
+		<field name="id" fieldType="char" size="10" isKey="true"/>
+		<field name="shortname" fieldType="char" size="30"/>
+		<field name="description" fieldType="char" size="100"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<table name="service">
+		<field name="id" fieldType="int" size="11" isKey="true"/>
+		<field name="name" fieldType="char" size="30"/>
+		<field name="description" fieldType="char" size="255"/>
+
+		<!-- add "granted-privileges" element for security constraints -->
+
+	</table>
+
+	<!-- ========== Connection =================================== -->
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.JakartaConnectionProvider"
+			name   					= "jdbc:hsqldb:$(SERVLETCONTEXT_REALPATH)/WEB-INF/db_hsqldb/testsuite"
+			isJndi 					= "false"
+			conClass 		 		= "org.hsqldb.jdbcDriver"
+			username 				= "sa"
+			password  				= ""
+	    />
+</dbforms-config>

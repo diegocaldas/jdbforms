@@ -1,0 +1,31 @@
+## boWindow upper part;
+
+#if ($titleType == "image")
+    #set( $templateTitle = "<img class='window_backoffice-Title' src='${title}'>" )    
+#else
+    #set( $templateTitle = "<span class='window_backoffice-Title'>${title}</span>" )   
+#end
+
+
+<TABLE class="window_backoffice" CELLPADDING="0" CELLSPACING="0">
+<TR>
+  <TD class="window_backoffice-TopL">&nbsp;</TD>
+  <TD class="window_backoffice-Top">$templateTitle</TD>
+  <TD class="window_backoffice-TopR">&nbsp;</TD>
+</TR>
+<TR bgcolor="${color}">
+  <TD class="window_backoffice-Left">&nbsp;</TD>
+  <TD>
+    ${windowContent}
+  </TD>
+  <TD class="window_backoffice-Right">&nbsp;</TD>
+</TR>
+<TR>
+  <TD class="window_backoffice-BotLeft">&nbsp;</TD>
+  <TD class="window_backoffice-Bot">&nbsp;</TD>
+  <TD class="window_backoffice-BotRight">&nbsp;</TD>
+</TR>
+</TABLE>
+
+
+

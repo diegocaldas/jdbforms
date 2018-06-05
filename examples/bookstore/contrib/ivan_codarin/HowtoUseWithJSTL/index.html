@@ -1,0 +1,65 @@
+<html>
+	<body>
+		<h1>Hints for the jstl examples</h1>	
+		<p>
+			I promised you to create some little examples on using JSTL with DBFORMS to create 
+			different layers (business logic, presentation logic, presentation).<br/>
+			So I extended the bookstore example adding 3 tables 
+			(library, customers, and library customers) to create different examples.<br/>
+			Now I send you the source code, 
+			I don't know if this is useful from your point of view.<br/>
+			These are very basic examples on how I re-engeneered my dbforms application.<br/><br/>
+			Ivan Codarin	(ivan.codarin@amm.uniud.it)
+		</p>
+		<table border="1">
+			<tr>
+				<td>
+				   <a href="ivanCustomerJSTL.jsp">ivanCustomerJSTL.jsp</a>
+				</td>
+				<td>
+					is a jdbform JSP where I use JSTL to set the backcolor  of the table-rows instead of setting a counter inside the JSP and testing it.
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <a href="ivanCustomer.jsp">ivanCustomer.jsp</a>
+				</td>
+				<td>
+					"traditional" jdbforms example
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <a href="ivanCustomerJSTL_Bean.jsp">ivanCustomerJSTL_Bean.jsp:</a>
+				</td>
+				<td>
+					is a jdbform JSP where I use JSTL to set the backcolor fo the table-rows. The color is computed inside a Bean that receives a record and establish the "correct color of the background". I called this "presentation-logic" because it isn't the true application logic but a new layer between it an the presentation.
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <a href="ivanLibraryJSTL.jsp">ivanLibraryJSTL.jsp</a>
+				</td>
+				<td>
+					IvanLibraryJSTL is an example similar to ivanCustomerJSTL
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <a href="ivanLibrary.jsp">ivanLibrary.jsp</a>
+				</td>
+				<td> 
+					"traditional" jdbforms example
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <a href="ivanLibraryCustomer.jsp">ivanLibraryCustomer.jsp</a>
+				</td>
+				<td> 
+					"traditional" jdbforms example
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

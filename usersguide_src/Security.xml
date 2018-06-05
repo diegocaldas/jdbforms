@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="security">
+  <title>Security</title>
+  <sect1>
+    <title>Introduction</title>
+    <para>
+      DbForm's security features are fully compliant with SUN's Java Servlet API Specifications, version 2.2.  Chapter 11 of the Java Servlet Specification 2.2 describes the mechanisms containers must provide in order to enable developers and deployers to ensure the following characteristics of security:
+    </para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>Authentication</para>
+      </listitem>
+      <listitem>
+        <para>Access control for resources</para>
+      </listitem>
+      <listitem>
+        <para>Data Integrity</para>
+      </listitem>
+      <listitem>
+        <para>Confidentiality of Data Privacy</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      DbForms, built on top of JSP, naturally builds on top of JSPs security concepts. 
+      Building a proprietary security system for DbForms (from scratch) would not make much sense. 
+      Building on top of implies that DbForms indeed provides an 
+      <emphasis role="bold">additional</emphasis> level of security handling.
+    </para>
+    <para>In short, DbForms takes away much work and worries from the 
+      <emphasis role="italic">developer</emphasis>, but not from the 
+      <emphasis role="italic">deployer</emphasis>. 
+      The deployer is still concerned with defining user-groups, choosing UserManager-factory-classes, 
+      eventually setting up database tables for user name/password, etc. 
+      Many of these issues (i.e. choosing UserManager-factories) are dependent of Application 
+      Servers (which is another reason why DbForms does not address these issues).�    For more information about the role of the deployer, refer to paragraph 2.2.2 
+      of the Java Servlet Specification (Roles/Deployer)
+    </para>
+    <para>
+      As we have elaborated, the deployer establishes the 
+      <emphasis role="italic">basic infrastructure</emphasis> for application security. 
+      Would that be sufficient for fulfilling an application security needs? 
+      Well, the deployer could indeed provide a certain level of security, but building an application 
+      using declarative security only, will not work. Why?
+    </para>
+    <para>
+      <emphasis role="bold">Consider the following example:</emphasis>
+    </para>
+    <para>
+      We have a view called customer.jsp, accessing a table customer, and  we have three 
+      users-groups A, B and C. (The terms group and role are used synonymously in this document.)
+    </para>
+    <blockquote>
+      <para>
+        Members of A may read, insert, update and delete customers, members of B may read and update 
+        customers and members of C have no access at all.
+    </para>
+    </blockquote>
+    <para>
+      Using declarative security a deployer could define security constraints in web.xml 
+      that allow members of A and B to access customer.jsp and deny access for  C. But how should the distinction be made between A and B? One way would be to split customer.jsp into 2 files -one with a delete button and one without. But how do we prevent malicious users from simulating a delete button using telnet?
+    </para>
+    <para>This is where DbForms security concept steps in:</para>
+  </sect1>
+  <sect1 id="security-concept">
+    <title>Security concept of DbForms</title>
+    <para>
+      DbForms provides fine-grained definition of rights for data-access and manipulation. 
+      DbForms security works directly on 
+      <emphasis role="italic">tables</emphasis>, not on JSPs. 
+      All database operations done by  DbForms run through a security check before they get executed.
+    </para>
+    <para>
+      DbForms allows attaching security constraints to each table defined in the xml-configuration. 
+      Listing 5 demonstrates how the problem described above could be solved using DbFormss built-in-security 
+      concept:
+    </para>
+    <programlisting>
+  <emphasis role="bold">&lt;dbforms-config&gt;</emphasis>
+    <emphasis role="bold">&lt;table name="customer" &gt;</emphasis>
+      &lt;field name="id" fieldType="int" isKey="true" /&gt;
+      &lt;field name="firstname" fieldType="char" /&gt;
+      &lt;field name="lastname" fieldType="char" /&gt;
+      &lt;field name="address" fieldType="char" /&gt;                                
+
+      <emphasis role="bold">&lt;granted-privileges</emphasis> 
+        select = "A,B"
+        insert = "A"
+        update = "A,B"
+        delete = "A"
+      /&gt;                
+    <emphasis role="bold">&lt;/table&gt;</emphasis>
+  <emphasis role="bold">&lt;/dbforms-config&gt;</emphasis>
+    </programlisting>
+    <para>
+      The attributes of the &lt;granted-privileges&gt; element tell DbForms:
+    </para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>
+          Members of A may select, insert, update and delete customers
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Members of B may only read and update customers
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          All other groups (which include C) may not access this table at all.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>This is exactly what we needed to solve the problem!</para>
+    <para>
+      Nota bene: not all attributes must be specified explicitly. If, for instance, all users may have 
+      <emphasis role="italic">read</emphasis> access to a table, the 
+      <emphasis role="italic">select</emphasis> attribute needs not to be declared. 
+      A missing attribute does not generate an error but implicates access for all groups 
+      (which may be useful if there are dozen's of roles)
+    </para>
+    <para>
+      If a 
+      <computeroutput>&lt;table&gt;</computeroutput>-element does not contain a 
+      <computeroutput>&lt;granted-privileges&gt;</computeroutput>-element, 
+      then all users have full read  write - access to this table.
+    </para>
+    <para>
+      If a user tries to execute an operation beyond his/her access rights, an SQL-Error will be triggered and (if a 
+      <computeroutput>&lt;db:errors/&gt;</computeroutput> tag is placed on the view) displayed to the user.
+    </para>
+    <para>
+      Note: current action buttons are not aware of security (i.e. a delete button will get rendered independently of the users right to delete data from the table)
+    </para>
+  </sect1>
+</chapter>

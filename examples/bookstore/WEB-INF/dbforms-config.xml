@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- ATTENTION: New tables only at the end otherwise the junit tests will not run!!!!!  -->
+<dbforms-config 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://jdbforms.sourceforge.net/dbforms-config.xsd"
+>
+		<param name="databaseName" value="bookstore" />
+		
+	    <table name="AUTHOR">
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
+	    </table>
+	    
+	    <table name="BOOK"
+		    dataAccessClass="dataaccess.DataSourceJDBCWithRowCount"
+	    >
+	        <field name="BOOK_ID" fieldType="int" isKey="true" />
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType ="varchar" />
+            <interceptor className = "interceptors.BookstoreInsertDataInterceptor"/>      
+	    </table>   
+
+		<query 	name="BOOKLISTPERAUTHOR" 
+		  distinct="true"
+		  from="BOOK LEFT JOIN AUTHOR ON BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID"
+		>
+		  <field name="BOOK_ID" fieldType="int"	isKey="true" autoInc="true"/>
+		  <field name="ISBN" fieldType="varchar"/>
+		  <field name="TITLE" fieldType="varchar"/>
+		  <calc name="ISBN_TITLE" fieldType="varchar" />
+		  <calc name="ROW_NUM" fieldType="int" />
+          <interceptor className = "interceptors.BookstoreCalcFieldAndSearchInterceptor"/>                
+		  <search name="AUTHOR_ID" fieldType="int"  />
+		</query>
+            
+        <query name="BOOK_QUERY" from="BOOK">
+            <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" isKey="true" />
+        </query> 
+
+	    <query name="BOOKWITHINTERCEPTOR" from="BOOK">
+	        <field name="BOOK_ID" fieldType="int" isKey="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true"/>
+	        <field name="TITLE" fieldType="varchar"/>
+            <interceptor className = "interceptors.BookstoreWithInterceptorTest"/>                
+	    </query>    
+	    
+
+	    <query name="AUTHOR_VIEW" from="AUTHOR" >
+	    </query>
+	    
+	    <query 	name="BOOKSPERAUTHOR" 
+		    	from="AUTHOR, BOOK"
+		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" >
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar" />
+	        <field name="ORGANISATION" fieldType="varchar" />
+	        <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar"/>
+	        <field name="TITLE" fieldType="varchar"/>
+	    </query>
+	    
+	    <table 
+	    	name="XMLBOOKS"
+		   dataAccessClass="org.dbforms.event.datalist.dao.DataSourceXML" 
+		   alias="file:///${SERVLETCONTEXT_REALPATH}/WEB-INF/db_xml/books.xml?/books/book"
+	    >	
+	        <field name="BOOK_ID" 
+	        	fieldType="int" 
+	        	isKey="true"
+				expression="id"
+	        />
+	        <field 
+	        	name="ISBN" 
+	        	fieldType="varchar" 
+				expression="isbn"
+	        />
+	        <field 
+	        	name="AUTHOR_ID" 
+	        	fieldType="int" 
+				expression="author/authorid"
+				isKey="true" 
+	        />
+	        <field 
+	        	name="TITLE" 
+	        	fieldType="varchar"
+				expression="title"
+	        />
+	        <field 
+	        	name="AUTHOR_NAME" 
+	        	fieldType="varchar" 
+				expression="author/name"
+	        />
+	        <field 
+	        	name="AUTHOR_SURNAME" 
+	        	fieldType="varchar" 
+				expression="author/surname"
+	        />
+	    </table>
+
+	    <table name="TIMEPLAN">
+	        <field name="TIME" 	fieldType="DATE" isKey="true"/>
+	        <field name="D" 	fieldType="DOUBLE" />
+	        <field name="I"	 	fieldType="INTEGER" />
+	        <field name="REMARK" 	fieldType="varchar" />
+	    </table>    
+
+		<query name="TIMEPLAN1" from="TIMEPLAN" />
+
+		<table name="KEYTEST"
+	        defaultVisibleFields="key1,key2,key3,key4" >
+			<field name="KEY_1" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_2" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_3" fieldType="varchar" size="10" isKey="true"/>
+			<field name="KEY_4" fieldType="int"               isKey="true"/>
+		</table>
+
+		<table name="BLOBTEST">
+			<field name="NAME" fieldType="varchar" isKey="true" />
+			<field 
+				name="FILE" 
+				fieldType="DISKBLOB"  
+				directory="c:/tmp"
+			    encoding="true"
+			    size="1200"
+			/>
+            <interceptor className = "interceptors.BLOBTESTEventInterceptor"/>                
+		</table>
+
+        <query name="BOOK_QUERY_WHERE" 
+			from="BOOK" 
+			where="BOOK_ID=1"
+		>
+            <field name="BOOK_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="ISBN" fieldType="varchar" />
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" />
+	        <field name="TITLE" fieldType="varchar" isKey="true" />
+        </query> 
+
+	    <query name="AUTHOR_CLASSIC" from="AUTHOR" >
+	        <field name="AUTHOR_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	        <field name="ORGANISATION" fieldType="varchar"  sortable="true"/>
+	        <events>
+	            <event type="insert" 	id="insertClassic"/>
+	            <event type="update" 	id="updateClassic"/>
+	            <event type="delete" 	id="deleteClassic"/>
+	            <event type="navGoto" 	id="navGotoClassic"/>
+	            <event type="navPrev" 	id="navPrevClassic"/>
+	            <event type="navNext" 	id="navNextClassic"/>
+	            <event type="navFirst" 	id="navFirstClassic"/>
+	            <event type="navLast" 	id="navLastClassic"/>
+	        </events>
+	    </query>    
+
+	    <table name="LIBRARY">
+	        <field name="LIBRARY_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="COMPANYNAME" fieldType="varchar"  sortable="true"/>
+	    </table>    
+
+	    <table name="CUSTOMER">
+	        <field name="CUSTOMER_ID" fieldType="int" isKey="true" autoInc="true"/>
+	        <field name="NAME" fieldType="varchar"  sortable="true"/>
+	    </table>    
+
+	    <table name="CUSTOMER_LIBRARY">
+	        <field name="LIBRARY_ID" fieldType="int" isKey="true" />
+	        <field name="CUSTOMER_ID" fieldType="int" isKey="true" />
+	    </table>    
+	    
+	    <query 	name="BOOKCOUNT" 
+		    	from="AUTHOR, BOOK"
+		    	where="BOOK.AUTHOR_ID = AUTHOR.AUTHOR_ID" 
+			  	groupBy="NAME" 
+	    >
+	       <field name="NAME" fieldType="char" />
+    	   <field name="C" fieldType="integer" expression="count(ISBN)"/>
+		</query>
+	    
+		<query 
+			name="BLOBINTERCEPTORTEST" 
+		    from="BLOBTEST" 
+		>
+			<field name="NAME" fieldType="varchar" isKey="true" />
+			<field name="FILENAME" fieldType="varchar"  />
+			<field name="FILEDATA" fieldType="BLOB"  />
+            <interceptor className = "org.dbforms.event.BlobInterceptor">                
+			   <param name="blob-column" value="FILEDATA"/>
+			   <param name="name-column" value="FILENAME"/>
+            </interceptor>
+		</query>
+
+	<!-- ========== event definition for classic data access =================================== -->
+        <events>
+            <database-events>
+                <database-event id="insertClassic" type="insert" className="org.dbforms.event.classic.InsertEvent" /> 
+                <database-event id="updateClassic" type="update" className="org.dbforms.event.classic.UpdateEvent" />
+                <database-event id="deleteClassic" type="delete" className="org.dbforms.event.classic.DeleteEvent" />
+            </database-events>
+            <navigation-events>
+                <navigation-event id="navGotoClassic" type="navGoto"   className="org.dbforms.event.classic.GotoEvent" />
+                <navigation-event id="navPrevClassic" type="navPrev"   className="org.dbforms.event.classic.NavPrevEvent" />
+                <navigation-event id="navNextClassic" type="navNext"   className="org.dbforms.event.classic.NavNextEvent" />
+                <navigation-event id="navFirstClassic" type="navFirst" className="org.dbforms.event.classic.NavFirstEvent" />
+                <navigation-event id="navLastClassic" type="navLast"   className="org.dbforms.event.classic.NavLastEvent" />
+            </navigation-events>
+        </events>
+
+
+	<!-- ========== Connection =================================== -->
+	    <dbconnection
+		    isPow2		   			= "true"
+		    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
+			name      = "jdbc:hsqldb:${SERVLETCONTEXT_REALPATH}/WEB-INF/db_hsqldb/${databaseName}"
+			isJndi    = "false"
+			conClass  = "org.hsqldb.jdbcDriver"
+			username  = "sa"
+			password  = ""
+		>
+			<pool-property name="validationQuery" value="select * from AUTHOR" />
+			<pool-property name="validationInterval" value="60" />				
+		</dbconnection>
+		
+	    <dbconnection 
+	    		id="asoexdb" 
+			    isPow2		   			= "true"
+			    connectionProviderClass = "org.dbforms.conprovider.SingleConnectionProvider"
+				name   = "jdbc:hsqldb:${SERVLETCONTEXT_REALPATH}//WEB-INF/db_hsqldb/bookstore"
+				isJndi = "false"
+				conClass  = "org.hsqldb.jdbcDriver"
+				username = "sa"
+				password  = ""
+	    /> 
+
+</dbforms-config>

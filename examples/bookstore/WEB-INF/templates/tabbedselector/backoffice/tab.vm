@@ -1,0 +1,5 @@
+  <TD class="${c1}"></TD>
+  <TD class="${c2}">
+    <SPAN class="${t}"><a href="${followUp}">${title}</a></SPAN>
+  </TD>
+  <TD class="${c3}"></TD>

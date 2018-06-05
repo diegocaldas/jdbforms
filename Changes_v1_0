@@ -1,0 +1,962 @@
+* $Header$
+* $Revision$
+* $Date$
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, April 5, 2002
+DbForms version 1.07
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+
+Attributes 'style' and 'styleClass' are now available for use in the select tag.
+
+Better handling of timestamp, date and null values in creation of prepared statement parameters. (Contrib. S.Borghi)
+
+Removed attribute 'disableCache' from StaticData tag (in dbforms.tld).
+
+Corrected html link in DevGui help file.
+
+
+------------------------------------------------------------------------------------
+
+navNewButton - tag
+destTable - attribute
+
+Allow navNewButton tag to specify a table for insertion other than the parent table. 
+(Contrib. John Madsen)
+
+Example:
+
+  <db:dbform tableName="company"...
+
+	<db:navNewButton caption="Add new Customer" followUp="new_cust.jsp" destTable="customer"/>
+
+------------------------------------------------------------------------------------
+
+tableData, queryData - tag
+format - attribute
+
+Specify a format to be used in concatenating several display fields.  When more then one (1) field 
+is shown, the fields are, by default, separated by a comma. The 'format' string should begin, 
+and contain 's' characters (s = string) and must contain the same amount of 's' characters as 
+the number of display fields. (contrib. Shawn)
+
+Example:
+
+     <db:queryData 
+          name="aQuery"
+          format = "s, s / s"
+          query="Select city_id, city_id, city_name, 
+          city_state from Cities"/>
+
+Result ->  014, Naples / Florida
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, March 22, 2002
+DbForms version 1.06
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Corrected problem with sorting - a JSP which contains a sort tag may have had problems finding
+it's defined source path. (Contrib. D.Kraemer)
+
+The diskblob encoding attribute (in config file) was not correctly being interpreted.
+
+Tags dateLabel and dateField now take their default (date) format from the 
+config file (dbforms-config.xml).  (Contrib. S.Borghi)
+
+Depending on the JDBC drivers being used, dates may be returned as timestamps.  
+Code has been adapted appropriately.  (Contrib. S.Borghi)
+
+Modification to allow dbForms, after an insert operation, to navigate to the
+last record inserted.  (Contrib. S.Borghi)
+
+Corrected problem with custom entry in Select tag when in redisplayFieldsOnError mode.
+
+
+DevGui Enhancements  (Contrib. D.Kraemer)
+-----------------------------------------
+
+- new config file panel with more options:
+
+  - radio buttons enables a user to select [all] catalogs, [all] schemas, and/or [all] table 
+    name pattern.
+  - combo boxes can be loaded with available catalog and schema names. Still possible
+    to manually enter values.
+  - meta data may be set to be read in transaction mode as opposed to autocommit mode (workaround Ingres II) 
+  - catalog and schema names may be optionally included in table name. 
+
+- tab placement is now in the upper-left region, needed more room for new options.
+
+- display a warning message when trying to exit program without saving changes.
+
+- display a warning message when trying to generate an (xml) config file without having first 
+  defined the output file name.
+
+- added a generalized help view.
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 22, 2002
+DbForms version 1.05
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Fixed spelling mistake in DbRadio tag when interpreting growDirection values.
+
+Corrected formating error in in DbBaseHandlerTag to support byte arrays (Contrib. D.Kraemer)
+
+Added unique identifiers in Button tags to allow for multiple buttons of the same type
+to co-exist - resolves followUp mix up.
+
+Corrected a problem in dispatching to followUpOnError, if this attribute is not specified. (Contrib. D.Kraemer)
+
+Removed the 'dependend' directory from the distribution packages in order minimize required disk space.
+The required jar files can be found on the dbforms website.
+
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 8, 2002
+DbForms version 1.04
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+nullPointerException in nested-forms using whereClause attributes. (Contrib. Dirk Kraemer)
+
+parsing error when specifying multiple OrderBy entries. (separated by commas)
+
+Table definitions must have a least one key defined, added an error message (log4j) to help 
+in debugging these types of errors.
+
+Support for bounded navigation (Contrib. Luca Fossato)
+
+Proper DB connection cleanup in Controller class. In our development, we sometimes set our 
+connection object to autoCommit=false. This allows us to create transactions (dbForms + our 
+own native JDBC code).  In case of an exception, we need to rollback and re-initialize the 
+connection object.
+
+Removed hasNoErrors tag. Bad design! Functionality now provided by followUpOnError attribute 
+in dbform and button tags.
+
+
+dbform, (Button) - tags
+followUpOnError - Attribute
+---------------------------
+
+dbForm (and button) tags can now specify two different followUp pages. If an error occurs in 
+processing the submitted form, the controller will display the page specified by the 
+followUpOnError attribute (optional attribute) else it will display the page defined in
+the followUp attribute.  Note that buttons can override followUp (and followUpOnError) settings 
+defined in the dbform tag.
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, February 1, 2002
+DbForms version 1.03
+Grunikiewicz.philip@hydro.qc.ca
+
+
+(Disk) BLOB support in textArea tag
+-----------------------------------
+
+Tags - textAreaForBlobs and blobContent were added to enable developers to
+edit the contents of files stored in a (disk)-blob via a textArea input.
+
+Example:
+
+	<db:textAreaForBlobs 
+		fieldName = "filePath"
+		renderBody = "true"
+		suffix = "jsp"
+		rows = "15"
+		cols = "60"
+		wrap = "virtual">
+		
+		<db:blobContent fieldName = "filePath"/>
+	</db:textAreaForBlobs>
+	
+	Note:
+			renderBody attribute must be set to true.
+			fieldPath is of type DISKBLOB.
+			
+Contributed by Joachim Peer
+
+
+getConnection - tag
+-------------------
+
+In order to assure the proper closing of connection objects, this tag
+is now divided into two parts.
+ 
+EXAMPLE
+(using Jakarta dbTags)
+
+             <db:getConnection id="myConnection">	<!-- Open connection -->
+
+	             <sql: statement id="stmt" conn="myConnection">
+	                 <sql:query>Select * from Table</sql:query>
+	                 <sql:resultSet id="rs">
+	                       Value: <sql:getColumn position="1"/>
+	                 </sql:resultSet>
+	             </sql:statement>
+             </db:getConnection>		<!-- close connection -->
+
+
+
+digesterDebugLevel setting in Config servlet
+--------------------------------------------
+
+Now that log4j handles all console output, you would think that by setting log4j
+to display fatal errors only, your console would be virtually empty.  Well, no!
+The current version of dbForms used the struts digester class to parse xml files
+at startup.  This class sends info to System.out.  The following setting (in web.xml)
+can be used to specify (to the digester) the amount of detail to display.
+
+Example:
+
+
+ <servlet>
+	<servlet-name>config</servlet-name>
+	<servlet-class>org.dbforms.ConfigServlet</servlet-class>
+      
+	<init-param>
+	      <param-name>log4j.configuration</param-name>
+	      <param-value>/WEB-INF/log4j.properties</param-value>
+      </init-param> 
+      
+	<init-param>
+	      <param-name>digesterDebugLevel</param-name>
+	      <param-value>0</param-value>	<!-- no debug(0) to (10) all info -->
+    </init-param>  
+  </servlet>
+
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Replaced all System.out and System.err method calls by equivalent log4j methods.
+Reviewed DbForm's database connection management and cleaned it up.
+Removed a reference to the login password in the connection's toString() method.
+
+
+Thanks to all who provide feedback and suggestions...
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Wednesday, January 23, 2002
+DbForms version 1.02
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Corrected the well-formed'ness of the dbforms.tld file.
+Added two new attributes to the various input tags to allow for validation.  More to come in future releases
+Fixed a problem in how dbform's allocates a database connection (Contributed by Dirk Kraemer).
+Error exceptions which are thrown, and are empty, are no longer displayed.
+
+
+DbForms-config.xml
+------------------
+
+Enhancement contributed by Stefano Borghi
+
+Currently, a date value sent to the database is converted into the yyyy-MM-dd format.  This is fine
+if you have configured your database to support this format but chances are, you may need to 
+use a different format.  This format can now be set in the dbforms-config.xml file as follows:
+
+<dbforms-config>
+
+	<date-format>dd/MM/yyyy</date-format>
+	
+
+	<table name=...	
+
+The format you specify, is the format in which you are expected to input your dates.  A conversion
+takes place within dbForms to convert your date value to the format expected by your database.  If
+you wish to DISPLAY dates in a format other then yyyy-MM-dd, then you are required to use the 
+'format' attribute as documented in the user manual.
+
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Friday, January 18th, 2002
+DbForms version 1.01
+Grunikiewicz.philip@hydro.qc.ca
+
+Bug Fixes and General Maintenance
+---------------------------------
+
+Fixed up the distribution packages (missing files)
+Cleaned up the web.xml file
+Optimized the readability of the dbForms.tld file.
+Corrected a problem in the DbLinkURL tag concerning contextPath
+Upgraded DevGui to xalan version 2
+Updated the information files (readme, CommonMistakes, etc...)
+
+Contributions
+-------------
+
+Thank you to Jeff Kunkle, Dirk Kraemer, Ron Smith and Gemes Tibor for their input and contributions in this latest release.
+
+
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+Tuesday, January 15th, 2002
+DbForms version 1.0
+Grunikiewicz.philip@hydro.qc.ca
+
+
+dbform - tag
+tableList - Attribute
+
+This attribute (in conjunction with the whereClause attribute) allows a developer to access fields from multiple tables.  
+This can be useful when your database does not support views or you need to retrieve fields from various tables for display 
+purposes only.
+
+In the dbForms-config.xml file, you must create an entry which contains references to the Table/Field combinations you wish to 
+access.  The table name you use is irrelevant.
+
+The value specified in the tableList attribute is used to specify the 'from' part of the Select query.  Hence the name: table list.
+
+The conditions used to define the table associations are specified in the whereClause attribute.( along with other conditions and orderBy…)
+
+Multiple table access is valid only for data retrieval. Insert, Update, and Delete are not supported.
+
+EXAMPLE
+
+ In dbForms-config.xml:
+
+       <table name="AnyName">
+           <field name="Table1.id" fieldType="VARCHAR2" isKey="true"/>
+           <field name="Table2.id" fieldType="VARCHAR2" isKey="true"/>
+           <field name="Table1.fieldName" fieldType="VARCHAR2"/>
+           <field name="Table2.OtherField" fieldType="NUMBER"/>
+       </table>
+
+ In jsp:
+
+       <db:form tableName="AnyName" 
+       		maxRows="*"  
+       		followUp="next.jsp" 
+       		tableList="Table1,Table2" 
+       		whereClause="Where Table1.id = Table2.id">
+       		
+            <db:header/>
+            <db:body>
+                <db:textField fieldname="Table1.fieldName"/>
+                <db:textField fieldname="Table2.otherField"/>
+            </db:body>
+            <db:footer/>
+        </db:form>
+
+
+Resulting Query:    
+
+SELECT Table1.id, Table2.id,Table1.fieldName,Table2.otherField FROM Table1,Table2 WHERE Table1.id = Table2.id
+
+------------------------------------------------------------------------------------
+
+dbform - tag
+whereClause - attribute
+
+Replaces the filter attribute in situations where the where clause is more complex.  Allows a developer to specify a free 
+form conditional clause (where Clause + order + etc…)
+
+EXAMPLE:
+
+<% 
+	StringBuffer whereClause = new StringBuffer();
+whereClause.append("WHERE (FIELD1>'25' AND FIELD1<'50' ) OR FIELD2 NOT NULL ORDERBY FIELD7");
+%>
+
+<db:dbform
+	table="TABLE1"
+	followUp="this.jsp"
+	whereClause = "<%whereClause.toString()%>">
+
+
+------------------------------------------------------------------------------------
+
+dbform - tag
+action - attribute
+
+The action attribute in the dbform tag allows a developer to have a dbform submit to something other then the control servlet.  
+This can be useful when dbForms is used in read-only mode (such as a view)
+
+EXAMPLE
+
+<db:dbform
+	table="TABLE1"
+	followUp="this.jsp"
+	action = "/exemplesWebi/servlet/ca.qc.hydro.myServlet">
+
+------------------------------------------------------------------------------------
+
+dbform - tag
+filter - attribute
+
+Can now also handle the <> (notNull) operator.
+
+EXAMPLE:
+
+<% 
+	StringBuffer filter = new StringBuffer();
+	filter.append("FIELD1<>5");
+%>
+
+<db:dbform
+	table="TABLE1"
+	followUp="this.jsp"
+	filter = "<%filter.toString()%>">
+
+
+
+ ------------------------------------------------------------------------------------
+hasNoError - tag	[REMOVED - ref v1.04]
+
+ 
+Tag which is used to verify if an error has occurred.  In cases where there are no errors and the page is in re-display mode 
+(calling page = current page), redirect to the specified url. Attribute name is used to specify the request object attribute which 
+was defined to hold errors (see xmlError tag).
+
+EXAMPLE
+       
+      <db:hasNoError name="errors" redirect="other.jsp"/>
+
+        
+------------------------------------------------------------------------------------
+
+getConnection - tag		[NEW IMPLEMENTATION - ref: v1.03]
+
+Tag which provides a jdbc connection object. 
+
+Allows other tags (and/or java scriptlets) to obtain a connection via the same settings as defined in dbForms.  If dbForms has not 
+already established a JDBC driverManager, this tag will be responsible for setting it up (using dbForms-config.xml settings) and 
+thereafter making it available to dbForms.
+ 
+The id attribute is used to specify the page context attribute in which the connection object can be referenced.
+ 
+EXAMPLE
+(using Jakarta dbTags)
+
+             <db:getConnection id="myConnection"/>
+
+             <sql: statement id="stmt" conn="myConnection">
+                 <sql:query>Select * from Table</sql:query>
+                 <sql:resultSet id="rs">
+                       Value: <sql:getColumn position="1"/>
+                 </sql:resultSet>
+             </sql:statement>
+
+------------------------------------------------------------------------------------
+hasMoreRecords - tag
+
+Tag used to determine the amount of data returned and render a message if necessary. 
+If the result Set contains >=  the number of elements specified, display the appropriate message (XML error file).  
+As with error messages, arguments may be passed to the message string via a comma delimited string.
+
+EXAMPLE
+
+ <db:dbform table="TABLE" 
+maxRows="200" 
+followUp="next.jsp">
+        <db:header>
+
+        <!-Message: Resultset too big, displaying first 200 records -->
+        <db:hasMoreRecords count="200" message="English-001:200" />
+        </db:header>
+
+		…
+ </db:dbform>
+
+ ------------------------------------------------------------------------------------
+
+label, dataLabel - tags
+maxlength - attribute
+
+Allows a developer to limit the amount of characters displayed on screen.  If the label to display exceeds the limit, 
+trim and display '...'
+
+EXAMPLE
+
+      <db:dataLabel fieldName="ABC" maxlength="10">
+                  …
+      </db:dataLabel>
+
+ ------------------------------------------------------------------------------------
+
+updateButton, deleteButton, insertButton, gotoButton, NavigationButtons - tags
+border - attribute
+
+Allows a developer to set the html border attribute.
+
+EXAMPLE
+
+      <db:updateButton caption="Update" border="1"/>
+
+ ------------------------------------------------------------------------------------
+
+select - tag
+customEntry - attribute
+
+Allows the possibility of adding an entry in the select list which is independent of data retrieved via tableData, queryData or 
+staticData.  Arguments to this tag are as follows:
+
+           Key,Description,boolean (default selection?)
+
+
+EXAMPLE
+    
+    <db:select fieldName="Column1" customEntry="001,,true">
+             …
+    </db:select>
+
+
+ ------------------------------------------------------------------------------------
+
+
+textField, textArea, dateField, file, radio, checkbox, select - tags
+id - attribute
+
+added an "id"-attribute to many of the Tag handlers -> improving interoperability with JavaScript (thanks to L. Fossato)
+Note: Not supported by all browser!
+
+EXEMPLE:
+
+	<db:textField fieldName="FIELD1" maxlength="15" id="InputField1" />
+
+
+ ------------------------------------------------------------------------------------
+
+tableData - Tag
+orderBy - attribute
+
+orderBy is now supported in tableData queries.  (thanks to Martin Kraus & collegues)
+
+EXEMPLE:
+
+	<db:select name="myQuery" fieldName="FIELD3">
+		<db:tableData
+			foreignTable="TABLE7"
+			visibleFields="FIELD1,FIELD3"
+			storeField="FIELD3"
+			orderBy="FIELD10"/>
+ 	</db:select>
+
+
+ ------------------------------------------------------------------------------------
+
+
+XmlErrors - Tag 
+
+In order to manage error messages more efficiently, we introduced the new XmlError tag.  Instead of hard coding your error messages 
+within your interceptors, you can now define them in an xml file which is loaded at application start-up (in the exact same manner as 
+the dbForms-config.xml file!)  Furthermore, messages may be stored (and retrieved) for any given language.  Here is how it works…
+
+Create an xml error file called dbForms-errors.xml with the following structure:
+
+<dbforms-errors>
+<error id="001" type="WARN">
+  			<message language="Français">% - Champ est obligatoire%
+</message> 
+  		<message language="English">% - is mandatory %"</message> 
+  </error>
+</dbforms-errors>
+
+Replace the errors tag by the xmlErrors tag (in your jsp's).
+
+In your interceptor, throw a ValidationException with the following message construct:
+
+Language-MessageID:parameter,parameter,parameter
+
+Where:
+	Language = used to locate which message to return, ends with a dash (-)
+	Message ID = error ID used for lookup, ends with a colon (:)
+	Parameter(s) = separated by commas, read in sequence, 
+replaces placeholders (%) in message
+
+EXAMPLE:
+
+String messageConstruct = "English-001:param1,param2";
+throw new ValidationException(messageConstruct);
+
+Note that you may also use this mechanism to intercept error messages which are generated by the database. Ie: Oracle throws the following message: ORA-0001: blah blah blah
+
+
+<dbforms-errors>
+<error id="0001" type="WARN">
+  			<message language="ORA">Oracle message: %
+</message> 
+  </error>
+</dbforms-errors>
+  
+
+ ------------------------------------------------------------------------------------
+
+MultipleValidationException
+
+It is now possible to accumulate error messages while validating a form in a dbForms interceptor class.  
+This is useful in situations where many fields are validated and you wish to return several errors instead of 
+just the first occurrence.
+
+In the validation process, when an error occurs, simply instantiate a new exception object and store it into a vector.  
+Do not throw this exception!
+
+Once the validation process has completed, throw an instance of the MultipleValidationException class and pass 
+the vector as an argument to its constructor.  
+
+Note that this functionality is dependant on using the xmlError tag.
+ 
+EXAMPLE
+
+public int preUpdate(HttpServletRequest req, 
+                     Hashtable fieldValues, 
+                     DbformsConfig conf, 
+                     Connection con) throws ValidationException
+{
+    Vector errors = new Vector();
+
+    // Validate, if error
+    errors.add(new SQLException("English-001:param");
+
+    // More validations, errors!…
+    errors.add(new SQLException("Français-003:param,param");
+
+    if(!errors.isEmpty)
+       throw new MultipleValidationException(errors);
+}
+
+Others changes
+
+·	changed taglib descriptor: set all attributes to RTEXPRVALUE=TRUE so every property can be set during runtime:
+
+<%  String max= ... %>  
+<db:dbform tableName="test" maxRows="<%= max %>"
+
+
+Proper DB connection cleanup in Table class. In our development, we sometimes set our connection object to autoCommit=false. 
+This allows us to create transactions (dbForms + our own native JDBC code).  In case of an exception, we need to rollback and 
+re-initialize the connection object.
+
+
+______________________________________________________________________________________________________
+__________________________________________________________________________________________________
+
+
+Wed, 26-Sep-2001
+
+* included contribution by Philip Grunikiewicz:
+
+1. Bypass Navigation (changed DbFormTag.java , DbForms.tld)
+
+Added a new attribute in the form tag to allow a developer to bypass navigation (i.e. bypassNavigation="true"): 
+
+Currently, when we set maxRows to anything else but *, dbForms create a special query to be able 
+to navigate to the next (or previous) set of related data.  The resulting query is sometimes quite complex and is long to execute.
+If we are NOT going to use navigation, eliminate the creation of, and execution of "fancy!" queries! 
+
+Example:  We are setting maxRows="201" to avoid having too many records displayed on screen.  If their are more than 200 records found, we simply tell our users to refine their search criterias. 
+
+2. Logical OR possible in dbforms filter attribute (WHERE clause) 
+(changed FieldValue.java)
+
+By default, all filter definitions are ANDed together.  I added support for logical OR.  Developers may prefix their filter definition with the '|' symbol.  This was a quick and simple way of adding support for OR! 
+
+Example: 
+aFieldVal=3, |anotherField>3 
+would produce the following: 
+... where aFieldVal=3 OR anotherField>3 
+        
+
+3. EmbeddedData caching may be disabled  (changed in EmbeddedData.java)
+
+EmbeddedData is retrieved via the TableData, QueryData or StaticData tags.  These tags are used within other tags (Select, dataLabel, Radio) to retrieve a result set.  By default, this result set is cached in the page and can be retrieved by any embeddedData tag which has been allocated the same name. 
+Example: 
+
+
+                <!-- following is repeated for each record retrieved from the resultset --> 
+                <db:select fieldName="id"> 
+                     <db:queryData 
+                        name ="queryAllDescriptions" 
+                        sql="Select Description from LookUp"/> 
+                </db:select> 
+
+
+The example above calls the database only ONCE and caches the result set containg 'descriptions' so that it's data may be used again and again (for each subsequent row).
+
+Sometimes a developer may want to execute the embedded data query for each and every row. i.e. not use the cached result set.  Suppose the 'lookUp' table contains 10000+ of rows, do you really want to cache the resultset or would it be better to build and execute a query for each row?  The query you specify could have a unique whereClause!  To achieve this, you need to be able to disable the caching mechanism.  Hence the disableCache attribute in TableData, QueryData and StaticData tags. 
+
+                <!-- following is repeated for each record retrieved from the resultset --> 
+                <% String sql = "Select Description from LookUp where id=" + currentRow_MainTable.get("id"); %> 
+                        <db:select fieldName="id"> 
+                                <db:queryData 
+                                        name ="queryAllDescriptions" 
+                                        disableCache="true" 
+                                        sql="<%=sql%>"/> 
+                        </db:select> 
+
+
+
+4. String identifier can be used to specify null object 
+(changed in SqlUtil.java)
+
+It is now possible to set the value of a field to null by using the '$null$' string identifier.  The following examples shows how to create a select clause which returns a set of records where field 'Test' is equal to null in the database: 
+
+                <% 
+                        StringBuffer whereClause = new StringBuffer(); 
+                        whereClause.append("Test="); 
+                        whereClause.append("$null$"); 
+                %> 
+
+                <db:form 
+                        table="aTable" 
+                        maxRow="*" 
+                        filter="<%= whereClause.toString() %>" 
+                        followUp="self.jsp"> 
+
+5.Enhancing ORDERING (ASC/DESC) (partially open)
+
+The orderBy clause usually defaults to ASCending order.A user may add, if we/she wishes the keyword ASC (ascending)  or DESC (descending) to specify a particular direction.Code in this method parses the orderBy clause and finds an occurence of either ASC or DESC.  Suppose your field name is DESCRIPTION! This name contains DESC therefore causing unexpected behaviour.   This bug fix consists of fine-tunning the parsing function to take into  consideration the sequence of parameters: 1-Field 2-Command 
+
+6. several other bug fixes:
+
+DbTextFieldTag          - Fix in redisplayFieldsOnError function.  Tag which 
+DbTextAreaTag           - contains overrideValue now conserves its value in 
+DbDateFieldTag          - redisplay mode (instead of using overrideValue) 
+
+
+Wed, 27-Jun-2001:
+
+* included contribution by Philip Grunikiewicz:
+
+  - 2 additional attributes for DbDateFieldTag: hidden, overrideValue
+
+
+* added Interbase - SQL files for bugtracker and testsuite
+  (contributed by Myles McLeod)
+
+
+* included a first fix for support of JDBC drivers (i.e. ProgressDriver)
+  which don't close Statements and ResultSets automatically (during garbage collection 
+  - as recommended by sun spec)
+  [this work is still in progress]
+
+
+Wed, 13-Jun-2001:
+
+* included contribution by John Peterson:
+
+  - support for Allaire/Macromedia JRun 3.1
+    [ changes in DbBodyTag.doEndTag() ]
+
+Tue, 12-Jun-2001:
+
+* included contributions by John Peterson:
+
+  - support for WebLogic 6: added servlet mappings (control => servlet/control, etc.) to web.xml
+  
+  - support for browsers without cookies: encoding URLs
+ 
+ 
+* included contribution by Ernesto Krsulovic:
+
+  - added PostgreSQL - files for bugtracker and testsuite
+  
+  - fixed a bug in devgui.sh shell script
+
+    
+
+Sa, 02-Jun-2001:
+
+* changed package structure to emphasize the nature of the project: Open Source
+  (com.itp.dbforms ----> org.dbforms)
+  
+  UPGRADING EXISTING APPLICATIONS TO NEW PACKAGE SCHEME:  
+
+  - replace dbforms_v0Xx.jar and dbforms.tld by new version
+  
+  - change org.itp.dbforms --> org.dbforms in all absolute servlet names in your WEB.XML
+        
+  - force JSP/Servlet container to recreate and recompile all JSPs containing DbForms tags
+  
+  - change import statements (org.itp.dbforms --> org.dbforms)
+    in all Application-specific Interceptors and recompile them
+  
+
+* added SQL files for example application "testsuite_v09" contributed by Marco Azzalini
+   
+* added improvements contributed by Philip Grunikiewicz:
+  - support for automatic formfield-repopulation in UPDATE mode (not just INSERT as before)
+  - various enhancements in taglib descriptor
+
+* added enhancement to DevGui:
+  - you can now set Catalog, TableName-Pattern and SchemaName-Pattern to generate XML metadata model of your database. 
+
+
+* added new IMPLICITE SCRIPTING VARIABLE: rsv_tableName
+
+  JSP developers can use this scripting variable inside a DbForms/body element to determine
+  the current value of any given field
+  
+  EXAMPLE:
+  if we want to print out a string representation of the current value of the field "reporter" in table "bugs", then we would write:
+  
+  <%= rsv_bugs.getField("reporter") %>  
+
+  we could also write:
+  <%= rsv_bugs.getFieldAsObject("reporter") %>
+
+  the difference between getField(String) and getFieldAsObject(String):
+  
+  -> getField always returns a String (as long as the fieldname is correct), even it the underlying data in the database has the value NULL.
+  -> getFieldAsObject returns the Object value as provided by the ResultSet.getObject(int) method. This means NULL values will be returned as null and not as ""-Strings.
+
+ 
+
+Fr, 25-May-2001:
+
+* added new attributes "overrideValue" and "hidden" to com.itp.dbforms.taglib.DbTextField
+
+* added ORACLE SQL scripts for the examples
+
+* corrected some errors in the demo applications and added two new JSP pages to 
+  testsuite_v09 (customers_pets.jsp, customer_complaints.jsp)
+
+
+Tue, 15-May-2001:
+
+* fixed a bug which caused an error in Orionserver (tried to remove a connection-object from 
+  request, which lead to a nullpointer exception)
+  
+* added a class com.itp.taglib.DbDateLabelTag which allows to display well formatted Date values easily
+  (contributed by Philip Grunikiewicz)
+  
+Mo, 14-May-2001:
+
+* fixed bug related to com.itp.dbforms.util.FileServlet and ORACLE database
+
+* added enhancement to error-tag (contributed by Philip Grunikiewicz)
+
+Mo, 06-May-2001:
+
+* bundled new distribution, including example-apps
+
+* enhanced XSL stylesheets
+
+* DateTags have now as default formatter the SimpleDataFormat("yyyy-mm-dd"), if the developer
+  does not provide a formatter via the "format"-attribute
+
+* renamed taglib.tld => dbforms.tld
+
+Sa, 05-May-2001:
+  
+* introduced new TAGLIB-tag: dateField (does, basically nothing more than a textField, but
+  we can start now adding date-specifica without messing up other code)
+
+* introduced a very useful attribute, "format". 
+  you can assign any subclass of java.text.Format and the value of the field will be formatted using
+  this formatter (example: new SimpleDateFormat("yyyy-MM-dd") - see taglib docu in CVS for more details)
+
+* fixed a bug regarding associated orderBy clause, sorting etc.
+  (DbForms ignored orderBy values set as dbform-tag attribute or table attribute in dbforms-config.xml
+
+* fixed a bug that lead to invalid database connections if there where multiple non-nested forms on
+  a JSP
+
+Fr, 04-May-2001:
+
+* Changed DevGui:
+  on panel "XML Config" there are 2 additional textfields available:
+  
+  - Catalog
+  - Schema Pattern
+
+  (compare to java Api-doc, java.sql.DatabaseMetaData::getTables(..), for more info about 
+  what catalog and schema pattern mean!)
+  
+  you can enter any string you want or you can leave them blank. if you want
+  them to be explicitly *null*, then you can enter the value "$null"
+
+  examples:
+  
+  #) if you want to query the default demo database from oracle then use:
+  - catalog = "$null"
+  - schema pattern = "SCOTT"
+ 
+  #) for querying agains a database on mysql
+  - catalaog =""
+  - schema pattern = ""
+
+
+=============================================
+
+@version 0.9   - 28-04-2001, major release, 
+
+this major release will be followed by a few minor releases, as we are testing and bug fixing right
+now. (this means, this version is not completetly stable yet)
+
+lots of new features and bug fixes in 0.9
+============================================
+
+- new syntax format for fields and keys.
+  the infamous "~" restriction is removed now!
+ 
+- fixed a bug which made it impossible to create subdirectories in web-root:
+  all JSP views had to be placed in web-app root, now the can be placed everywhere.
+  for example you could create a subdirectory "members" for JSP views protected
+  by the JSP container, etc. - DbForms will handle this correctly now.
+
+- new attributes to DbForm tag: gotoPrefix, goto, 
+
+- bug fixes regarding BLOBs/DISKBLOBs and in the FileServlet:
+  * now DISKBLOBs can get UPDATED
+  * FileServlet servers file correctly
+  * BLOB-URL custom tag writes URLs correctly
+  * Max. Upload size for files can be configured now using a init-parameter in WEB.XML
+  
+
+- a complete SWING-based GUI for managing XSL transformations for real Rapid Application Developement
+  (check manual for more info)  
+
+- fixed ordering/sorting bugs in TableData, QueryData, StaticData, Radio and Select - custom tags
+
+- introduced better LOGGING by integrating LOG4J framework
+
+- fixed bug in DbSelect-tag (fix contributed by Philip Grunikiewicz)
+
+- removed limitation in "filter"-Attribute of DbForm custom tag 
+  old versions only took into consideration an = (equal) as operator 
+  now it supports >,<,<=,>= (for date intervals)!
+  (fix contributed by Philip Grunikiewicz)
+
+@version 0.8   - 09-02-2001, major release, lots of new features and bug fixes
+@version 0.7.3 - 28-01-2001, quickly fixed a few bugs (more detailled info (soon) available on dbforms-website)
+@version 0.7.2 - 26-01-2001, fixed a bug
+@version 0.7.1 - 25-01-2001, first release of 0.7 

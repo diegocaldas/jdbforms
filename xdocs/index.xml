@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="fossato@pow2.com">Luca Fossato</author>
+    <title>DbForms</title>
+  </properties>
+
+<body>
+
+<section name="Overview">
+  <p>
+    DbForms enables developers to build sophisticated web-based database driven applications in very short time 
+	and with very little efforts. DbForms - applications are built in a manner conceptually similar to RAD - 
+	database building tools such as Microsoft Access (for Windows-based applications) or Sybase PowerSite 
+	(for web-based applications). 
+  </p>
+  <p>
+    Rapid Application Development (RAD) tools in general, allow a user to place database components and 
+	action elements on templates which then get executed at runtime.  As you will soon discover, dbForms 
+	uses these same techniques for its own framework.
+  </p>
+  <p>
+    An important benefit of using DbForms is its openness to other systems. You may use DbForms in conjunction 
+	with common JSP-pages, Struts-based pages, etc. This means that you are free to use DbForms where it brings 
+	you the most benefits (dramatically reduce development efforts, etc.) and to use other techniques if you 
+	think that they offer a better solution.  
+  </p>
+</section>
+
+<section name="Architecture">
+  <p>
+    DbForms implements the concepts of the Model - View - Controller design pattern
+	and leads to typical 3-tiered web-applications.
+  </p>
+  <p>
+    <img src="images/mvc.gif" border="0" />
+  </p>
+</section>
+
+<section name="Technical background">
+  <p>
+    DbForms is based on the following specifications: 
+	"Java Servlets 2.3" and "Java Server Pages 1.2" by Sun 
+	Microsystems. 
+	For more information on server-side Java technology please 
+	see <a href="http://www.javasoft.com/products/servlets/"> [servlet]</a>
+  </p>
+  <p>
+    DbForms makes extensively use of the "JSP Tag Library Extension" included in the JSP 1.1 specification. 
+    <a href="http://www.javasoft.com/products/jsp/taglibraries.html">[tags] </a>
+  </p>
+  <p>
+    <!--
+      XML parsing facilities and other parts of DbForms are based on code taken from Apache Group's 
+      Jakarta-Struts project. <a href="http://jakarta.apache.org/struts/">[Struts]</a>
+    -->
+      XML parsing facilities and other parts of DbForms use <a href="http://www.apache.org">Apache</a> Group's XML components:
+      <ul>
+        <li><a href="http://xml.apache.org/xerces2-j/" target="_top">Xerces</a> XML parser</li>
+        <li><a href="http://xml.apache.org/xalan-j/"   target="_top">Xalan</a> XSLT processor</li>
+        <li><a href="http://jakarta.apache.org/commons/digester/" target="_top">Digester</a> component</li>
+      </ul>
+  </p>
+</section>
+
+<section name="Contacts">
+  <p>
+    Any questions or comments? Please send an E-Mail to the <a href="mail-lists.html"> mailing list</a>!
+  </p>
+</section>
+</body>
+</document>

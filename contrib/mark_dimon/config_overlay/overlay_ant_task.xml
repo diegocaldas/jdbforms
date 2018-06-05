@@ -1,0 +1,28 @@
+<target name="update-config" description="--> Rebuild the dbforms-config.xml
+file ( assumes dbex.props file exist in /bin , generate dbex.props from
+devgui )">
+<echo message=""/>
+<echo message="*** updateing dbforms-config.xml ***"/>
+<echo message=""/>
+<java classname="org.dbforms.devgui.DevGui" fork="true" >
+<sysproperty key="DBFORMS_HOME" value="${basedir}"/>
+<arg value="createconfigfile"/>
+<arg value="${basedir}/bin/dbex.props"/>
+<arg value="${basedir}/temp/temp-config.xml"/>
+<classpath>
+<path refid="classpath"/>
+<pathelement location="${dist.dir}/dbforms${dbforms.version}.jar"/>
+</classpath>
+</java>
+<echo message=""/>
+<echo message="*** merging with overlay ***"/>
+<echo message=""/>
+<style style="${xslsrc.dir}/overlay.xsl"
+in="${basedir}/temp/temp-config.xml"
+out="${basedir}/temp/dbforms-config.xml">
+<param name="overlay-path" expression="../bin/dbforms-config-overlay.xml"/>
+</style>
+<echo message=""/>
+<echo message="*** your new dbforms-config.xml exists in the /temp directory ***"/>
+<echo message=""/>
+</target>

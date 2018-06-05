@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="app_hooks">
+  <title>Application hook-ups (Interceptors)
+</title>
+  <sect1>
+    <title>Introduction
+</title>
+    <para>It would be neither possible nor useful to create a system which has a solution, for every problem or requirement which could appear during the development-process (and life-cycle) of a database application.
+</para>
+    <para>Because it is impossible to foresee all eventual use cases and user needs, an 'all-in-one' product would most likely restrict the application developer sooner or later.
+</para>
+    <para>In order to handle the all-to-familiar unknown, systems must offer a kind of programming facility or Application Programmer Interface. DbForms offers the following:
+</para>
+  </sect1>
+  <sect1>
+    <title>Interface DbEventInterceptor
+</title>
+    <para>DbForms provides the 
+      <computeroutput>DbEventInterceptor</computeroutput> interface, which is capable of intercepting database operations (before and after they are executed).
+
+    </para>
+    <para>This interface provides the following methods
+</para>
+    <example>
+      <title>Methods defined in interface DbEventInterceptor
+</title>
+      <programlisting>
+    public int <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
+                DbFormsConfig config, Connection con)
+                throws ValidationException;
+ 
+
+    public void <emphasis role="bold">postInsert</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
+ 
+
+    public int <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
+                DbFormsConfig config, Connection con)
+                throws ValidationException;
+ 
+
+    public void <emphasis role="bold">postUpdate</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
+ 
+
+    public int <emphasis role="bold">preDelete</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues,
+                DbFormsConfig config, Connection  con)
+                throws ValidationException;
+
+
+    public void 
+        <emphasis role="bold">postDelete</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
+
+     
+    public int 
+        <emphasis role="bold">preSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con)
+                throws ValidationException;
+ 
+    public void 
+        <emphasis role="bold">postSelect</emphasis>(HttpServletRequest request, DbFormsConfig config, Connection con);
+ 
+    
+        (Note: the following pre/postAddRow methods are used to make a custom filter by selectively ignoring the results of our query,
+        sum values, or just merge some columns which can not be merged in sql.  See <computeroutput>IGNORE_OPERATION</computeroutput>
+        below.  Also, they are useful for counting rows -- see howtoAddRowCountSupport.jsp under /bookstore/howto/)
+    
+    public int <emphasis role="bold">preAddRow</emphasis>(DbEventInterceptorData data)
+                 throws ValidationException, MultipleValidationException;
+   
+                 
+    public void <emphasis role="bold">postAddRow</emphasis>(DbEventInterceptorData data);
+    
+      </programlisting>
+    </example>
+    <para>As the names indicate:</para>
+    <itemizedlist mark="opencircle">
+      <listitem>
+        <para>
+The 
+          <emphasis role="bold">preXxx() methods</emphasis> get called BEFORE the respective database operation is performed, and 
+          <emphasis role="bold">return a value</emphasis> indicating if the operation should be performed or not
+        </para>
+        <para>There are three possible values which could be returned, as well as an exception that could be thrown:
+        </para>
+        <para>
+        <variablelist>
+        <varlistentry>
+            <term><computeroutput>DENY_OPERATION</computeroutput></term>
+                <listitem><para>If <computeroutput>DENY_OPERATION</computeroutput> is given back by the interceptor, a SQL exception is raised
+                and the transaction is rolled back if set to <computeroutput>autoCommit = false</computeroutput></para>
+                </listitem>
+        </varlistentry>
+        <varlistentry>
+             
+            <term><computeroutput>GRANT_OPERATION</computeroutput></term>
+                <listitem><para>If <computeroutput>GRANT_OPERATION</computeroutput> is returned by the interceptor, the event will be performed and in cases where <computeroutput>autoCommit = false</computeroutput>, the transaction will be committed.</para>
+                </listitem>
+        </varlistentry>
+        <varlistentry>
+            <term><computeroutput>IGNORE_OPERATION</computeroutput></term>
+                <listitem><para>If <computeroutput>IGNORE_OPERATION</computeroutput> is returned by the interceptor, the DBForms event (UPDATE, INSERT, SELECT, DELETE) will not be performed, However in cases where <computeroutput>autoCommit = false</computeroutput>, the transaction will be committed.</para>
+                <para>For <emphasis role="bold">preAddRow</emphasis> and <emphasis role="bold">postAddRow</emphasis> methods, returning <computeroutput>IGNORE_OPERATION</computeroutput> means that the row is 
+                not written to the ResultSetVector and allows you to make filters which are not possible via SQL alone.
+                </para>
+                </listitem>
+        </varlistentry>
+        
+        
+        <varlistentry>
+            <term><computeroutput>ValidationException</computeroutput></term>
+             
+                <listitem>
+                    <para>If the Interceptor raises a <computeroutput>ValidationException</computeroutput> the transaction is rolled
+                    back too.</para>
+                    <para> 
+                    So if you have an exception inside your interceptor, you have two
+                    possibilities:
+ 
+                    Return <computeroutput>DENY_OPERATION</computeroutput> which generates <computeroutput>SQLException</computeroutput> with an NOGRANT message
+                    or throw a <computeroutput>ValidationExeception</computeroutput> with your own error text.</para>
+                </listitem>
+        </varlistentry>
+    </variablelist> 
+    </para>
+      </listitem>
+      <listitem>
+        <para>
+The 
+          <emphasis role="bold">postXxx()</emphasis> methods get called AFTER the operation has finished, and 
+          <emphasis role="bold">do not return a value</emphasis>, as the operation has already completed.
+
+        </para>
+      </listitem>
+    </itemizedlist>
+    
+  </sect1>
+  <sect1>
+    <title>Class Diagram
+</title>
+    <para/>
+    <para>
+      <figure>
+        <title>UML diagram of the DbEventInterceptor interface and some of its implementations
+</title>
+        <mediaobject id="UML_diagram_of_DbEventInterceptor_interface">
+          <imageobject role="html">
+            <imagedata format="PNG" fileref="images/figures/UML_diagram_of_DbEventInterceptor_interface.png"/>
+          </imageobject>
+          <imageobject role="fo">
+            <imagedata format="PNG" fileref="../images/figures/UML_diagram_of_DbEventInterceptor_interface.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <para>As you can see, there exists an interface 
+      <computeroutput>DbEventInterceptor</computeroutput> as described above. Additionally there exists a built-in implementation class 
+      <computeroutput>DbEventInterceptorSupport</computeroutput> of this interface. This is a convenience class which allows the developer to override just the methods he/she is interested in. There is no other difference between these two entities.
+
+    </para>
+  </sect1>
+  <sect1>
+    <title>Method parameters
+</title>
+    <para/>
+    <para>
+      <table>
+        <title>Parameters available in methods of DbEventInterceptor</title>
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>Parameter
+</entry>
+              <entry>Description</entry>
+            </row>
+            <row>
+              <entry>Connection con</entry>
+              <entry>a database connection
+=&gt; this object makes it easy to "trigger" other functionality like database-logging, keep up special data constraints, execute a sub-query, etc.</entry>
+            </row>
+            <row>
+              <entry>DbFormsConfig config
+</entry>
+              <entry>a config object
+provides the  method DbFormsConfig.getServletContext() which gives access to other J2EE-resources which may be stored in application scope. This could be an entry point to any other application, including EJB-Apps, Struts-Apps, Messaging systems, etc.
+</entry>
+            </row>
+            <row>
+              <entry>HttpServletRequest request
+</entry>
+              <entry>an http-request object
+gives access to various types of information, including the current user&#146;s name and user&#146;s groups/roles.
+</entry>
+            </row>
+            <row>
+              <entry>FieldValues fieldValues:
+</entry>
+              <entry><para>in the preInsert(), preUpdate() and preDelete()-methods:
+FieldValues which gives access to the fields contained in the current (selected) row.</para><para>
+<computeroutput>(String) fieldValues.get("lastname").getFieldValueAsObject();</computeroutput></para><para> -or-</para><para> <computeroutput>fieldValues.get("lastname").getFieldValue();</computeroutput></para>
+<para>will return the field value of the field &#147;lastName&#148; of the row DbForm's is about to insert, to update or to delete.  Note: <computeroutput>...getFieldValue();</computeroutput> always returns a String.</para>
+<para>To make changes in preInsert() and preUpdate() so that changes in the FieldValues are reflected in the database, use <computeroutput> setValue(Table table, FieldValues fieldValues, String fieldName, String value)</computeroutput> as shown below:</para>
+<para><computeroutput>this.setValue(table, fieldValues, "lastname", "smith");</computeroutput></para>
+<para>will ensure that the value &#147;smith&#148; be stored in the lastname field in the database. (column lastname must exist!)</para>
+</entry>
+            </row>
+            <row>
+              <entry>
+                DbEventInterceptorData data
+              </entry>
+              <entry>
+                <para>the <computeroutput>DbEventInterceptorData</computeroutput> contains the same data as the above parameters and can be accessed by using: 
+                <itemizedlist mark="opencircle">
+                <listitem>
+                <para>
+                data.getConnection()
+                </para>
+                </listitem>
+                <listitem>
+                <para>
+                data.getConfig()
+                </para>
+                </listitem>
+                <listitem>
+                <para>
+                data.getRequest()
+                </para>
+                </listitem>
+                <listitem>
+                <para>
+                data.getTable()
+                </para>
+                </listitem>
+                <listitem>
+                <para>
+                (FieldValues) data.getAttribute(DbEventInterceptorData.FIELDVALUES)
+                </para>
+                </listitem>
+                </itemizedlist>
+                </para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+  </sect1>
+  <sect1>
+    <title>Installing Interceptors
+</title>
+    <para>How do we tell DbForms 
+      <emphasis role="italic">when</emphasis> to invoke 
+      <emphasis role="italic">which</emphasis> Interface implementation?
+
+    </para>
+    <para>This information is provided in the dbForms XML configuration file. Similar to the granted-privileges security-constraint, (described in the security chapter) the XML tag which defines an Interceptor has to be placed inside a &lt;table&gt; element.
+</para>
+<sect2>
+<title>Table by Table Configuration</title>
+    <example>
+      <title>interceptor in dbforms-config.xml</title>
+      <programlisting>
+        <emphasis role="bold">&lt;table</emphasis> name="customer"&gt;
+        &lt;field name="id" fieldType="int" isKey="true"/&gt; 
+  &lt;field name="firstname" fieldType="char" /&gt; 
+  &lt;field name="lastname" fieldType="char" /&gt; 
+  &lt;field name="address" fieldType="char" /&gt; 
+  &lt;field name="pcode" fieldType="char" /&gt; 
+  &lt;field name="city" fieldType="char" /&gt; 
+            
+            
+        <emphasis role="bold">&lt;interceptor</emphasis> className = "com.foo.bar.CustomerValidatonChecker"/&gt; 
+    
+            
+        <emphasis role="bold">&lt;interceptor</emphasis> className = "com.foo.bar.TransactionLogger"/&gt;
+             
+    &lt;/table&gt; 
+    
+      </programlisting>
+    </example>
+    <para>The semantics of these declarations could be described as follows:
+</para>
+    <para>
+      <emphasis role="italic">Invoke </emphasis>
+      <computeroutput>com.foo.bar.CustomerValidatonChecker</computeroutput>
+      <emphasis role="italic"> and </emphasis>
+      <computeroutput>com.foo.bar.TransactionLogger</computeroutput>
+      <emphasis role="italic">, if the user is about to read, insert, update or delete data from table </emphasis>
+      <computeroutput>customer and call the appropriate methods on those objects</computeroutput>
+      <emphasis role="italic"/>
+    </para>
+    </sect2>
+    <sect2>
+    <title>Global Configuration</title>
+    <para>Interceptors can also be configured in <computeroutput>dbforms-config.xml</computeroutput> globally.</para>
+    <para>
+    <screen>
+    &lt;dbforms-config&gt;
+	&lt;interceptors&gt;
+	   &lt;interceptor className = "com.foo.bar.CustomerValidatonChecker"/&gt;
+       	&lt;/interceptors&gt;
+&lt;/dbforms-config&gt;
+    </screen></para>
+    
+    </sect2>
+    <sect2>
+    <title>Both Table by Table and Global Configured</title>
+    <para>If both ways are used, then the<emphasis role="italic">Table by Table interceptor</emphasis> will be processed first, and the <emphasis role="italic"> Global interceptor</emphasis> will be processed after that.  This means of course that changes to your <computeroutput>FieldValues</computeroutput> in the <emphasis role="italic">Table by Table interceptor</emphasis> get passed to the <emphasis role="italic"> Global interceptor</emphasis>. </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Example
+</title>
+    <para>In this example, we override 2 methods (preInsert and preUpdate) to do some basic validation checking.
+</para>
+    <example>
+      <title>Validation checking in interceptor</title>
+      <screen>
+import org.dbforms.config.*;
+import org.dbforms.event.*;
+import java.sql.*;
+import java.util.*;
+import javax.servlet.http.*;
+
+    public class CheckCustomerData 
+        <emphasis role="bold">extends DbEventInterceptorSupport</emphasis> {
+
+        private int 
+        <emphasis role="bold">checkCustomer</emphasis>(FieldValues fieldValues) // method invented by developer    
+            throws ValidationException {
+
+                String lastName = (String) fieldValues.get("lastname").getFieldValue();
+
+                String pCode = (String) fieldValues.get("pcode").getFieldValue();
+                
+                String city = (String) fieldValues.get("city").getFieldValue();
+                
+                // perform form-validation
+                if (lastName == null || lastName.trim().length()==0 ||   
+                    pCode == null || pCode.trim().length()==0 ||
+                    city == null || city.trim().length()==0)  {
+
+                        throw new ValidationException("Please fill out the form completely!"); } 
+                
+                else return GRANT_OPERATION;
+
+            }
+
+
+        public int 
+        <emphasis role="bold">preInsert</emphasis>(HttpServletRequest request,  Table table, FieldValues fieldValues, 
+         DbFormsConfig config, Connection con)
+            throws ValidationException {
+
+                
+        <emphasis role="bold">return checkCustomer(fieldValues);</emphasis>
+                
+            }
+
+
+        public int 
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest request, Table table, FieldValues fieldValues, 
+           DbFormsConfig config, Connection con)
+            throws ValidationException {
+
+                
+        <emphasis role="bold">return checkCustomer(fieldValues);</emphasis>
+            }
+
+
+    }
+
+
+      </screen>
+    </example>
+    <para>Remarks:
+</para>
+    <para>There is an Exception -- <computeroutput>org.dbforms.config.ValidationException</computeroutput> which may be thrown to signal a message to the end-user. In fact, returning the integer constant 
+      <computeroutput>DENY_OPERATION</computeroutput> defined in 
+      <computeroutput>DbEventInterceptor</computeroutput> leads to similar results (but with an unspecific error message and no generic message)
+
+    </para>
+  </sect1>
+  <sect1>
+    <title>Accumulating error messages</title>
+    <para>It is now possible to accumulate error messages while validating a form in a dbForms interceptor class.  This is useful in situations where many fields are validated and you wish to return several errors instead of just the first occurrence. In the validation process, when an error occurs, simply instantiate a new exception object and store it into a vector.  Do not throw this exception!  Once the validation process has completed, throw an instance of the MultipleValidationException class and pass the vector as an argument to its constructor.  Note that this functionality is dependant on using the xmlError tag. (refer to the section: DbForms Custom Tag Library for more information on using the xmlError  tag)
+</para>
+    <example>
+      <title>accumlating error messages</title>
+      <screen>
+    public int 
+        <emphasis role="bold">preUpdate</emphasis>(HttpServletRequest req, FieldValues fieldValues, DbformsConfig conf, 
+      Connection con)
+        throws ValidationException{
+      
+            Vector 
+        <emphasis role="bold">errors</emphasis> = new Vector();
+            
+             // Validate, if error    
+            
+        <emphasis role="bold">errors.add</emphasis>(new SQLException("English-001:param");
+            
+            
+             // More validations, errors    
+            
+        <emphasis role="bold">errors.add</emphasis>(new SQLException("Franais-003:param,param");
+      
+      
+            if(!errors.isEmpty) 
+        <emphasis role="bold">throw new MultipleValidationException(errors)</emphasis>;
+      
+      
+        }                    
+                        
+                        
+      </screen>
+    </example>
+    <para/>
+  </sect1>
+  <sect1>
+    <title>Changing Key Values in an Interceptor</title>
+    <para>Although you could try and do it via a pluggableEvent, as it currently stands this can not be done.</para>
+    <para>Apparently if a field is marked with isKey="true" in the config file,
+the preDelete and preUpdate methods disregard any changes to it.</para>
+    <para>Carlos Anjos pointed out:</para>
+    <para>I had a situation where I did some processing in the preDelete method
+and then I wanted to allow the operation, but on a different row.
+So I changed the values in fieldValues, but still the
+orginal row got deleted.</para>
+    <para>After banging my head for where in my code the error was, I finally
+understood that dbforms was ignoring the change to that attribute.
+A friend of mine went through dbforms deleteEvent code and confirmed
+that.</para>
+  </sect1>
+</chapter>

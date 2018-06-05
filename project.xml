@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd"
+>
+   <pomVersion>3</pomVersion>
+   <id>dbforms</id>
+   <name>DbForms</name>
+   <currentVersion>2.6-SNAPSHOT</currentVersion>
+   <organization>
+      <name>DbForms</name>
+      <url>http://jdbforms.sourceforge.net</url>
+      <logo>http://jdbforms.sourceforge.net/img/logo.gif</logo>
+   </organization>
+   <inceptionYear>2002</inceptionYear>
+   <package>org.dbforms</package>
+   <logo/>
+   <!-- Gump integration -->
+   <gumpRepositoryId/>
+   <description>
+    DbForms enables developers to build sophisticated web-based 
+    database driven applications in very short time and with very little efforts. 
+  </description>
+   <shortDescription>DbForms provides a form interface to databases</shortDescription>
+   <url>http://jdbforms.sourceforge.net</url>
+   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=17608</issueTrackingUrl>
+   <siteAddress>shell.sourceforge.net</siteAddress>
+   <siteDirectory>/home/groups/j/jd/jdbforms/htdocs</siteDirectory>
+   <repository>
+      <connection>scm:cvs:pserver:anonymous@jdbforms.cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</connection>
+      <developerConnection>scm:cvs:ext:${maven.username}@jdbforms.cvs.sourceforge.net:/cvsroot/jdbforms:dbforms</developerConnection>
+      <url>http://jdbforms.cvs.sourceforge.net/jdbforms/</url>
+   </repository>
+   <mailingLists>
+      <mailingList>
+         <name>DbForms Interest - use to ask questions, discuss problems, and make suggestions</name>
+         <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</subscribe>
+         <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-interest</unsubscribe>
+         <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=2497</archive>
+      </mailingList>
+      <mailingList>
+         <name>DbForms Developers - record of cvs changes</name>
+         <subscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</subscribe>
+         <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jdbforms-developers</unsubscribe>
+         <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=1896</archive>
+      </mailingList>
+   </mailingLists>
+   <developers>
+      <developer>
+         <name>Joachim Peer</name>
+         <id>joepeer</id>
+         <email>j.peer@gmx.net</email>
+         <organization/>
+         <roles>
+            <role>Project founder</role>
+            <role>Java Developer</role>
+            <role>Adminstrator</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Shawn Asamoto-Brown</name>
+         <id>javajunkie</id>
+         <email>javajunkie@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Sebastian Bogaci</name>
+         <id>sbogaci</id>
+         <email>Sebastian.Bogaci@daimlerchrysler.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Richard Bondi</name>
+         <id>rbondi</id>
+         <email>rbondi@ergito.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Mark Dimon</name>
+         <id>mdimon</id>
+         <email>mark.dimon@btinternet.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Luca Fossato</name>
+         <id>foxat</id>
+         <email>fossato@pow2.com</email>
+         <organization>Power Of Two S.r.l.</organization>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>John Gagon</name>
+         <id>johngagon</id>
+         <email>JohnG@ATSER.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Philip Grunikiewicz</name>
+         <id>pgrunik</id>
+         <email>Grunikiewicz.Philip@hydro.qc.ca</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+            <role>Adminstrator</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Henner Kollmann</name>
+         <id>hkollmann</id>
+         <email>Henner.Kollmann@gmx.de</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+            <role>Adminstrator</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Dirk Kraemer</name>
+         <id>dikr</id>
+         <email>kraemer@rz.uni-kiel.de</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+            <role>Adminstrator</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>John Peterson</name>
+         <id>jdp1120</id>
+         <email>jdp@ix.netcom.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+            <role>Adminstrator</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Eric Pugh</name>
+         <id>dep4b</id>
+         <email>epugh@upstate.com</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Sergio Moretti</name>
+         <id>mrsermore</id>
+         <email>s.moretti@nsi-mail.it</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Jan-Friedrich Mutter</name>
+         <id>krabatz</id>
+         <email>Krabatz@gmx.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Sungam Noremac</name>
+         <id>noremac</id>
+         <email>noremac@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Ivan Francolin Martinez</name>
+         <id>ivanfm</id>
+         <email>ivanfm@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+      <developer>
+         <name>Nicolas Parise</name>
+         <id> nicparise</id>
+         <email> nicparise@users.sourceforge.net</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </developer>
+   </developers>
+   <contributors>
+      <contributor>
+         <name>Bradley M. Handy</name>
+         <email>bhandy@arbor.edu</email>
+         <organization/>
+         <roles>
+            <role>Java Developer</role>
+         </roles>
+      </contributor>
+      <contributor>
+         <name>Robert W. Husted</name>
+         <email>husted@netscape.com</email>
+         <organization/>
+         <roles>
+            <role>JavaScript Calendar contribution</role>
+         </roles>
+      </contributor>
+      <contributor>
+         <name>Matthew Stein</name>
+         <email>mstein@ergito.com</email>
+         <organization/>
+         <roles>
+            <role>XSL Developer</role>
+            <role>Documentation Developer</role>
+         </roles>
+      </contributor>
+   </contributors>
+   <dependencies>
+      <dependency>
+         <id>log4j</id>
+         <version>1.2.8</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <!-- Apache Jakarta commons here, pliz ! -->
+      <dependency>
+         <id>commons-httpclient</id>
+         <version>2.0</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-collections</id>
+         <version>3.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-dbcp</id>
+         <version>1.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-digester</id>
+         <version>1.7</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-lang</id>
+         <version>2.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-logging</id>
+         <version>1.0.3</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-pool</id>
+         <version>1.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-el</id>
+         <version>1.0</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-beanutils</id>
+         <version>1.6</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-validator</id>
+         <version>1.0.2</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>commons-fileupload</id>
+         <version>1.0</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>oro</id>
+         <version>2.0.8</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>xercesImpl</id>
+         <groupId>xerces</groupId>
+         <version>2.6.0</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>xmlParserAPIs</id>
+         <groupId>xerces</groupId>
+         <version>2.2.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>xalan</id>
+         <version>2.5.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>hsqldb</id>
+         <version>1.7.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>protomatter</id>
+         <!-- This is self hosted! -->
+         <version>1.1.8-pre5</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>jasperreports</id>
+         <version>1.0.2</version>
+         <url>http://jasperreports.sourceforge.net</url>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+<!--
+      <dependency>
+         <id>jasper-compiler-jdt</id>
+         <version>5.5.7</version>
+         <groupId>tomcat</groupId>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+-->
+      <dependency>
+         <id>itext</id>
+         <version>1.3.1</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>cewolf</id>
+         <version>1.0</version>
+         <url>http://cewolf.sourceforge.net</url>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>jfreechart</id>
+         <version>1.0.0</version>
+         <url>http://www.jfree.org/jfreechart/</url>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>jcommon</id>
+         <version>1.0.0</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>poi</id>
+         <version>2.0-final-20040126</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <!-- This is self hosted! -->
+         <id>maxq</id>
+         <version>0.95dev</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      
+      <!-- testing only -->
+      <dependency>
+         <id>httpunit</id>
+         <version>1.5.4</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>rhino</id>
+         <version>1.5R4.1</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>nekohtml</id>
+         <version>0.9.3</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>junit</id>
+         <version>3.8.1</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <id>cactus</id>
+         <version>13-1.7</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+
+      <!-- for building against servletapi 2.3
+       -->
+      <dependency>
+         <id>servletapi</id>
+         <version>2.3</version>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <!-- This is self hosted! -->
+         <id>jsp-api-el</id>
+         <version>2.0</version>
+         <properties>
+            <war.bundle>true</war.bundle>
+         </properties>
+      </dependency>
+
+<!-- for building against servletapi 2.4
+    <dependency>
+      <id>servletapi</id>
+      <version>2.4-20040521</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>         
+
+    <dependency>
+      <id>jsp-api</id>
+      <groupId>jspapi</groupId>
+      <version>2.0-20040521</version>
+      <properties>
+         <war.bundle>false</war.bundle>
+       </properties>
+    </dependency>         
+-->
+      <!-- plugins used for maven reports! -->
+      <dependency>
+         <groupId>cactus</groupId>
+         <artifactId>cactus-maven</artifactId>
+         <version>1.7</version>
+         <type>plugin</type>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <groupId>maven</groupId>
+         <artifactId>maven-war-plugin</artifactId>
+         <version>1.6.1</version>
+         <type>plugin</type>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+
+      <dependency>
+         <groupId>maven-taglib</groupId>
+         <artifactId>maven-taglib-plugin</artifactId>
+         <version>1.2</version>
+         <type>plugin</type>
+         <url>http://maven-taglib.sourceforge.net</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <groupId>maven-plugins</groupId>
+         <artifactId>maven-findbugs-plugin</artifactId>
+         <version>0.8.4</version>
+         <type>plugin</type>
+         <url>http://maven-plugins.sourceforge.net</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+      <dependency>
+         <groupId>maven-plugins</groupId>
+         <artifactId>maven-sourceforge-plugin</artifactId>
+         <version>1.3</version>
+         <type>plugin</type>
+         <url>http://maven-plugins.sourceforge.net</url>
+         <properties>
+            <war.bundle>false</war.bundle>
+         </properties>
+      </dependency>
+   </dependencies>
+
+
+   <build>
+      <nagEmailAddress/>
+      <sourceDirectory>src</sourceDirectory>
+      <unitTestSourceDirectory>tests/test</unitTestSourceDirectory>
+      <aspectSourceDirectory/>
+      <unitTest>
+         <includes>
+            <include>**/Test*.java</include>
+         </includes>
+         <!-- Test resources -->
+         <resources>
+            <resource>
+               <directory>tests/test</directory>
+               <includes>
+                  <include>**/*.txt</include>
+               </includes>
+            </resource>
+         </resources>
+      </unitTest>
+      <resources>
+         <resource>
+            <directory>src</directory>
+            <includes>
+               <include>**/*.properties</include>
+               <include>**/*.x*</include>
+            </includes>
+         </resource>
+      </resources>
+   </build>
+   <reports>
+      <report>maven-license-plugin</report>
+      <report>maven-changes-plugin</report>
+      <report>maven-changelog-plugin</report>
+      <report>maven-file-activity-plugin</report>
+      <report>maven-developer-activity-plugin</report>
+      <report>maven-jdepend-plugin</report>
+      <report>taglib</report>
+      <report>maven-javadoc-plugin</report>
+      <report>maven-jxr-plugin</report>
+      <report>maven-junit-report-plugin</report>
+      <report>maven-cactus-plugin</report>
+      <report>maven-findbugs-plugin</report>
+      <report>maven-pmd-plugin</report>
+      <report>maven-simian-plugin</report>
+      <report>maven-tasklist-plugin</report>
+   </reports>
+</project>

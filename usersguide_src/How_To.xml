@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : how_to_examples.xml
+    Created on : August 11, 2003, 10:20 AM
+    Author     : javauser
+    Description:
+        Purpose of the document follows.
+--> 
+
+<chapter>
+<title>Additional Tools and Useful How To Examples 
+</title>
+<para>Additional tools for and information on how to use database forms is available in various locations including our wiki, how-tos for the bookstore, and in the <computeroutput>dbforms/contrib</computeroutput> directory</para>
+<para><emphasis role="bold">Any techniques you have for our bookstore How-To examples or Tools you want to contribute can be done through our mailing list.</emphasis></para> 
+<sect1>
+<title>Wiki</title>
+<para>Please see and contribute your helpful solutions/suggestions to the <ulink url="http://jdbforms.sourceforge.net/wiki.php"><citetitle>DbForm's Wiki</citetitle></ulink></para>
+</sect1>
+<sect1>
+<title>Changing Select Box Value From Another Select Box</title>
+<para>An example to show how to change the values shown in a second select box based on the value chosen by a user in the first select box.
+</para>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+</sect1>
+<sect1>
+<title>Tabbed Selector</title>
+<para>An example to show how to "break up" a page using a tabSelector to allow for the input of one form over several pages</para>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+</sect1>
+<sect1>
+<title>Printing a JasperReport</title>
+
+<para>Shows how to to print a JasperReport from dbforms for either the whole list or a single row of data using &lt;db:goto&gt; tag</para>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+</sect1>
+<sect1>
+<title>Create an Excel Worksheet</title>
+<para>Shows how to to create an Excel worksheet report with Dbforms using &lt;db:goto&gt; tag</para>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+</sect1>
+<sect1>
+<title>Use the Custom Formatter</title>
+<para>How to use the Custom Formatter</para>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+</sect1>
+<sect1>
+<title>Tool to Merge dbforms-config.xml Files.</title>
+<para>There is an <computeroutput>update-config</computeroutput> ant task and other resources to assist in overlaying a newly generated <computeroutput>dbforms-config.xml</computeroutput> file to add needed attributes / elements or keep keep hand coded
+changes you want in your config.</para>
+<para>It can be found in the <computeroutput>/dbforms/contrib/mark_dimon</computeroutput> directory</para>
+</sect1>
+<sect1>
+<title>How To Use DbForms With JSTL</title>
+<para>See the <ulink url="http://localhost:8080/bookstore/contrib/ivan_codarin/HowtoUseWithJSTL/"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/http://localhost:8080/bookstore/contrib/ivan_codarin/HowtoUseWithJSTL/</computeroutput></para>
+ 
+</sect1>
+
+<sect1>
+<title>How To Add Row Count Support</title>
+<para>See the <ulink url="http://localhost:8080/bookstore/howto/index.html"><citetitle>HowTos</citetitle></ulink> if you have the bookstore example installed, or view it under <computeroutput>dbforms/examples/bookstore/howto/index.html</computeroutput></para>
+ 
+</sect1>
+
+<sect1>
+<title>How To Monitor SQL Statements</title>
+
+<para>
+   It is possible to monitor the execution of sql statements of a JDBC
+   application using two open source tools: P6Spy (see <ulink
+   url="http://www.p6spy.com/"/>) and IronEye SQL (see <ulink
+   url="http://www.irongrid.com/"/>). P6Spy is, according to its web site, 
+   an open source framework to support applications that intercept and 
+   optionally modify database statements. It does so by acting as a JDBC 
+   proxy driver.  IronEye SQL is a lightweight Java tool that provides 
+   statistics and various performance graphs of all SQL that flows between an
+   application and a database.  It in this instance, it acts as a Java
+   Swing GUI frontend to P6Spy.
+</para>
+
+<para>
+Jahia software, <ulink url="http://www.jahia.org/"/>, provides a
+SQL Profiler, licensed under the Jahia Open Software License.  The profiler
+is an alternative to the IronEye SQL tool. 
+</para>
+
+<para>
+   Using IronEye SQL and P6Spy to monitor a DbForms application is quite
+   easy.  The P6Spy JDBC driver is inserted between DbForms and your
+   actual JDBC driver class.  Then, DbForms operations can be monitored
+   by connection to P6Spy from IronEye SQL.  The following checklist
+   shows the steps needed.
+<orderedlist>
+  <listitem>
+    <para>
+      Download and install P6Spy and IronEye SQL.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      Copy the three JAR files
+      <computeroutput>ironeyesql.jar</computeroutput>,
+      <computeroutput>p6spy.jar</computeroutput>, and
+      <computeroutput>log4j-1.2.8.jar.jar</computeroutput> into the
+      <computeroutput>WEB-INF/lib</computeroutput> directory of your
+      web application.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      Create a <computeroutput>spy.properties</computeroutput> file into
+      <computeroutput>WEB-INF/classes</computeroutput> directory of
+      your web application or include it into the JAR archive of your
+      application.  An extract of a sample file is shown below.
+<programlisting>
+# ----
+module.log=com.p6spy.engine.logging.P6LogFactory
+#module.outage=com.p6spy.engine.outage.P6OutageFactory
+module.monitor=com.irongrid.monitor.server.MonitorFactory
+monitorport=2000
+
+# oracle...
+realdriver=oracle.jdbc.driver.OracleDriver
+
+# are you sure you want to set me to true ? Have you read the docs ?
+deregisterdrivers=true
+# ----
+</programlisting>
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      Configure database access in 
+      <computeroutput>dbforms-config.xml</computeroutput>
+      using the <computeroutput>dbconnection</computeroutput> element below 
+      as a basic model.  The key portion is the
+      <computeroutput>conClass</computeroutput> attribute.
+<programlisting>
+&lt;dbconnection
+ isJndi                  = "false"
+ isPow2                  = "true"
+ defaultConnection       = "true"
+ connectionProviderClass = 
+   "org.dbforms.conprovider.SingleConnectionProvider"
+ conClass                = "com.p6spy.engine.spy.P6SpyDriver"
+ name                    = "jdbc:oracle:thin:@devel:1521:myDbService"
+ username                = "user"
+ password                = "passwd"/&gt;
+</programlisting>
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      Start your JDBC web application.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      Execute the IronEye SQL application and press the "connect"
+      button to connect to P6Spy.  As the web application produces
+      queries, they will be visible through IronEye SQL.
+    </para>
+  </listitem>
+</orderedlist>
+</para>
+
+</sect1>
+
+</chapter>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- ATTENTION: New tables only at the end otherwise the junit tests will not run!!!!!  -->
+<dbforms-config>
+	  <events>
+	    <database-events>
+	      <database-event type="insert"   className="org.dbforms.event.classic.InsertEvent" />
+	      <database-event type="update"   className="org.dbforms.event.classic.UpdateEvent" />
+	      <database-event type="delete"   className="org.dbforms.event.classic.DeleteEvent" />
+	    </database-events>
+	    <navigation-events>
+	      <navigation-event type="navGoto"   className="org.dbforms.event.classic.GotoEvent" />
+	      <navigation-event type="navPrev"   className="org.dbforms.event.classic.NavPrevEvent" />
+	      <navigation-event type="navNext"   className="org.dbforms.event.classic.NavNextEvent" />
+	      <navigation-event type="navFirst"  className="org.dbforms.event.classic.NavFirstEvent" />
+	      <navigation-event type="navLast"   className="org.dbforms.event.classic.NavLastEvent" />
+	    </navigation-events>
+	  </events>
+</dbforms-config>

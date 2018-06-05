@@ -1,0 +1,206 @@
+Release Notes for DbForms Version 2.0,  2004-01-24
+
+Contents:
+1)    About this release
+2)    Compatibility Issues
+2-1)  Interceptor interface
+2-2)  FilterCondition Tag
+2-3)  ValidationException classes
+3)    Details about enhancements and changes
+3-0)  Code cleanup
+3-1)  New navigation system
+3-2)  XML Data source
+3-3)  Bookstore example application
+3-4)  New field type TIME
+3-5)  Text field output
+3-6)  Text field parsing
+3-7)  Deprecated: date-format attribute in dbforms-config.xml 
+3-8)  jUnit testing of client side code
+3-9)  Added attribute searchAlgo to filterValue
+3-10) Added the possibility to use StaticDataItem - Tags inside TableData, QueryData and ConfTableData
+3-11) Change tableName at runtime
+
+1) About this release
+----------------------
+
+DbForms 2.0 is the second release to be labelled production/stable. It is the result of the 1.1.4 developer 
+releases.  Changes made in those releases are included and described below.
+
+Please report any problems or comments to the DbForms mailing list:
+
+    jdbforms-interest@lists.sourceforge.net
+
+This document summarizes the changes since release 1.1.3, which are of interest to end users. Note that their have 
+also been several internal enhancements to DbForms which are documented uniquely within the source code(i.e.: code 
+cleanup, improved algorithms).
+
+2) Compatibility Issues
+-------------------------
+
+2-1) Interceptor interface
+-----------------------------------
+
+To have better control over the fields written to the database, the interceptor interface for methods 
+preUpdate/preInsert/preDelete have been modified to:
+
+      public int preXXXXXX(
+      				HttpServletRequest request,  
+					Table table, 
+					FieldValues fieldValues,
+					DbFormsConfig config, 
+					Connection con) throws ValidationException
+
+You now have full control over the fields written to the database, and can remove, change and add new fields by 
+simply modifying the FieldValues object.
+
+IMPORTANT: You must change all (call-back) methods in your interceptors to use this new signature. Changing the 
+code however, is not necessary because the interface of class FieldValues is compatible to that of class Hashtable.
+
+
+2-2) FilterCondition Tag
+-----------------------------------
+
+Changed filters to use the resultSet setter methods. Quotes ('') should no longer be added to string-type 
+filter conditions. This is now added automatically.
+
+Example:
+ 
+	name like '?' 
+	
+		becomes
+
+	name like ? 
+
+
+2-3) ValidationException classes
+---------------------------------------
+
+To break cyclic references, the classes 
+
+	org/dbforms/event/ValidationException and 
+	org/dbforms/event/MultipleValidationException
+
+have been moved to
+
+	org/dbforms/config/ValidationException
+	org/dbforms/config/MultipleValidationException
+
+
+
+3)   Details about enhancements and changes
+-------------------------------------------
+
+3-0) Code cleanup
+-----------------
+
+A major cleanup has been done to change the navigation system and to remove duplicated code inside the tag libraries.
+This cleanup should not affect any interfaces, however a lot of classes have been touched. So please report all 
+irregularities to the mailing list!
+
+
+3-1) New navigation framework
+-----------------------------
+
+A new event framework has been built that DOES NOT re-execute a search query every time a client requests an 
+additional subset of data (as the original did). Also, with this framework, it is possible to use navigation in 
+conjunction with free form selects (as navigation has been made independent of filtering).
+
+Please refer to the Users Guide and bookstore example for details on how to use and configure this feature 
+(the original system remains the default).
+
+3-2) XML data source
+----------------------
+
+A new event framework was also put into place with this new DbForms release.  To demonstrate its usefulness, 
+a data source to read XML data was developed. Please refer to the Users Guide and bookstore example for more 
+details.
+
+3-3) Bookstore example application
+----------------------------------
+
+Added a new example application named bookstore to show several of DbForms more advanced features. This web 
+application contains some helpful to-do example pages and is also used for testing purposes.
+
+Another goal in developing the bookstore application was to have a common application base for all DbForms 
+developers. In the event of a reported bug, a simple page could be built in the bookstore application 
+exemplifying the bug and allowing for easy debugging by DbForms developers.
+
+3-4) New field type TIME
+------------------------
+
+DbForms now supports SQL time as a valid field type.
+
+
+3-5) Text field output
+----------------------
+
+Input (text) fields now provide the 'pattern' attribute which is used to specify display format. Internally, 
+this is achieved by passing the desired format to the format.applyPattern method. The format is constructed from 
+the locale setting found in the current request object. So, numeric and date values are written with user-defined 
+locale.
+
+IMPORTANT: The format attribute is now deprecated
+
+Another important change is how null values (from the database) are displayed. You can set a substitute 'null 
+field value' with the 'null field' attribute.  Default value can also be specified using the 'default' attribute.
+
+
+3-6) Text field parsing
+-------------------------------------
+
+Parsing text is not done according to the current locale setting and format pattern. To enable, the format used 
+to write out the field is written as a hidden field into the page.  During parsing, it is read back and used to 
+construct a format for parsing. Numeric and date values are then parsed according to the end-user locale setting.
+
+3-7) Deprecated: date-format attribute in dbforms-config.xml 
+--------------------------------------------------------------
+
+Due to the above-mentioned changes in output and parsing date input fields, the date-format attribute 
+(dbforms-config.xml) has become obsolete and should no longer be used.
+
+3-8) jUnit testing of client side code
+------------------------------------------
+
+Integrated httpclient and maxq into the package. It is now possible to run the maxq recorder, generate junit 
+test files for the client side and test the results during unit testing.
+
+Added some general tests for displaying and editing data. 
+
+
+3-9) Added attribute searchAlgo to filterValue tag
+--------------------------------------------------
+
+Added the searchAlgo attribute to the filterValue tag with values of
+
+	sharp 			this is the default behaviour, do nothing.
+	weakStart		like, % is added in front of value
+	weakEnd			like, % is appended to value
+	weakStartEnd	like, % is added in front of value and % is appended to value
+
+For more details see documentation.
+
+3-10) Added the possibility to use StaticDataItem - Tags inside TableData, QueryData and ConfTableData
+-------------------------------------------------------------------------------------------------------
+Now you can add StaticDataItem - Tags inside TableData, QueryData and ConfTableData. So it's possible to
+add fixed values to your list of dynamic values.
+
+3-11) Change tableName at runtime
+----------------------------------
+Now you can change the tableName at runtime. So it's possible to change the table and reuse the form.
+One consequence of this is that in the case you use this features the well known dbforms variables, 
+e.g. currentRow_tablename will not work. So i added a new variable named dbforms as hashtable. 
+This hashtable holds a list of all known dbforms and subforms in the page. 
+Key of the map is the new db:dbforms attribute name. 
+Objects of this list are of the type DbFormContext, 
+which will give the access to all of the known fields:
+
+Public class DbFormsContext {
+	public String getPosition();
+	public ResultSetVector getRsv();
+	public Map getSearchFieldAlgorithmNames();
+	public Map getSearchFieldModeNames();
+	public Map getSearchFieldNames();
+	public Map getCurrentRow();
+	public void setCurrentRow(Map map);
+	public void setPosition(String string);
+}

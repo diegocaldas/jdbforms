@@ -1,0 +1,467 @@
+<?xml version="1.0"?>
+<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <choice>
+            
+            <element name="dbfoms-config">
+                <zeroOrMore>
+                    <element name="table">
+                        <ref name="anonymous0"/>
+                    </element>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <element name="query">
+                        <ref name="anonymous0"/>
+                        <zeroOrMore>
+                            <element name="search">
+                                <optional>
+                                    <attribute name="expression">
+                                    <data type="string"/>
+                                    </attribute>
+                                </optional>
+                                <optional>
+                                    <attribute name="fieldType">
+                                    <data type="string"/>
+                                    </attribute>
+                                </optional>
+                                <optional>
+                                    <attribute name="name">
+                                    <data type="string"/>
+                                    </attribute>
+                                </optional>
+                            </element>
+                        </zeroOrMore>
+                        <optional>
+                            <attribute name="from">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="where">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="followAfterWhere">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="orderWithPos">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="distinct">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="groupBy">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="having">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                    </element>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <element name="events">
+                        <oneOrMore>
+                            <element name="database-events">
+                                <oneOrMore>
+                                    <element name="database-event">
+                                    <attribute name="className">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <attribute name="type">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <optional>
+                                    <attribute name="id">
+                                    <data type="string"/>
+                                    </attribute>
+                                    </optional>
+                                    </element>
+                                </oneOrMore>
+                            </element>
+                        </oneOrMore>
+                        <oneOrMore>
+                            <element name="navigation-events">
+                                <oneOrMore>
+                                    <element name="navigation-event">
+                                    <attribute name="className">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <attribute name="type">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <optional>
+                                    <attribute name="id">
+                                    <data type="string"/>
+                                    </attribute>
+                                    </optional>
+                                    </element>
+                                </oneOrMore>
+                            </element>
+                        </oneOrMore>
+                    </element>
+                </zeroOrMore>
+                <zeroOrMore>
+                    <element name="dbconnection">
+                        <optional>
+                            <attribute name="contextDataSource">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="orderBy">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="password">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="username">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="conClass">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="connectionPoolURL">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="connectionProviderClass">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="defaultConnection">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="isPow2">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="isJndi">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="type">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <attribute name="name">
+                            <data type="string"/>
+                        </attribute>
+                        <optional>
+                            <attribute name="id">
+                                <data type="string"/>
+                            </attribute>
+                        </optional>
+                        <zeroOrMore>
+                            <element name="property">
+                                <attribute name="value">
+                                    <data type="string"/>
+                                </attribute>
+                                <attribute name="name">
+                                    <data type="string"/>
+                                </attribute>
+                            </element>
+                        </zeroOrMore>
+                        <zeroOrMore>
+                            <element name="pool-property">
+                                <attribute name="value">
+                                    <data type="string"/>
+                                </attribute>
+                                <attribute name="name">
+                                    <data type="string"/>
+                                </attribute>
+                            </element>
+                        </zeroOrMore>
+                    </element>
+                </zeroOrMore>
+                <optional>
+                    <element name="DOMFactoryClass">
+                        <ref name="string"/>
+                    </element>
+                </optional>
+                <optional>
+                    <element name="DefaultEscaperClass">
+                        <ref name="string"/>
+                    </element>
+                </optional>
+                <optional>
+                    <element name="interceptors">
+                        <zeroOrMore>
+                            <element name="interceptor">
+                                <attribute name="className">
+                                    <data type="string"/>
+                                </attribute>
+                                <zeroOrMore>
+                                    <element name="param">
+                                    <attribute name="value">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <attribute name="name">
+                                    <data type="string"/>
+                                    </attribute>
+                                    </element>
+                                </zeroOrMore>
+                            </element>
+                        </zeroOrMore>
+                    </element>
+                </optional>
+            </element>
+        </choice>
+    </start>
+    <define name="anonymous0">
+        <optional>
+            <attribute name="defaultVisibleFields">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="defaultVisibleFieldsFormat">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="blobHandling">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="alias">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="escaperClass">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="dataAccessClass">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="orderBy">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <attribute name="name">
+            <data type="string"/>
+        </attribute>
+        <zeroOrMore>
+            <choice>
+                <notAllowed/>
+                <element name="field">
+                    <ref name="anonymous1"/>
+                    <optional>
+                        <attribute name="encoding">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                </element>
+            </choice>
+        </zeroOrMore>
+        <zeroOrMore>
+            <choice>
+                <notAllowed/>
+                <element name="calc">
+                    <ref name="anonymous1"/>
+                </element>
+            </choice>
+        </zeroOrMore>
+        <zeroOrMore>
+            <choice>
+                <notAllowed/>
+                <element name="foreign-key">
+                    <optional>
+                        <attribute name="displayType">
+                            <choice>
+                                <value type="string">none</value>
+                                <value type="string">radio</value>
+                                <value type="string">select</value>
+                            </choice>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="visibleFields">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="format">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                    <attribute name="name">
+                        <data type="string"/>
+                    </attribute>
+                    <attribute name="foreignTable">
+                        <data type="string"/>
+                    </attribute>
+                    <oneOrMore>
+                        <element name="reference">
+                            <attribute name="foreign">
+                                <data type="string"/>
+                            </attribute>
+                            <attribute name="local">
+                                <data type="string"/>
+                            </attribute>
+                        </element>
+                    </oneOrMore>
+                </element>
+            </choice>
+        </zeroOrMore>
+        <optional>
+            <choice>
+                <notAllowed/>
+                <element name="events">
+                    <oneOrMore>
+                        <element name="event">
+                            <attribute name="id">
+                                <data type="string"/>
+                            </attribute>
+                            <attribute name="type">
+                                <data type="string"/>
+                            </attribute>
+                            <zeroOrMore>
+                                <element name="param">
+                                    <attribute name="value">
+                                    <data type="string"/>
+                                    </attribute>
+                                    <attribute name="name">
+                                    <data type="string"/>
+                                    </attribute>
+                                </element>
+                            </zeroOrMore>
+                        </element>
+                    </oneOrMore>
+                </element>
+            </choice>
+        </optional>
+        <zeroOrMore>
+            <choice>
+                <notAllowed/>
+                <element name="interceptor">
+                    <attribute name="className">
+                        <data type="string"/>
+                    </attribute>
+                    <zeroOrMore>
+                        <element name="param">
+                            <attribute name="value">
+                                <data type="string"/>
+                            </attribute>
+                            <attribute name="name">
+                                <data type="string"/>
+                            </attribute>
+                        </element>
+                    </zeroOrMore>
+                </element>
+            </choice>
+        </zeroOrMore>
+        <zeroOrMore>
+            <choice>
+                <notAllowed/>
+                <element name="granted-privileges">
+                    <optional>
+                        <attribute name="delete">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="update">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="insert">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="select">
+                            <data type="string"/>
+                        </attribute>
+                    </optional>
+                </element>
+            </choice>
+        </zeroOrMore>
+    </define>
+    <define name="anonymous1">
+        <optional>
+            <attribute name="escaperClass">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="alias">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="defaultValue">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="expression">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="directory">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="autoInc">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="sortable">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="isKey">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="size">
+                <data type="string"/>
+            </attribute>
+        </optional>
+        <attribute name="fieldType">
+            <data type="string"/>
+        </attribute>
+        <attribute name="name">
+            <data type="string"/>
+        </attribute>
+    </define>
+    <define name="string">
+        <data type="string"/>
+    </define>
+</grammar>

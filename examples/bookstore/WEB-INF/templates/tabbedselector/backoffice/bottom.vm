@@ -1,0 +1,8 @@
+<TR>
+  <TD class="tabbedselector_backoffice-LBot"></TD>
+  <TD class="tabbedselector_backoffice-Bot" colspan="${colspan}"></TD>
+  <TD class="tabbedselector_backoffice-RBot"></TD>
+</TR>
+</TABLE>
+
+

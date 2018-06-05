@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter>
+  <title>Sequence diagrams</title>
+
+  <sect1>
+    <title>The controller</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/event-servletController.usd.png">diagram</ulink>
+      shows the interaction between the Controller class that receives the incoming 
+      http request and all the other classes that manage the event creation and its procession.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The controller servlet gets the incoming http request that contains the data
+              to process; the request object contains also the data that identify the event 
+              to instantiate and execute.
+            </para>
+            <para>
+              Then, the controller instantiates the  <computeroutput>EventEngine</computeroutput> object.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet calls the <computeroutput>eventEngine.generatePrimaryEvent()</computeroutput> method.
+              <computeroutput>generatePrimaryEvent()</computeroutput> gets the <computeroutput>action</computeroutput> 
+              parameter from the <computeroutput>request</computeroutput>, try to 
+              identify the related event type (database or navigation) and then uses the appropriate factory
+              to create the related event object. <computeroutput>generatePrimaryEvent()</computeroutput> returns the event 
+              object to the controller.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet checks if the returned event object is an instance of a
+              <computeroutput>Database event</computeroutput> (i.e.: insert, delete, update events).
+              If yes, validate the incoming data 
+              (the validation step occurs only if the <computeroutput>formValidatorName</computeroutput> request parameter 
+              exist and the current event is an <computeroutput>Update</computeroutput> 
+              or <computeroutput>Insert</computeroutput> event.
+              The controller executes the <computeroutput>doValidation()</computeroutput> method 
+              that uses the <computeroutput>Commons-Validator</computeroutput> Jakarta component) 
+               and process the event object.
+            </para>
+            <para>
+              Note: the Navigation events are managed by the <computeroutput>DbFormsTag</computeroutput> class.
+              The controller manages only the database events.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para id="controller-WebEvent">
+              The controller servlet stores the event reference into the session context.
+              MUST UPDATE the diagram picture...
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet checks if the evetEngine has got involved tables:
+              it find out which tables where on the jsp page (the view); 
+              one jsp file may contain multiple (db)forms, and each forms could contain many
+              subforms nested inside.
+            </para>         
+            <para>
+              If yes, the controller gets the list of all the involved tables, generates 
+              and executes update events for all of them.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The controller servlet forwards the client to the target resource referred from the 
+              <computeroutput>followUp</computeroutput>
+              attribute of the jsp form if there are no errors.
+              Else redirects to the resource specified by the 
+              <computeroutput>followUpOnError</computeroutput> form attribute.
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+  <sect1>
+    <title>The dbform JSP tag</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/taglib-DbFormTag.doStartTag.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>DbFormTag</computeroutput> class 
+      and all the other classes that are used to render the data into the target jsp page.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The jsp page containing the <computeroutput>dbform</computeroutput> tag
+              instantiates and initializes the <computeroutput>DbFormTag</computeroutput> class.
+            </para>         
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object gets the main table object, 
+              and checks if it has granted-privileges that make queries possible. 
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object checks if the main table 
+              contains interceptor objects. 
+              If yes, process those objects calling their <computeroutput>PRE_SELECT</computeroutput> 
+              hook up method.             
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object generates the HTML form.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> executes the 
+              <computeroutput>initOverrulingOrder()</computeroutput> method to 
+              overrule other default declarations eventually done into the XML configuration file.
+              <computeroutput>initOverrulingOrder()</computeroutput> 
+              initialises the datastructures containing informations about how table should be ordered.
+              The information is specified in the JSP this tags lives in.
+              This declaration OVERRULES other default declarations eventually done into the 
+              XML configuration file.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object sets the initial navigation position.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object executes the 
+              <computeroutput>checkLinkage()</computeroutput> method to check 
+              if the fieldvalue-list related to the position strings for a certain subform
+              is valid in the current state.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object tries to retrieve from the 
+              <computeroutput>request</computeroutput> context the any previously instantiated
+              <computeroutput>WebEvent</computeroutput> object.
+              If the event doesn't exist, the <computeroutput>DbFormTag</computeroutput> object
+              generates a new <emphasis role="bold">navigation</emphasis> event
+              and then processes it.
+            </para>
+            <para>
+              Note: the member <computeroutput>localWebEvent</computeroutput> action string is used to 
+              identify the navigation event type to instantiate.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object checks if the main table 
+              contains interceptor objects. 
+              If yes, process those objects calling their <computeroutput>POST_SELECT</computeroutput> 
+              hook up method.             
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>DbFormTag</computeroutput> object recalculates its cursor position.
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+  <sect1>
+    <title>The Goto event</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/datalist-gotoEvent.processEvent.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
+      <computeroutput>GotoEvent</computeroutput> object and all the other actors that are used 
+      to process this navigation event.
+    </para>
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The <computeroutput>Controller</computeroutput> servlet calls the GotoEvent's
+              <computeroutput>processEvent</computeroutput> method.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>GotoEvent</computeroutput> object parses the position string 
+              and build a FieldValues data structure representing the values 
+              of the fields decoded from that position.
+              The position string uses the following format:
+              <programlisting>
+  field(0).id : field(0).length : field(0).value - ... - field(n).id : field(n).length : field(n).value
+              </programlisting>
+              and contains data for all the fields of the current table.
+              It calls <computeroutput>table.mapChildFieldValues</computeroutput>
+              if the event was generated by a parent-child table; 
+              else calls <computeroutput>table.getFieldValues</computeroutput>.
+            </para>
+            <para>
+              Note: the Table's <computeroutput>mapChildFieldValues</computeroutput> method is used to  
+              build a new <computeroutput>FieldValues</computeroutput> object 
+              that inherits the fields' names from the child table 
+              and the fields' values from the parent table.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              Having the FieldValues data for the input position, 
+              the <computeroutput>GotoEvent</computeroutput> object try to build
+              the key position string.
+              It uses the same format as position string:
+              <programlisting>
+  field(0).id : field(0).length : field(0).value - ... - field(n).id : field(n).length : field(n).value
+              </programlisting>
+              but contains data only for the fields that define the key set for the current table.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>GotoEvent</computeroutput> object gets the
+              <computeroutput>DataSourceList</computeroutput> instance and remove the 
+              <computeroutput>DataSourceFactory</computeroutput> associated to the current table
+              and to the current the current request URI from its internal list. 
+              (the current request URI example value:  
+               <computeroutput>/bookstore_v1_1_x_20030819/tests/testAUTHOR_list.jsp?AUTHOR</computeroutput>)
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>GotoEvent</computeroutput> object instantiates a new 
+              <computeroutput>DataSourceFactory</computeroutput> object and stores it into the 
+              <computeroutput>DataSourceList</computeroutput>
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>GotoEvent</computeroutput> object calls the 
+              <computeroutput>DataSourceFactory.getCurrent</computeroutput> method passing 
+              to it the key position string to return a new 
+              <computeroutput>ResultSetVector</computeroutput> object
+              to the <computeroutput>Controller</computeroutput>
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+
+
+
+  <sect1>
+    <title>The NavNextEvent</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/datalist-navNextEvent.processEvent.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
+      <computeroutput>NavNextEvent</computeroutput> object and all the other actors that are used 
+      to process this navigation event.
+    </para>
+    <para>
+      <emphasis role="bold">Note</emphasis>: 
+      <computeroutput>NavNextEvent</computeroutput> works similar to
+      <computeroutput>NavFirstEvent</computeroutput>, <computeroutput>NavLastEvent</computeroutput> and
+      <computeroutput>NavPrevEvent</computeroutput>, so the diagram above should explain the sequence
+      of class messages for all those events. For further details, see the
+      <screen>
+  public ResultSetVector processEvent(FieldValue[] childFieldValues, 
+                                      FieldValue[] orderConstraint, 
+                                      int          count, 
+                                      String       firstPosition, 
+                                      String       lastPosition, 
+                                      Connection   con, 
+                                      String       dbConnectionName)
+                               throws SQLException
+       </screen>
+       method of the selected NavigationEvent class.
+    </para>
+
+	<sect2>
+	  <title>Event initialization</title>
+	  <para>
+        This navigation event is initialized by the following parameters:
+
+        <table>
+		  <title>initialization parameters and their meaning</title>
+          <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>action string</entry>
+              <entry>the input action string generated by the parent jsp page</entry>
+            </row>
+            <row>
+              <entry>step width</entry>
+              <entry>the number of records to show into the target jsp page</entry>
+            </row>
+          </tbody>
+          </tgroup>
+        </table>
+
+        <table>
+		  <title>navigation event parameters generated by a form</title>
+          <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>action string</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>step width</entry>
+              <entry>1</entry>
+            </row>
+          </tbody>
+          </tgroup>
+        </table>
+
+	  </para>
+	</sect2>
+
+    <sect2>
+      <title>Steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The <computeroutput>Controller</computeroutput> servlet calls the NavNextEvent's
+              <computeroutput>processEvent</computeroutput> method.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object retrieve the instance of 
+              the <computeroutput>DataSourceList</computeroutput> object.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object get the 
+              <computeroutput>DataSourceFactory</computeroutput> related to the current table and
+              to the current request URI.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object retrieve the 
+              <computeroutput>FieldValues</computeroutput> object 
+              (a data structure representing the values of the fields decoded from a given position string)
+              related to the the last resultset position string. [ADD A NEW MESSAGE INTO THE DIAGRAM]
+              Then it get the key position string
+              for the current table from that <computeroutput>FieldValues</computeroutput>.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>NavNextEvent</computeroutput> object calls the
+              <computeroutput>DataSourceFactory.getNext</computeroutput> method to 
+              obtain the <computeroutput>ResultSetVector</computeroutput> object. 
+              If that <computeroutput>ResultSetVector</computeroutput> is null, 
+              <computeroutput>NavNextEvent</computeroutput> calls
+              <computeroutput>DataSourceFactory.getLast</computeroutput> to obtain
+              the last records from the current table 
+              (it simulates a <computeroutput>NavLastEvent</computeroutput> event).
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+
+
+  <sect1>
+    <title>The InsertEvent</title>
+    <para>
+      This <ulink url="./images/figures/uml/sequence/datalist-navInsertEvent.processEvent.usd.png">diagram</ulink>
+      shows the interaction between the <computeroutput>Controller</computeroutput> object, the 
+      <computeroutput>InsertEvent</computeroutput> object and all the other actors that are used 
+      to process this database event.
+    </para>
+    <para>
+      <emphasis role="bold">Note</emphasis>: 
+      <computeroutput>InsertEvent</computeroutput> works similar to
+      <computeroutput>UpdateEvent</computeroutput> and <computeroutput>DeleteEvent</computeroutput>, 
+      so the diagram above should explain the sequence
+      of class messages for all those events. For further details, see the
+      <screen>
+  public void processEvent(Connection con)
+      throws SQLException, MultipleValidationException
+       </screen>
+       method of the selected DatabaseEvent class.
+    </para>
+	<sect2>
+	  <title>Event initialization</title>
+	  <para>
+        This database event is initialized by the following parameters and example values:
+
+        <table>
+		  <title>initialization parameters and their meaning</title>
+          <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>action string</entry>
+              <entry>the input action string generated by the parent jsp page</entry>
+            </row>
+            <row>
+              <entry>event type</entry>
+              <entry>the string identifying the event type</entry>
+            </row>
+            <row>
+              <entry>table id</entry>
+              <entry>the dbforms' table identifier (used to build the query string)</entry>
+            </row>
+            <row>
+              <entry>key id</entry>
+              <entry>the dbforms' key identifier related to the current table</entry>
+            </row>
+            <row>
+              <entry>insert button count</entry>
+              <entry>button count used to identify individual insert buttons</entry>
+            </row>
+          </tbody>
+          </tgroup>
+        </table>
+
+        <table>
+		  <title>insert event parameters generated by a main form</title>
+          <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>action string</entry>
+              <entry>ac_insert_0_root_5</entry>
+            </row>
+            <row>
+              <entry>event type</entry>
+              <entry>ac_insert</entry>
+            </row>
+            <row>
+              <entry>table id</entry>
+              <entry>0</entry>
+            </row>
+            <row>
+              <entry>key id</entry>
+              <entry>root</entry>
+            </row>
+            <row>
+              <entry>button count</entry>
+              <entry>5</entry>
+            </row>
+          </tbody>
+          </tgroup>
+        </table>
+
+        <table>
+		  <title>insert event parameters generated by a subform</title>
+          <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>action</entry>
+              <entry>ac_insert_1_0@root_17</entry>
+            </row>
+            <row>
+              <entry>event type</entry>
+              <entry>ac_insert</entry>
+            </row>
+            <row>
+              <entry>table id</entry>
+              <entry>1</entry>
+            </row>
+            <row>
+              <entry>key id</entry>
+              <entry>0@root</entry>
+            </row>
+            <row>
+              <entry>button count</entry>
+              <entry>17</entry>
+            </row>
+          </tbody>
+          </tgroup>
+        </table>
+
+	  </para>
+	</sect2>
+    <sect2>
+      <title>Event steps</title>
+      <para>
+        <itemizedlist mark="opencircle">
+
+          <listitem>
+            <para>
+              The <computeroutput>Controller</computeroutput> servlet calls the InsertEvent's
+              <computeroutput>processEvent</computeroutput> method.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object checks if the current user 
+              has got the INSERT privilege.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object builds a 
+              <computeroutput>FieldValues</computeroutput> object representing 
+              the set of <computeroutput>FieldValue</computeroutput> objects to process.
+              Then it copy the <computeroutput>FieldValues</computeroutput> 
+              data into a new <computeroutput>fieldValueHashTable</computeroutput> 
+              object that will be used as interceptor's input parameter.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object 
+              checks if there is any interceptor object binded to the current main table.
+              If yes, executes its <computeroutput>PRE_INSERT</computeroutput> hook method.
+            </para>         
+            <para>
+              Then the <computeroutput>InsertEvent</computeroutput> object  
+              synchronizes data from the <computeroutput>fieldValueHashTable</computeroutput> structure used as
+              interceptor's input parameter (the hash table could contains values modified by the interceptor code) 
+              to the original <computeroutput>FieldValues</computeroutput> object 
+              (that will be used by the database insert operation).
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object builds a 
+              <computeroutput>FieldValues</computeroutput> object representing 
+              the set of <computeroutput>FieldValue</computeroutput> objects to process.
+              Then it copy the <computeroutput>FieldValues</computeroutput> 
+              data into a new <computeroutput>fieldValueHashTable</computeroutput> 
+              object that will be used as interceptor's input parameter.
+            </para>         
+          </listitem>
+
+         <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object calls the 
+              <computeroutput>checkSufficentValues</computeroutput> method to 
+              check a list of conditions on the the input FieldValues object:
+              
+              <itemizedlist>
+                <listitem><para>
+                  it must contains the same number of fields as the current main Table</para>
+                </listitem>
+                <listitem><para>
+                  any autoInc field must NOT have a related FieldValue object (generated by a request
+                  parameter) because that field value must be calculated by the underlying RDBMS</para>
+                </listitem>
+              </itemizedlist>
+
+               if all the conditions above are true, the system continues the execution of the event flow,
+               else it generates a <computeroutput>SQLException</computeroutput> that stops the event procession.
+            </para>         
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object retrieve the 
+              <computeroutput>DataSourceFactory</computeroutput> and executes its
+              <computeroutput>doInsert</computeroutput> method to store the data
+              contained into the  <computeroutput>FieldValues</computeroutput> object 
+			  (the new record to insert) into the underlying database.
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              The <computeroutput>InsertEvent</computeroutput> object 
+              checks (again) if there is any interceptor object binded to the current main table.
+              If yes, executes its <computeroutput>POST_INSERT</computeroutput> hook method.
+            </para>         
+          </listitem>
+
+        </itemizedlist>
+      </para>
+    </sect2>
+  </sect1>
+
+</chapter>

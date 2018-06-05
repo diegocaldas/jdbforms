@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : http_link.xml
+    Created on : March 10, 2003, 12:56 PM
+    Author     : javauser
+    Description:
+        Purpose of the document follows.
+-->
+<ulink url="http://www.ora.com/catalog/tex/"><citetitle>whatever text you want to be the link</citetitle></ulink>

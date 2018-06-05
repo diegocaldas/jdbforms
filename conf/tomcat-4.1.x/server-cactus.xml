@@ -1,0 +1,18 @@
+<Server port="8005" shutdown="SHUTDOWN" debug="0">
+
+  <Service name="Tomcat-Standalone">
+
+    <Connector 
+               port="8080" minProcessors="5" maxProcessors="75"
+               acceptCount="10" debug="0"/>
+
+    <Engine name="Standalone" defaultHost="localhost" debug="0">
+      <Logger className="org.apache.catalina.logger.FileLogger"
+             prefix="dbforms-cactus." suffix=".log"  timestamp="true"/>
+      <Host name="localhost" debug="1" appBase="webapps" unpackWARs="true">
+      </Host>
+    </Engine>
+
+  </Service>
+
+</Server>
